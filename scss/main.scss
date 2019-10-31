@@ -34,6 +34,11 @@ h3 {
   }
 }
 
+#about-sm-heading,
+#work-sm-heading {
+  margin-bottom: 5rem;
+}
+
 a {
   color: set-text-color($primary-color);
   text-decoration: none;
@@ -50,7 +55,7 @@ header {
 }
 
 main {
-  padding: 4rem;
+  padding: 3rem 4.5rem;
   //height: 100%;
   min-height: calc(100vh - 60px);
 
@@ -77,10 +82,11 @@ main {
 
 .about-info {
   display: grid;
-  grid-gap: 30px;
+  grid-gap: 60px;
   grid-template-areas:
     "bioimage bio bio"
-    "job1 job2 job3";
+    "job1 job2 job3"
+    "job4 job5 job5";
   grid-template-columns: repeat(3, 1fr);
 
   .bio-image {
@@ -92,7 +98,7 @@ main {
 
   .bio {
     grid-area: bio;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
   }
 
   .job-1 {
@@ -106,28 +112,79 @@ main {
   .job-3 {
     grid-area: job3;
   }
+  .job-4 {
+    grid-area: job4;
+  }
+  .job-5 {
+    grid-area: job5;
+  }
 
   .job {
-    background: lighten($primary-color, 5);
-    padding: 0.5rem;
+    background: rgba(lighten($color: $primary-color, $amount: 3), 0.5);
+    padding: 30px 30px 50px 30px;
     border-bottom: $secondary-color 5px solid;
+    p {
+      font-size: 14px;
+    }
   }
+
+  h5 {
+    margin-top: 15px;
+    margin-bottom: 0;
+  }
+  .expDate {
+    color: lighten($primary-color, 30);
+    margin-top: 0;
+    margin-bottom: 30px;
+    padding: 0;
+  }
+}
+
+.aboutIcons,
+.i {
+  margin: 50px 0 5px 0;
+  text-align: center;
+}
+
+.fa-2x {
+  padding: 10px 15px;
 }
 
 // Work/Projects
 .projects {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 0.7rem;
+  grid-gap: 1rem;
 
   img {
     width: 100%;
     border: 3px #fff solid;
+    position: relative;
 
     &:hover {
-      opacity: 0.5;
+      opacity: 0.2;
       border-color: $secondary-color;
       @include ease-out;
+      filter: blur(1px);
+    }
+  }
+
+  .item {
+    position: relative;
+
+    h2 {
+      position: absolute;
+      z-index: 10;
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      color: $secondary-color;
+      opacity: 0;
+
+      &.show {
+        @include ease-out;
+        opacity: 1;
+      }
     }
   }
 }
@@ -142,7 +199,7 @@ main {
 
   div {
     font-size: 2rem;
-    border: 3px #fff solid;
+    border: 3px set-text-color($primary-color) solid;
     padding: 1.5rem 2.5rem;
     margin-bottom: 2rem;
     @include ease-out;
