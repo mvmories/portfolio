@@ -1,0 +1,50 @@
+.app__navigation {
+  // Fixed rather than a flex child of each section: there is one of these for
+  // the whole page now, so it has to position itself against the viewport.
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-sticky);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: var(--space-4);
+}
+
+.app__navigation-dot {
+  width: 10px;
+  height: 10px;
+  margin: var(--space-2) 0;
+  border-radius: var(--radius-full);
+  background-color: var(--border-strong);
+
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    background-color: var(--surface-brand);
+    transform: scale(1.3);
+  }
+
+  // Driven by the attribute rather than an inline style, so the active colour
+  // comes from the theme and follows dark mode like everything else.
+  &[aria-current='true'] {
+    background-color: var(--surface-brand);
+    transform: scale(1.3);
+  }
+
+  @media screen and (min-width: 2000px) {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .app__navigation {
+    display: none;
+  }
+}

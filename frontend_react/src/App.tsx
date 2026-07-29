@@ -1,11 +1,19 @@
 import { About, Experience, Footer, Header, Skills, Testimonial, Work } from './container'
-import { Navbar } from './components'
+import { Navbar, NavigationDots, SocialMedia } from './components'
 import './App.scss'
 
 const App = () => (
   <div className='app'>
+    {/* First thing in the tab order: lets a keyboard user past the nav in one key. */}
+    <a className='sr-only sr-only-focusable' href='#main'>
+      Skip to content
+    </a>
+
     <Navbar />
-    <main>
+    <SocialMedia />
+    <NavigationDots />
+
+    <main id='main' tabIndex={-1}>
       <Header />
       <About />
       <Work />
@@ -14,6 +22,11 @@ const App = () => (
       <Testimonial />
       <Footer />
     </main>
+
+    <footer className='copyright'>
+      <p className='p-text'>@{new Date().getFullYear()} Miguel Vilhena</p>
+      <p className='p-text'>All rights reserved</p>
+    </footer>
   </div>
 )
 

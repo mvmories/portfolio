@@ -10,8 +10,8 @@ import {
 import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
 
+import { useCv } from '@/lib/useCv'
 import { useSiteSettings } from '@/lib/useSiteSettings'
-import { normalizeDriveUrl, formatUpdatedAt } from '@/lib/drive'
 import type { SocialPlatform } from '@/types/sanity'
 
 const PLATFORMS: Record<SocialPlatform, { Icon: IconType; label: string }> = {
@@ -23,14 +23,10 @@ const PLATFORMS: Record<SocialPlatform, { Icon: IconType; label: string }> = {
 }
 
 const SocialMedia = () => {
-  const { cvEnabled, cvUrl, cvLabel, cvUpdatedAt, socials } = useSiteSettings()
-
-  // An unset or malformed link yields null, which hides the button rather than
-  // rendering one that leads nowhere.
-  const cv = cvEnabled === false ? null : normalizeDriveUrl(cvUrl)
-  const updated = formatUpdatedAt(cvUpdatedAt)
-
-  const cvTooltip = [cvLabel?.trim() || 'My CV', updated].filter(Boolean).join(' · ')
+  const { socials } = useSiteSettings()
+  // Null when there is nothing worth linking to, which hides the button rather
+  // than rendering one that leads nowhere.
+  const cv = useCv()
 
   return (
     <div className='app__social'>
@@ -39,10 +35,10 @@ const SocialMedia = () => {
           href={cv.viewUrl}
           target='_blank'
           rel='noopener noreferrer'
-          aria-label={cvTooltip}
+          aria-label={cv.tooltip}
           data-testid='cv-link'
         >
-          <Tippy content={cvTooltip} className='tippy-tooltip' placement='right'>
+          <Tippy content={cv.tooltip} className='tippy-tooltip' placement='right'>
             <div>
               <BsFillFileEarmarkTextFill />
             </div>

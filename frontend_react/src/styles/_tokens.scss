@@ -148,6 +148,7 @@
   // --- Motion --------------------------------------------------------------
   // Named for feel, not for the curve, so they are picked by intent.
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1); // decelerate hard - entrances
+  --ease-in: cubic-bezier(0.64, 0, 0.78, 0); // accelerate away - exits
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); // symmetric - moves and morphs
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); // slight overshoot - delight
 
@@ -164,6 +165,7 @@
   --z-raised: 10;
   --z-sticky: 100;
   --z-navbar: 200;
+  --z-scrim: 250; // sits between the page and whatever it is dimming
   --z-drawer: 300;
   --z-overlay: 400;
   --z-modal: 500;

@@ -1,64 +1,107 @@
-import { useState } from 'react'
-import { HiMenuAlt4, HiX } from 'react-icons/hi'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
+import { HiMenuAlt4 } from 'react-icons/hi'
+import { HiOutlineDocumentText } from 'react-icons/hi2'
 
+import MobileDrawer from '@/components/Navbar/MobileDrawer'
+import ThemeToggle from '@/components/ThemeToggle'
 import { images } from '@/constants'
 import { SECTIONS } from '@/constants/sections'
-import ThemeToggle from '@/components/ThemeToggle'
+import { useActiveSection } from '@/lib/useActiveSection'
+import { useCv } from '@/lib/useCv'
 import './Navbar.scss'
 
+/** Far enough that the bar only reacts to a deliberate scroll. */
+const SCROLL_THRESHOLD = 24
+
+/** Must match the drawer's close keyframes in Navbar.scss. */
+const CLOSE_DURATION = 180
+
+type DrawerState = 'closed' | 'open' | 'closing'
+
 const Navbar = () => {
-  const [toggle, setToggle] = useState(false)
+  // Three states rather than a boolean, because the drawer has to stay mounted
+  // long enough to animate out.
+  const [drawer, setDrawer] = useState<DrawerState>('closed')
+  const [scrolled, setScrolled] = useState(false)
+  const active = useActiveSection()
+  const cv = useCv()
+
+  const close = useCallback(() => {
+    setDrawer((state) => (state === 'open' ? 'closing' : state))
+  }, [])
+
+  useEffect(() => {
+    if (drawer !== 'closing') return
+    const timer = setTimeout(() => setDrawer('closed'), CLOSE_DURATION)
+    return () => clearTimeout(timer)
+  }, [drawer])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <nav className='app__navbar'>
-      <div className='app__navbar-logo'>
-        <img src={images.logo} alt='Miguel Vilhena logo' width={90} height={40} />
-      </div>
+    <header className={`app__navbar${scrolled ? ' is-scrolled' : ''}`}>
+      <a className='app__navbar-logo' href='#home' aria-label='Back to top'>
+        <img src={images.logo} alt='Miguel Vilhena' width={90} height={30} />
+      </a>
 
-      <ul className='app__navbar-links'>
-        {SECTIONS.map((item) => (
-          <li className='app__flex p-text2' key={`link-${item}`}>
-            <div />
-            <a href={`#${item}`}>{item}</a>
-          </li>
-        ))}
-      </ul>
+      <nav aria-label='Primary'>
+        <ul className='app__navbar-links'>
+          {SECTIONS.map((item) => (
+            <li key={`link-${item}`}>
+              <a
+                href={`#${item}`}
+                className={active === item ? 'is-active' : undefined}
+                aria-current={active === item ? 'page' : undefined}
+              >
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <div className='app__navbar-actions'>
         <ThemeToggle />
-      </div>
 
-      <div className='app__navbar-menu'>
-        <button type='button' aria-label='Open menu' aria-expanded={toggle} onClick={() => setToggle(true)}>
-          <HiMenuAlt4 />
+        {cv && (
+          <a
+            className='app__navbar-cv'
+            href={cv.viewUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            title={cv.tooltip}
+          >
+            <HiOutlineDocumentText aria-hidden='true' />
+            <span>CV</span>
+          </a>
+        )}
+
+        <button
+          type='button'
+          className='app__navbar-toggle'
+          aria-label='Open menu'
+          aria-expanded={drawer === 'open'}
+          aria-controls='app__navbar-drawer'
+          onClick={() => setDrawer('open')}
+        >
+          <HiMenuAlt4 aria-hidden='true' />
         </button>
-
-        <AnimatePresence>
-          {toggle && (
-            <motion.div
-              initial={{ x: 300 }}
-              animate={{ x: 0 }}
-              exit={{ x: 300 }}
-              transition={{ duration: 0.85, ease: 'easeOut' }}
-            >
-              <button type='button' aria-label='Close menu' onClick={() => setToggle(false)}>
-                <HiX />
-              </button>
-              <ul>
-                {SECTIONS.map((item) => (
-                  <li key={item}>
-                    <a href={`#${item}`} onClick={() => setToggle(false)}>
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
-    </nav>
+
+      {drawer !== 'closed' && (
+        <MobileDrawer
+          active={active}
+          cv={cv}
+          closing={drawer === 'closing'}
+          onClose={close}
+        />
+      )}
+    </header>
   )
 }
 
