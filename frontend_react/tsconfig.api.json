@@ -1,23 +1,17 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2023"
-    ],
+    "lib": ["ES2023"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": [
-      "node"
-    ],
+    "jsx": "react-jsx",
+    "types": ["node"],
     "isolatedModules": true,
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
-    "jsx": "react-jsx"
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": [
-    "vite.config.ts",
-    "vitest.config.ts",
-    "vite-plugin-dev-api.ts"
-  ]
+  "include": ["api", "emails"]
 }

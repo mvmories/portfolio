@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
 // The Sanity client is network-bound; stub it so the smoke test stays offline.
@@ -22,12 +22,17 @@ describe('App', () => {
     for (const id of ['home', 'about', 'work', 'skills', 'testimonials', 'contact']) {
       expect(document.getElementById(id)).toBeInTheDocument()
     }
+
+    // Let the stubbed Sanity fetches settle so state updates stay inside act().
+    await waitFor(() => expect(screen.getAllByText(/testimonials/i).length).toBeGreaterThan(0))
   })
 
-  it('renders the contact form', () => {
+  it('renders the contact form', async () => {
     render(<App />)
-    expect(screen.getAllByPlaceholderText('Your Name').length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('button', { name: /send message/i }).length).toBeGreaterThan(0)
+    await waitFor(() => {
+      expect(screen.getAllByPlaceholderText('Your Name').length).toBeGreaterThan(0)
+      expect(screen.getAllByRole('button', { name: /send message/i }).length).toBeGreaterThan(0)
+    })
   })
 })
 
