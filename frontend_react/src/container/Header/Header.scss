@@ -1,6 +1,10 @@
 #home {
   position: relative;
-  background: url('../../assets/bgIMG.png');
+  // WebP, generated from bgIMG.png by `npm run images`. The PNG was 397 kB -
+  // more than the rest of the page combined - for a blurred texture that is
+  // scaled to cover. The source PNG stays in the repo but is no longer
+  // referenced, so it is not bundled.
+  background: url('../../assets/bgIMG.webp');
   background-size: cover;
   background-repeat: repeat;
   background-position: center;

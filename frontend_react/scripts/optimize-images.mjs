@@ -24,7 +24,8 @@ import {fileURLToPath} from 'node:url'
 import sharp from 'sharp'
 
 const root = path.dirname(fileURLToPath(import.meta.url))
-const source = path.join(root, '..', 'src', 'assets', 'profile.png')
+const assets = path.join(root, '..', 'src', 'assets')
+const source = path.join(assets, 'profile.png')
 const outDir = path.join(root, '..', 'public', 'hero')
 
 /**
@@ -83,6 +84,39 @@ async function main() {
       `\nwhat a phone actually downloads: ${kb(before)} -> ${kb(largestAvif)} ` +
       `(${Math.round((1 - largestAvif / before) * 100)}% smaller)\n`
   )
+
+  await backgrounds()
+}
+
+/**
+ * The two decorative backgrounds are referenced from SCSS rather than rendered
+ * as elements, so they cannot use <picture>. They are re-encoded in place as
+ * WebP, which every browser Vite targets supports, and the SCSS points at the
+ * WebP directly - `image-set()` with a PNG fallback would ship both files to
+ * some browsers to save bytes on none.
+ *
+ * bgIMG is a full-bleed 3840px texture behind the hero, downloaded on every
+ * visit at 397 kB, which is more than the rest of the page combined.
+ */
+async function backgrounds() {
+  console.log('backgrounds:')
+  for (const name of ['bgIMG', 'bgWhite']) {
+    const from = path.join(assets, `${name}.png`)
+    const before = (await stat(from)).size
+
+    // Capped at 1920px: these are blurred textures scaled with `background-size:
+    // cover`, so the extra pixels of a 4K source are invisible at any viewport.
+    const info = await sharp(from)
+      .resize({width: 1920, withoutEnlargement: true})
+      .webp({quality: 70})
+      .toFile(path.join(assets, `${name}.webp`))
+
+    console.log(
+      `  ${name}.png -> ${name}.webp  ${kb(before)} -> ${kb(info.size)} ` +
+        `(${Math.round((1 - info.size / before) * 100)}% smaller)`
+    )
+  }
+  console.log()
 }
 
 main().catch((err) => {
