@@ -29,3 +29,6 @@ yarn-error.log*
 
 # generated email previews
 .email-previews
+
+# TypeScript incremental build cache
+*.tsbuildinfo
