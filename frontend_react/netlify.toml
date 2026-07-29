@@ -52,3 +52,12 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# The hero images live in public/ so index.html can preload a path known before
+# the build assigns content hashes. That costs us fingerprinting, so they get a
+# day of caching plus revalidation rather than "immutable" — long enough to be
+# free on repeat visits, short enough that replacing the photo is not permanent.
+[[headers]]
+  for = "/hero/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"

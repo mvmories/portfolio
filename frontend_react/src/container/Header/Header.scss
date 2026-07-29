@@ -163,6 +163,14 @@
   align-items: flex-end;
   position: relative;
 
+  // `display: contents` removes the <picture> box from the layout entirely, so
+  // the <img> stays the direct flex child it was before the AVIF/WebP sources
+  // were added. Without this the picture element becomes the flex item and the
+  // percentage heights below resolve against the wrong box.
+  picture {
+    display: contents;
+  }
+
   img {
     max-height: 90%;
     width: 100%;

@@ -33,12 +33,30 @@ const builder = imageUrlBuilder(client)
 
 export const urlFor = (source: SanityImage) => builder.image(source)
 
-/** Fetch that never throws — sections render an empty state instead of blanking out. */
-export async function safeFetch<T>(query: string, fallback: T): Promise<T> {
-  try {
-    return await client.fetch<T>(query)
-  } catch (error) {
+/**
+ * Fetch that never throws — sections render an empty state instead of blanking out.
+ *
+ * Identical queries are also deduplicated. `SocialMedia` is rendered by
+ * `AppWrap`, which wraps every section, so the site settings singleton was being
+ * requested six times per page load; `skills` was requested twice. The data is
+ * static for the lifetime of the page, so the second and subsequent callers can
+ * safely share the first caller's promise.
+ *
+ * Failures are evicted rather than cached, so one dropped request cannot leave a
+ * section stuck on its fallback for the rest of the session.
+ */
+const inFlight = new Map<string, Promise<unknown>>()
+
+export function safeFetch<T>(query: string, fallback: T): Promise<T> {
+  const shared = inFlight.get(query)
+  if (shared) return shared as Promise<T>
+
+  const request = client.fetch<T>(query).catch((error) => {
     console.error(`[sanity] query failed: ${query}`, error)
+    inFlight.delete(query)
     return fallback
-  }
+  })
+
+  inFlight.set(query, request)
+  return request
 }

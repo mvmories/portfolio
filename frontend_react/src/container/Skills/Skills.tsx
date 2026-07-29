@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import { AppWrap, MotionWrap } from '@/wrapper'
-import { safeFetch, urlFor } from '@/lib/client'
-import type { Skill } from '@/types/sanity'
+import { urlFor } from '@/lib/client'
+import { useSkills } from '@/lib/useSkills'
 import './Skills.scss'
 
 const Skills = () => {
-  const [skills, setSkills] = useState<Skill[]>([])
-
-  useEffect(() => {
-    safeFetch<Skill[]>('*[_type == "skills"]', []).then(setSkills)
-  }, [])
+  const skills = useSkills()
 
   return (
     <>

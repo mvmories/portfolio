@@ -6,6 +6,7 @@ import { AppWrap, MotionWrap } from '@/wrapper'
 import { safeFetch, urlFor } from '@/lib/client'
 import { byMostRecent, formatDuration, formatRange } from '@/lib/dates'
 import { usePrefersReducedMotion } from '@/lib/usePrefersReducedMotion'
+import { useSkills } from '@/lib/useSkills'
 import type { ExperienceFields, Skill } from '@/types/sanity'
 import './Experience.scss'
 
@@ -178,7 +179,7 @@ const ExperienceCard = ({
 
 const Experience = () => {
   const [experiences, setExperiences] = useState<ExperienceFields[]>([])
-  const [skills, setSkills] = useState<Skill[]>([])
+  const skills = useSkills()
   const [openIds, setOpenIds] = useState<string[]>([])
   const reducedMotion = usePrefersReducedMotion()
 
@@ -190,7 +191,6 @@ const Experience = () => {
       const mostRecent = [...docs].sort(byMostRecent)[0]
       if (mostRecent) setOpenIds([mostRecent._id])
     })
-    safeFetch<Skill[]>('*[_type == "skills"]{_id, name, icon}', []).then(setSkills)
   }, [])
 
   const sorted = useMemo(() => [...experiences].sort(byMostRecent), [experiences])
