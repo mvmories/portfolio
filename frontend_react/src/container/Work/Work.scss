@@ -15,10 +15,12 @@
 
   .app__work-filter-item {
     padding: 0.5rem 1rem;
+    border: 0;
     border-radius: 0.5rem;
     background-color: #fff;
     color: #000;
     font-weight: 800;
+    font-family: inherit;
 
     cursor: pointer;
     transition: all 0.3s ease;

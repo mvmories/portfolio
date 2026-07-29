@@ -128,3 +128,21 @@
     margin: 1rem 0;
   }
 }
+
+.app__footer-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.app__footer-status:not(:empty) {
+  margin-top: 1rem;
+  color: #c0392b;
+  text-align: center;
+}

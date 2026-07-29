@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Portfolio — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React 18 + TypeScript + Vite single-page portfolio, with content served from Sanity.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node **>= 20.19** (see `.nvmrc` / `engines`)
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+cp .env.example .env.local   # already contains the public Sanity project id
+npm run dev                  # http://localhost:3000
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Scripts
 
-### `npm test`
+| Script | Purpose |
+|---|---|
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | Typecheck + production build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run typecheck` | TypeScript only, no emit |
+| `npm run lint` / `lint:fix` | ESLint (flat config) |
+| `npm run format` | Prettier |
+| `npm test` / `test:watch` | Vitest + Testing Library |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment variables
 
-### `npm run build`
+Anything prefixed `VITE_` is **inlined into the public bundle**. Never put a
+secret behind that prefix.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Variable | Where | Notes |
+|---|---|---|
+| `VITE_SANITY_PROJECT_ID` | client | public |
+| `VITE_SANITY_DATASET` | client | public, defaults to `production` |
+| `SANITY_WRITE_TOKEN` | server only | used by `/api/*`, never exposed |
+| `RESEND_API_KEY` | server only | transactional email |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The `production` dataset is public-read, so the browser makes **no**
+authenticated requests. All writes go through serverless functions.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Structure
 
-### `npm run eject`
+```
+src/
+├── components/   Reusable UI (Navbar, NavigationDots, SocialMedia)
+├── constants/    Local image barrel + section list
+├── container/    Page sections (Header, About, Work, Skills, Testimonial, Footer)
+├── lib/          Sanity client + helpers
+├── types/        Sanity document interfaces
+└── wrapper/      AppWrap / MotionWrap HOCs
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Path alias: `@/` → `src/`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Content
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Managed in the Sanity Studio under `../backend_sanity` (`npm run dev` there).
