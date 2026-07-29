@@ -90,6 +90,20 @@
   align-items: center;
   background-color: var(--secondary-color);
 
+  // Hamburger trigger — semantic <button> reset so it looks like the old <svg>.
+  > button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   svg {
     width: 70%;
     height: 70%;
@@ -119,6 +133,14 @@
     background-repeat: repeat;
 
     box-shadow: 0 0 20px rgba(168, 168, 168, 0.15);
+
+    // Close trigger inside the drawer.
+    button {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
 
     svg {
       width: 35px;

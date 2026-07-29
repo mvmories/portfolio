@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# Portfolio — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React 18 + TypeScript + Vite single-page portfolio, with content served from Sanity.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node **>= 20.19** (see `.nvmrc` / `engines`)
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+cp .env.example .env         # already contains the public Sanity project id
+npm run dev                  # http://localhost:3000
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Scripts
 
-### `npm test`
+| Script | Purpose |
+|---|---|
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | Typecheck + production build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run typecheck` | TypeScript only, no emit |
+| `npm run lint` / `lint:fix` | ESLint (flat config) |
+| `npm run format` | Prettier |
+| `npm test` / `test:watch` | Vitest + Testing Library |
+| `npm run email:preview` | Render the email templates and open them in a browser |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment variables
 
-### `npm run build`
+Anything prefixed `VITE_` is **inlined into the public bundle**. Never put a
+secret behind that prefix.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Variable | Where | Notes |
+|---|---|---|
+| `VITE_SANITY_PROJECT_ID` | client | public |
+| `VITE_SANITY_DATASET` | client | public, defaults to `production` |
+| `SANITY_WRITE_TOKEN` | server only | used by the Netlify function, never exposed |
+| `RESEND_API_KEY` | server only | transactional email |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The `production` dataset is public-read, so the browser makes **no**
+authenticated requests. All writes go through serverless functions.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contact form
 
-### `npm run eject`
+The form POSTs to `/api/contact`, a Netlify Function. It:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. rate-limits by IP (3 per 10 minutes), keyed on `context.ip` so it cannot
+   be spoofed with a forged `X-Forwarded-For` header,
+2. validates with zod,
+3. rejects bots via a honeypot field and a minimum fill time,
+4. emails a notification to `CONTACT_TO_EMAIL` via Resend, with `reply_to` set
+   to the visitor so replying from Gmail goes straight back to them,
+5. sends the visitor a branded auto-reply,
+6. optionally archives the submission in Sanity.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Steps 5 and 6 are best-effort — if they fail the visitor still gets a success
+response, because their message did arrive.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`npm run dev` runs the function for real: `@netlify/vite-plugin` emulates the
+Netlify platform inside the Vite dev server, so functions, redirects and headers
+behave locally as they do in production — no Netlify CLI needed. Secrets are
+loaded from `.env` into `process.env` by a small plugin in `vite.config.ts`,
+because the emulator only sources variables from a linked site.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Templates live in `emails/` and are ordinary React components — run
+`npm run email:preview` to see them.
 
-## Learn More
+## Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+src/
+├── components/   Reusable UI (Navbar, NavigationDots, SocialMedia)
+├── constants/    Local image barrel + section list
+├── container/    Page sections (Header, About, Work, Skills, Testimonial, Footer)
+├── lib/          Sanity client + helpers
+├── types/        Sanity document interfaces
+└── wrapper/      AppWrap / MotionWrap HOCs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+netlify/
+└── functions/    Netlify Functions. Routes are declared in each file's
+                  `export const config`, not by filename.
+    └── contact.mts   POST /api/contact
+server/           Server-only helpers (validation, rate limiting). Deliberately
+                  outside netlify/functions so nothing here is mistaken for a
+                  deployable function.
+emails/           React Email templates
+```
 
-### Code Splitting
+Path alias: `@/` → `src/`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Content
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Managed in the Sanity Studio under `../backend_sanity` (`npm run dev` there).
