@@ -1,0 +1,54 @@
+# Keeps mvmories.sanity.studio in step with the schemas in this repo.
+#
+# Schemas are compiled into the Studio bundle, so a field added here is
+# invisible in the hosted Studio until it is rebuilt and redeployed. Doing that
+# by hand means the hosted Studio silently drifts from the code, which is how
+# a newly added type ends up missing for the person trying to edit it.
+name: Deploy Sanity Studio
+
+on:
+  push:
+    branches: [main]
+    # Only the Studio's own sources can change what the Studio renders, so
+    # frontend-only commits do not trigger a deploy.
+    paths:
+      - 'backend_sanity/**'
+      - '.github/workflows/deploy-studio.yml'
+  # Allows a redeploy without an empty commit, e.g. after rotating the token.
+  workflow_dispatch:
+
+# A queued deploy is always superseded by a newer one, but in-flight deploys are
+# allowed to finish rather than leaving the Studio half-published.
+concurrency:
+  group: deploy-sanity-studio
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend_sanity
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+          cache-dependency-path: backend_sanity/yarn.lock
+
+      # The lockfile is yarn v1 format; corepack honours the "packageManager"
+      # field so CI resolves the same tree as a local install. --frozen-lockfile
+      # fails rather than silently rewriting the lockfile.
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
+
+      - name: Deploy Studio
+        env:
+          # Needs only the "Deploy Studio" role - it cannot read or write content.
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: yarn deploy
