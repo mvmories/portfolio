@@ -11,9 +11,19 @@ import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 import type { SanityImage } from '@/types/sanity'
 
+/**
+ * The project id is public — it appears in every request URL and in this
+ * bundle — so it falls back to a literal rather than leaving the site to die.
+ * `createClient` throws when it is missing, and because that happens at module
+ * scope it takes the entire app down with it, which would defeat `safeFetch`
+ * below. An unset environment variable should degrade a section, not the site.
+ */
+const projectId = import.meta.env.VITE_SANITY_PROJECT_ID || 'khsof0do'
+const dataset = import.meta.env.VITE_SANITY_DATASET || 'production'
+
 export const client = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
-  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
+  projectId,
+  dataset,
   apiVersion: '2024-01-01',
   useCdn: true,
   perspective: 'published',
