@@ -54,12 +54,12 @@ export function formatRange(
 }
 
 /**
- * Whole months elapsed between two dates.
+ * Whole months a role spanned, counting both the first and last month.
  *
- * `endDate` means the month the role *ended*, not the last month worked, which
- * is the reading the original data supports: "2015 - 2018 (3 years)" is only
- * three years if January 2018 is the leaving date rather than a month worked.
- * Counting inclusively here would inflate every duration by a month.
+ * `endDate` is the last month worked, not the month after leaving. This is the
+ * convention Miguel's CV uses and the one LinkedIn displays: February 2015 to
+ * January 2018 is three years, not two years eleven months. Counting the gap
+ * between the dates instead would shave a month off every role.
  */
 export function monthsBetween(
   startDate: string | undefined | null,
@@ -68,7 +68,7 @@ export function monthsBetween(
   const start = parse(startDate)
   const end = parse(endDate)
   if (!start || !end) return null
-  const months = (end.year - start.year) * 12 + (end.month - start.month)
+  const months = (end.year - start.year) * 12 + (end.month - start.month) + 1
   return months > 0 ? months : null
 }
 

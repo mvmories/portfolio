@@ -7,7 +7,9 @@
  * new ones look right.
  *
  * Documents use fixed, readable ids (see roles.ts), so running this twice
- * updates the same nine documents rather than creating duplicates.
+ * updates the same nine documents rather than creating duplicates. ROLES is
+ * treated as the complete set: any other `experience` document is removed, so
+ * renaming a company cannot strand its old entry on the site.
  *
  *   npx tsx scripts/migrate-experience.ts
  *   SANITY_WRITE_TOKEN=... npx tsx scripts/migrate-experience.ts --write
@@ -30,10 +32,11 @@ const client = createClient({
   token,
 })
 
+/** Inclusive of both end months, matching the CV, LinkedIn and the frontend. */
 function monthsBetween(start: string, end: string): number {
   const a = new Date(start)
   const b = new Date(end)
-  return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())
+  return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth()) + 1
 }
 
 function describeDuration(role: (typeof ROLES)[number]): string {
@@ -70,8 +73,22 @@ async function main() {
     console.log(`    ${range}  (${describeDuration(role)})`)
     console.log(`    summary:    ${role.summary}`)
     console.log(`    highlights: ${role.highlights.length}, tech: ${role.techStack.join(', ')}`)
-    console.log(`    was:        ${role.originalDesc.slice(0, 90)}...`)
+    for (const line of role.highlights) console.log(`      - ${line}`)
     console.log()
+  }
+
+  // Documents are keyed by an id derived from the company name, so renaming a
+  // company writes a new document and silently strands the old one - which is
+  // exactly what happened on the first run, leaving three duplicate roles on the
+  // site. Treating ROLES as the complete set is what makes re-running safe.
+  const orphans: {_id: string; role?: string; company?: string}[] = await client.fetch(
+    '*[_type == "experience" && !(_id in $ids)]{_id, role, company}',
+    {ids: ROLES.map((r) => r.id)}
+  )
+  if (orphans.length) {
+    console.log(`  ${orphans.length} experience documents are no longer produced by roles.ts`)
+    for (const doc of orphans) console.log(`    - ${doc._id}  (${doc.role} @ ${doc.company})`)
+    console.log(write ? '  These will be deleted.\n' : '  A --write run would delete these.\n')
   }
 
   if (!write && !deleteOld) {
@@ -88,13 +105,21 @@ async function main() {
   if (write) {
     const tx = client.transaction()
     for (const role of ROLES) {
-      // originalDesc is intentionally not written to Sanity: it exists in this
-      // repo for auditing the rewrite, and would only be dead weight in the CMS.
-      const {id, originalDesc: _originalDesc, ...fields} = role
+      // `sources` is deliberately not written to Sanity: it exists in this repo
+      // so every claim can be traced back to the CV and LinkedIn, and would only
+      // be dead weight in the CMS.
+      const {id, sources: _sources, ...fields} = role
       tx.createOrReplace({_id: id, _type: 'experience', ...fields})
     }
+
+    for (const doc of orphans) tx.delete(doc._id)
+
     await tx.commit()
-    console.log(`Wrote ${ROLES.length} experience documents.\n`)
+    console.log(
+      `Wrote ${ROLES.length} experience documents` +
+        (orphans.length ? ` and removed ${orphans.length} orphaned.` : '.') +
+        '\n'
+    )
   }
 
   if (deleteOld) {

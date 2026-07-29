@@ -106,6 +106,7 @@ export default {
       title: 'Ended',
       type: 'date',
       options: {dateFormat: 'MMMM YYYY'},
+      description: 'The last month you worked there, which is counted in the duration.',
       hidden: ({parent}: {parent?: ExperienceDoc}) => Boolean(parent?.current),
       group: 'dates',
       validation: (Rule: SanityRule) =>

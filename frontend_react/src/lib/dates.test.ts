@@ -45,18 +45,22 @@ describe('formatRange', () => {
 })
 
 describe('monthsBetween', () => {
-  it('counts elapsed months, not months worked', () => {
-    // The end date is when the role ended, so Jan 2015 - Jan 2018 is exactly
-    // three years. Counting the final month too would make it 3y 1m.
-    expect(monthsBetween('2015-01-01', '2018-01-01')).toBe(36)
+  it('counts months worked, including the last one', () => {
+    // Feb 2015 to Jan 2018 is three years on a CV, and that is what Miguel's
+    // states. Measuring the gap between the dates would report 2y 11m.
+    expect(monthsBetween('2015-02-01', '2018-01-01')).toBe(36)
   })
 
   it('handles ranges within a year', () => {
-    expect(monthsBetween('2021-01-01', '2021-09-01')).toBe(8)
+    expect(monthsBetween('2021-03-01', '2021-09-01')).toBe(7)
   })
 
   it('handles ranges crossing a year boundary', () => {
-    expect(monthsBetween('2021-10-01', '2022-05-01')).toBe(7)
+    expect(monthsBetween('2021-09-01', '2022-03-01')).toBe(7)
+  })
+
+  it('counts a single month as one', () => {
+    expect(monthsBetween('2021-05-01', '2021-05-01')).toBe(1)
   })
 
   it('returns null when the end precedes the start', () => {
@@ -69,25 +73,24 @@ describe('monthsBetween', () => {
 })
 
 describe('formatDuration', () => {
+  // Every expectation here is the duration Miguel's CV states for that role.
   it.each([
-    ['2015-01-01', '2018-01-01', '3 yrs'],
-    ['2018-01-01', '2020-01-01', '2 yrs'],
-    ['2020-01-01', '2021-01-01', '1 yr'],
-    ['2021-01-01', '2021-09-01', '8 mos'],
-    ['2021-10-01', '2022-05-01', '7 mos'],
-    ['2022-01-01', '2023-07-01', '1 yr 6 mos'],
-    ['2021-01-01', '2021-02-01', '1 mo'],
+    ['2015-02-01', '2018-01-01', '3 yrs'],
+    ['2022-03-01', '2023-07-01', '1 yr 5 mos'],
+    ['2021-09-01', '2022-03-01', '7 mos'],
+    ['2021-03-01', '2021-09-01', '7 mos'],
+    ['2021-05-01', '2021-05-01', '1 mo'],
   ])('%s to %s is %s', (start, end, expected) => {
     expect(formatDuration(start, end)).toBe(expected)
   })
 
   it('measures a current role against today', () => {
-    expect(formatDuration('2023-08-01', undefined, true, new Date('2026-07-15'))).toBe('2 yrs 11 mos')
+    expect(formatDuration('2023-07-01', undefined, true, new Date('2026-07-15'))).toBe('3 yrs 1 mo')
   })
 
   it('ignores a stale end date on a current role', () => {
-    expect(formatDuration('2023-08-01', '2023-09-01', true, new Date('2026-07-15'))).toBe(
-      '2 yrs 11 mos'
+    expect(formatDuration('2023-07-01', '2023-09-01', true, new Date('2026-07-15'))).toBe(
+      '3 yrs 1 mo'
     )
   })
 
