@@ -15,6 +15,16 @@
 [build.environment]
   NODE_VERSION = "22"
 
+  # Netlify's secrets scanner flags any environment-variable *value* it finds in
+  # the build output. These three are deliberately public — the contact address
+  # is a mailto: link in the footer, the from address appears in every email
+  # sent, and the site URL is the site itself — so their presence is expected.
+  #
+  # Scoped to keys rather than paths on purpose: SECRETS_SCAN_OMIT_PATHS would
+  # blind the scanner to entire files, and disabling it outright would stop it
+  # catching RESEND_API_KEY, which is the one value that must never ship.
+  SECRETS_SCAN_OMIT_KEYS = "CONTACT_TO_EMAIL,CONTACT_FROM_EMAIL,SITE_URL"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
