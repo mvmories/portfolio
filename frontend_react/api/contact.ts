@@ -97,8 +97,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (error) throw new Error(error.message)
 
     // Auto-reply and archiving are secondary — a failure must not tell the
-    // visitor their message was lost, because it was not.
-    await Promise.allSettled([
+    // visitor their message was lost, because it was not. They are still
+    // logged, so a silently-broken auto-reply cannot go unnoticed.
+    const [autoReply] = await Promise.allSettled([
       resend.emails.send({
         from: FROM,
         to: email,
@@ -108,6 +109,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }),
       archiveInSanity({ name, email, message }),
     ])
+
+    // Resend reports API failures in the resolved value rather than throwing,
+    // so a fulfilled promise is not on its own proof of delivery.
+    // archiveInSanity logs its own failures.
+    if (autoReply.status === 'rejected') {
+      console.error('[contact] auto-reply failed', autoReply.reason)
+    } else if (autoReply.value.error) {
+      console.error('[contact] auto-reply rejected by Resend', autoReply.value.error)
+    }
 
     return res.status(200).json({ ok: true })
   } catch (error) {
