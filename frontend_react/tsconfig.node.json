@@ -17,7 +17,6 @@
   },
   "include": [
     "vite.config.ts",
-    "vitest.config.ts",
-    "vite-plugin-dev-api.ts"
+    "vitest.config.ts"
   ]
 }

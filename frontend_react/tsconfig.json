@@ -1,8 +1,18 @@
 {
+  // Solution-style config: `files: []` means these compilerOptions are unused
+  // by `tsc -b`, which builds the referenced projects instead. They exist for
+  // esbuild, which Netlify uses to bundle functions and which resolves the
+  // nearest tsconfig walking up from each source file. Without `jsx` set here,
+  // esbuild falls back to the classic transform and the React Email templates
+  // throw "React is not defined" at runtime.
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.api.json" }
+    { "path": "./tsconfig.server.json" }
   ]
 }

@@ -10,7 +10,7 @@ React 18 + TypeScript + Vite single-page portfolio, with content served from San
 
 ```bash
 npm install
-cp .env.example .env.local   # already contains the public Sanity project id
+cp .env.example .env         # already contains the public Sanity project id
 npm run dev                  # http://localhost:3000
 ```
 
@@ -36,7 +36,7 @@ secret behind that prefix.
 |---|---|---|
 | `VITE_SANITY_PROJECT_ID` | client | public |
 | `VITE_SANITY_DATASET` | client | public, defaults to `production` |
-| `SANITY_WRITE_TOKEN` | server only | used by `/api/*`, never exposed |
+| `SANITY_WRITE_TOKEN` | server only | used by the Netlify function, never exposed |
 | `RESEND_API_KEY` | server only | transactional email |
 
 The `production` dataset is public-read, so the browser makes **no**
@@ -44,9 +44,10 @@ authenticated requests. All writes go through serverless functions.
 
 ## Contact form
 
-The form POSTs to `/api/contact`, a Vercel serverless function. It:
+The form POSTs to `/api/contact`, a Netlify Function. It:
 
-1. rate-limits by IP (3 per 10 minutes),
+1. rate-limits by IP (3 per 10 minutes), keyed on `context.ip` so it cannot
+   be spoofed with a forged `X-Forwarded-For` header,
 2. validates with zod,
 3. rejects bots via a honeypot field and a minimum fill time,
 4. emails a notification to `CONTACT_TO_EMAIL` via Resend, with `reply_to` set
@@ -57,9 +58,14 @@ The form POSTs to `/api/contact`, a Vercel serverless function. It:
 Steps 5 and 6 are best-effort — if they fail the visitor still gets a success
 response, because their message did arrive.
 
-`vite dev` serves `api/` through `vite-plugin-dev-api.ts`, so the endpoint works
-locally without the Vercel CLI. Templates live in `emails/` and are ordinary
-React components — run `npm run email:preview` to see them.
+`npm run dev` runs the function for real: `@netlify/vite-plugin` emulates the
+Netlify platform inside the Vite dev server, so functions, redirects and headers
+behave locally as they do in production — no Netlify CLI needed. Secrets are
+loaded from `.env` into `process.env` by a small plugin in `vite.config.ts`,
+because the emulator only sources variables from a linked site.
+
+Templates live in `emails/` and are ordinary React components — run
+`npm run email:preview` to see them.
 
 ## Structure
 
@@ -72,9 +78,13 @@ src/
 ├── types/        Sanity document interfaces
 └── wrapper/      AppWrap / MotionWrap HOCs
 
-api/              Vercel serverless functions (server-side, secrets live here)
-├── _lib/         Validation + rate limiting (underscore = not a route)
-└── contact.ts    POST /api/contact
+netlify/
+└── functions/    Netlify Functions. Routes are declared in each file's
+                  `export const config`, not by filename.
+    └── contact.mts   POST /api/contact
+server/           Server-only helpers (validation, rate limiting). Deliberately
+                  outside netlify/functions so nothing here is mistaken for a
+                  deployable function.
 emails/           React Email templates
 ```
 

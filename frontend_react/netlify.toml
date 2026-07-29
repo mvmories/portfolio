@@ -1,0 +1,44 @@
+# Netlify configuration.
+#
+# This file lives in frontend_react/ rather than the repo root because the
+# Netlify Vite plugin resolves `base` relative to Vite's working directory,
+# so a root-level config with base = "frontend_react" resolves to
+# frontend_react/frontend_react and breaks local dev.
+#
+# Requires "Base directory: frontend_react" in the Netlify UI — Netlify then
+# reads this file from there.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Functions declare their own routes via `export const config = { path }`,
+# so /api/* needs no redirect here.
+
+# SPA fallback. Must come last so it cannot shadow function routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+
+# Vite fingerprints these filenames, so they are safe to cache forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

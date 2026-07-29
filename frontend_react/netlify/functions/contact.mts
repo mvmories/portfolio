@@ -1,20 +1,21 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+import type { Config, Context } from '@netlify/functions'
 import { Resend } from 'resend'
 import { createClient } from '@sanity/client'
 
-import { ContactNotification } from '../emails/ContactNotification'
-import { ContactAutoReply } from '../emails/ContactAutoReply'
-import { contactSchema, MIN_FILL_TIME_MS, sanitizeHeader } from './_lib/validation'
-import { checkRateLimit } from './_lib/rate-limit'
+import { ContactNotification } from '../../emails/ContactNotification'
+import { ContactAutoReply } from '../../emails/ContactAutoReply'
+import { contactSchema, MIN_FILL_TIME_MS, sanitizeHeader } from '../../server/validation'
+import { checkRateLimit } from '../../server/rate-limit'
 
-const TO = process.env.CONTACT_TO_EMAIL || 'mvmories@gmail.com'
-const FROM = process.env.CONTACT_FROM_EMAIL || 'Portfolio <onboarding@resend.dev>'
-const SITE_URL = process.env.SITE_URL || 'https://miguelvilhena.com'
+const TO = () => process.env.CONTACT_TO_EMAIL || 'mvmories@gmail.com'
+const FROM = () => process.env.CONTACT_FROM_EMAIL || 'Portfolio <onboarding@resend.dev>'
+const SITE_URL = () => process.env.SITE_URL || 'https://miguelvilhena.com'
 
-function clientIp(req: VercelRequest): string {
-  const forwarded = req.headers['x-forwarded-for']
-  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded
-  return raw?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown'
+function json(body: unknown, status = 200, headers: Record<string, string> = {}) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'content-type': 'application/json', ...headers },
+  })
 }
 
 /** Best-effort audit copy in Sanity. Never allowed to fail the request. */
@@ -38,43 +39,59 @@ async function archiveInSanity(data: { name: string; email: string; message: str
   }
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async (req: Request, context: Context) => {
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST')
-    return res.status(405).json({ error: 'Method not allowed' })
+    return json({ error: 'Method not allowed' }, 405, { allow: 'POST' })
   }
 
-  const rate = checkRateLimit(clientIp(req))
+  const to = TO()
+
+  // context.ip is resolved by the platform, so it cannot be spoofed by simply
+  // sending an X-Forwarded-For header the way a self-hosted setup can.
+  const rate = checkRateLimit(context.ip || 'unknown')
   if (!rate.allowed) {
-    res.setHeader('Retry-After', String(rate.retryAfterSeconds))
-    return res.status(429).json({
-      error: `Too many messages. Please try again in ${Math.ceil(rate.retryAfterSeconds / 60)} minutes.`,
-    })
+    return json(
+      {
+        error: `Too many messages. Please try again in ${Math.ceil(rate.retryAfterSeconds / 60)} minutes.`,
+      },
+      429,
+      { 'retry-after': String(rate.retryAfterSeconds) },
+    )
   }
 
-  const parsed = contactSchema.safeParse(req.body ?? {})
+  let payload: unknown
+  try {
+    payload = await req.json()
+  } catch {
+    return json({ error: 'Please check the form and try again.' }, 400)
+  }
+
+  const parsed = contactSchema.safeParse(payload ?? {})
 
   if (!parsed.success) {
     const first = parsed.error.issues[0]
     // A filled honeypot lands here too — treat it as success so bots learn nothing.
-    if (first?.path[0] === 'website') return res.status(200).json({ ok: true })
-    return res.status(400).json({
-      error: first?.message ?? 'Please check the form and try again.',
-      field: first?.path[0],
-    })
+    if (first?.path[0] === 'website') return json({ ok: true })
+    return json(
+      {
+        error: first?.message ?? 'Please check the form and try again.',
+        field: first?.path[0],
+      },
+      400,
+    )
   }
 
   const { name, email, message, elapsedMs } = parsed.data
 
   // Submitted implausibly fast — almost certainly a bot. Silently accept.
   if (elapsedMs > 0 && elapsedMs < MIN_FILL_TIME_MS) {
-    return res.status(200).json({ ok: true })
+    return json({ ok: true })
   }
 
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
     console.error('[contact] RESEND_API_KEY is not configured')
-    return res.status(500).json({ error: 'Email is not configured yet. Please email me directly.' })
+    return json({ error: 'Email is not configured yet. Please email me directly.' }, 500)
   }
 
   const submittedAt = new Intl.DateTimeFormat('en-GB', {
@@ -85,13 +102,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const resend = new Resend(apiKey)
+    const from = FROM()
 
     const { error } = await resend.emails.send({
-      from: FROM,
-      to: TO,
+      from,
+      to,
       replyTo: email,
       subject: `Portfolio · ${sanitizeHeader(name)} got in touch`,
-      react: ContactNotification({ name, email, message, submittedAt, sourceUrl: SITE_URL }),
+      react: ContactNotification({ name, email, message, submittedAt, sourceUrl: SITE_URL() }),
     })
 
     if (error) throw new Error(error.message)
@@ -101,9 +119,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // logged, so a silently-broken auto-reply cannot go unnoticed.
     const [autoReply] = await Promise.allSettled([
       resend.emails.send({
-        from: FROM,
+        from,
         to: email,
-        replyTo: TO,
+        replyTo: to,
         subject: 'Thanks for getting in touch',
         react: ContactAutoReply({ name, message }),
       }),
@@ -119,11 +137,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('[contact] auto-reply rejected by Resend', autoReply.value.error)
     }
 
-    return res.status(200).json({ ok: true })
+    return json({ ok: true })
   } catch (error) {
     console.error('[contact] send failed', error)
-    return res.status(500).json({
-      error: 'I could not send that right now. Please email me directly at ' + TO + '.',
-    })
+    return json({ error: `I could not send that right now. Please email me directly at ${to}.` }, 500)
   }
+}
+
+export const config: Config = {
+  path: '/api/contact',
 }
