@@ -42,6 +42,11 @@ export interface Skill extends SanityDocument {
   icon: SanityImage
 }
 
+/**
+ * Superseded by `Experience`. The nested shape kept the date range inside the
+ * description prose, so it could not be sorted or formatted. Retained only until
+ * the migrated documents are confirmed.
+ */
 export interface WorkExperience {
   _key?: string
   name: string
@@ -49,11 +54,38 @@ export interface WorkExperience {
   desc: string
 }
 
-export interface Experience extends SanityDocument {
+/** @deprecated Use {@link Experience}. */
+export interface LegacyExperience extends SanityDocument {
   _type: 'experiences'
   year: string
   works: WorkExperience[]
 }
+
+export type EmploymentType = 'full-time' | 'contract' | 'freelance' | 'founder' | 'internship'
+
+export interface Experience extends SanityDocument {
+  _type: 'experience'
+  role: string
+  company: string
+  companyUrl?: string
+  location?: string
+  employmentType?: EmploymentType
+  startDate: string
+  endDate?: string
+  current?: boolean
+  summary: string
+  highlights?: string[]
+  techStack?: string[]
+}
+
+/**
+ * What the timeline's GROQ projection actually returns.
+ *
+ * The query selects named fields, so the document metadata is genuinely absent
+ * at runtime. Typing the result as a full `Experience` would promise callers
+ * three fields that are never there.
+ */
+export type ExperienceFields = Omit<Experience, '_createdAt' | '_updatedAt' | '_rev'>
 
 export interface Testimonial extends SanityDocument {
   _type: 'testimonials'
@@ -96,4 +128,11 @@ export interface SiteSettings {
   socials?: SocialLink[]
 }
 
-export type SectionId = 'home' | 'about' | 'work' | 'skills' | 'testimonials' | 'contact'
+export type SectionId =
+  | 'home'
+  | 'about'
+  | 'work'
+  | 'experience'
+  | 'skills'
+  | 'testimonials'
+  | 'contact'
