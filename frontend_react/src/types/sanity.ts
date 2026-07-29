@@ -77,4 +77,23 @@ export interface ContactSubmission {
   message: string
 }
 
+export type SocialPlatform = 'linkedin' | 'github' | 'twitter' | 'instagram' | 'website'
+
+export interface SocialLink {
+  _key?: string
+  platform: SocialPlatform
+  url: string
+  label?: string
+}
+
+/** Singleton — always fetched by the fixed id `siteSettings`. */
+export interface SiteSettings {
+  _type: 'siteSettings'
+  cvEnabled?: boolean
+  cvUrl?: string
+  cvLabel?: string
+  cvUpdatedAt?: string
+  socials?: SocialLink[]
+}
+
 export type SectionId = 'home' | 'about' | 'work' | 'skills' | 'testimonials' | 'contact'
