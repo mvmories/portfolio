@@ -1,14 +1,14 @@
 .app {
-  background-color: var(--primary-color);
+  background-color: var(--surface-subtle);
   font-family: var(--font-base);
 }
 
 .app__whitebg {
-  background-color: var(--white-color);
+  background-color: var(--surface);
 }
 
 .app__primarybg {
-  background-color: var(--primary-color);
+  background-color: var(--surface-subtle);
 }
 
 .app__container {
@@ -47,54 +47,42 @@
 
   p {
     text-transform: uppercase;
-    color: var(--black-color);
+    color: var(--text);
   }
 }
 
 .head-text {
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-extrabold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
   text-align: center;
-  color: var(--black-color);
-  text-transform: capitalize;
+  text-wrap: balance;
+  color: var(--text);
 
+  // `capitalize` was overriding the copy written in the CMS, so "Full Stack
+  // Software Engineer" and "full stack software engineer" rendered identically
+  // and sentence case was impossible to author.
   span {
-    color: var(--secondary-color);
-  }
-
-  @media screen and (min-width: 2000px) {
-    font-size: 4rem;
-  }
-
-  @media screen and (max-width: 450px) {
-    font-size: 2rem;
+    color: var(--text-brand);
   }
 }
 
 .p-text {
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
   text-align: left;
-  color: var(--gray-color);
-  line-height: 1.5;
-
-  @media screen and (min-width: 2000px) {
-    font-size: 1.75rem;
-  }
+  color: var(--text-muted);
 }
 
 .bold-text {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--black-color);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text);
   text-align: left;
-
-  @media screen and (min-width: 2000px) {
-    font-size: 2rem;
-  }
-
-  @media screen and (max-width: 450px) {
-    font-size: 0.9rem;
-  }
 }
 
 .app__social {
@@ -109,9 +97,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--white-color);
+    background-color: var(--surface-raised);
     margin: 0.25rem 0;
-    border: 1px solid var(--lightGray-color);
+    border: 1px solid var(--border);
 
     display: flex;
     justify-content: center;
@@ -122,17 +110,17 @@
     svg {
       width: 15px;
       height: 15px;
-      color: var(--gray-color);
+      color: var(--text-muted);
     }
 
     &:hover {
-      background-color: var(--secondary-color);
-      border-color: var(--secondary-color);
+      background-color: var(--surface-brand);
+      border-color: var(--surface-brand);
 
       cursor: pointer;
 
       svg {
-        color: var(--white-color);
+        color: var(--text-on-brand);
       }
     }
 
@@ -162,13 +150,13 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #cbcbcb;
+    background-color: var(--border-strong);
     margin: 0.5rem;
 
     transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      background-color: var(--secondary-color);
+      background-color: var(--surface-brand);
     }
 
     @media screen and (min-width: 2000px) {
@@ -192,11 +180,11 @@
 .tippy-tooltip {
   max-width: 300px;
   z-index: 10;
-  background-color: var(--gray-color);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 1rem;
-  color: var(--white-color);
+  background-color: var(--surface-inverse);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  color: var(--text-inverse);
   text-align: center;
   line-height: 1.5;
   opacity: 1;
@@ -210,5 +198,5 @@
 }
 
 .tippy-arrow {
-  color: var(--gray-color) !important;
+  color: var(--surface-inverse) !important;
 }

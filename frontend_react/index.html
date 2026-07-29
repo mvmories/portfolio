@@ -8,6 +8,24 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#313bac" />
 
+    <!--
+      Applies a stored theme before the first paint. Without this, the document
+      renders light, React mounts, and the page flashes to dark - the one piece
+      of theming that genuinely cannot wait for the bundle.
+
+      Only an explicitly stored choice is applied. Leaving the attribute absent
+      is what lets the `prefers-color-scheme` media query in the CSS take over,
+      so the OS default works with no JavaScript at all.
+    -->
+    <script>
+      try {
+        var t = localStorage.getItem('theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch (e) {
+        /* Private mode can throw on storage access; the CSS default still applies. */
+      }
+    </script>
+
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 

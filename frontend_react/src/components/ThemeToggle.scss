@@ -1,0 +1,77 @@
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background-color: var(--surface-raised);
+  color: var(--text-muted);
+
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    color: var(--text-brand);
+    border-color: var(--border-brand);
+    background-color: var(--surface-brand-subtle);
+  }
+
+  // Both icons occupy the same grid cell and cross-fade, so the button never
+  // changes size and there is no reflow at the moment of switching.
+  &__icons {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+  }
+
+  &__icon {
+    grid-area: 1 / 1;
+    width: 18px;
+    height: 18px;
+
+    transition:
+      opacity var(--duration-normal) var(--ease-out),
+      transform var(--duration-normal) var(--ease-spring);
+  }
+
+  // The visible icon is the one for the theme you would switch *to*, matching
+  // the button's label.
+  &__icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  &__icon--moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@mixin show-sun {
+  .theme-toggle__icon--sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  .theme-toggle__icon--moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+}
+
+// In dark mode the button offers a return to light, so the sun shows.
+[data-theme='dark'] {
+  @include show-sun;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include show-sun;
+  }
+}

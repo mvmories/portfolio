@@ -8,12 +8,12 @@
   margin-top: 5rem;
   width: 60%;
   min-height: 320px;
-  background-color: var(--white-color);
+  background-color: var(--surface-raised);
   display: flex;
   flex-direction: row;
   padding: 2rem;
   border-radius: 15px;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 
   transition: all 0.3s ease-in-out;
 
@@ -56,7 +56,7 @@
   p {
     font-size: 1rem;
     line-height: 2rem;
-    color: var(--black-color);
+    color: var(--text);
     font-family: var(--font-base);
 
     @media screen and (min-width: 2000px) {
@@ -67,13 +67,13 @@
 
   h4 {
     font-weight: 600;
-    color: var(--secondary-color);
+    color: var(--text-brand);
     margin-top: 2rem;
   }
 
   h5 {
     font-weight: 400;
-    color: var(--gray-color);
+    color: var(--text-muted);
     margin-top: 5px;
   }
 
@@ -93,7 +93,7 @@
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background-color: var(--white-color);
+    background-color: var(--surface-raised);
     cursor: pointer;
 
     margin: 1rem;
@@ -102,14 +102,14 @@
     svg {
       width: 20px;
       height: 20px;
-      color: var(--secondary-color);
+      color: var(--text-brand);
     }
 
     &:hover {
-      background-color: var(--secondary-color);
+      background-color: var(--surface-brand);
 
       svg {
-        color: var(--white-color);
+        color: var(--text-on-brand);
       }
     }
 

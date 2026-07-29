@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { images } from '@/constants'
 import { SECTIONS } from '@/constants/sections'
+import ThemeToggle from '@/components/ThemeToggle'
 import './Navbar.scss'
 
 const Navbar = () => {
@@ -23,6 +24,10 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+
+      <div className='app__navbar-actions'>
+        <ThemeToggle />
+      </div>
 
       <div className='app__navbar-menu'>
         <button type='button' aria-label='Open menu' aria-expanded={toggle} onClick={() => setToggle(true)}>

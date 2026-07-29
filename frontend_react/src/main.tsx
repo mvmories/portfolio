@@ -8,9 +8,10 @@ import { createRoot } from 'react-dom/client'
 // a third-party dependency, and the variable font covers every weight in one
 // file. `font-display: swap` means text paints immediately regardless.
 import '@fontsource-variable/dm-sans'
+import '@fontsource-variable/plus-jakarta-sans'
 
 import App from './App'
-import './index.css'
+import './styles/global.scss'
 
 const container = document.getElementById('root')
 if (!container) throw new Error('Root element #root not found')

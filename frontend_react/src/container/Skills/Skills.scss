@@ -40,7 +40,8 @@
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background-color: #fef4f5;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
 
     img {
       width: 50%;
@@ -49,7 +50,7 @@
     }
 
     &:hover {
-      box-shadow: 0 0 25px #fef4f5;
+      box-shadow: var(--shadow-md);
     }
 
     @media screen and (min-width: 2000px) {

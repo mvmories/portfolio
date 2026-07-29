@@ -1,0 +1,22 @@
+// ---------------------------------------------------------------------------
+// Style helpers
+// ---------------------------------------------------------------------------
+
+/// Applies rules only when the dark theme is active.
+///
+/// Dark is reachable two ways - an explicit `[data-theme='dark']`, or the OS
+/// preference while no explicit choice is stored - so anything that cannot be
+/// expressed as a token swap needs both selectors. Almost everything *should*
+/// be a token swap; this is for the cases that genuinely cannot be, such as
+/// inverting a raster logo or dimming a decorative image.
+@mixin when-dark {
+  [data-theme='dark'] & {
+    @content;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) & {
+      @content;
+    }
+  }
+}

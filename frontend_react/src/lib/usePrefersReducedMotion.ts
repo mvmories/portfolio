@@ -5,7 +5,7 @@ const QUERY = '(prefers-reduced-motion: reduce)'
 /**
  * Tracks the user's motion preference.
  *
- * `index.css` already disables CSS transitions, but framer-motion animates
+ * `styles/global.scss` already disables CSS transitions, but framer-motion animates
  * inline styles with JavaScript, so it never sees that rule. Animating a card's
  * height is exactly the kind of movement people disable motion to avoid, so the
  * preference has to be readable from JS too.

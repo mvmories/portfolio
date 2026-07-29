@@ -14,21 +14,21 @@
 
 .app__experience-toggle-all {
   background: transparent;
-  border: 1px solid var(--lightGray-color);
+  border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.5rem 1.1rem;
   font-family: var(--font-base);
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--gray-color);
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 
   &:hover,
   &:focus-visible {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    background-color: var(--primary-color);
+    color: var(--text-brand);
+    border-color: var(--surface-brand);
+    background-color: var(--surface-subtle);
   }
 }
 
@@ -51,8 +51,8 @@
     width: 2px;
     background: linear-gradient(
       to bottom,
-      var(--secondary-color) 0%,
-      var(--lightGray-color) 100%
+      var(--surface-brand) 0%,
+      var(--border) 100%
     );
 
     @media screen and (min-width: 900px) {
@@ -78,8 +78,8 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: var(--white-color);
-  border: 3px solid var(--lightGray-color);
+  background-color: var(--surface-raised);
+  border: 3px solid var(--border);
   z-index: 1;
 
   @media screen and (min-width: 900px) {
@@ -89,39 +89,39 @@
 }
 
 .app__experience-item.is-current .app__experience-dot {
-  border-color: var(--secondary-color);
-  background-color: var(--secondary-color);
-  box-shadow: 0 0 0 0 rgba(49, 59, 172, 0.5);
+  border-color: var(--surface-brand);
+  background-color: var(--surface-brand);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--surface-brand) 50%, transparent);
   animation: app__experience-pulse 2.4s ease-out infinite;
 }
 
 @keyframes app__experience-pulse {
   70% {
-    box-shadow: 0 0 0 10px rgba(49, 59, 172, 0);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--surface-brand) 0%, transparent);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(49, 59, 172, 0);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--surface-brand) 0%, transparent);
   }
 }
 
 .app__experience-card {
-  background-color: var(--white-color);
-  border: 1px solid var(--lightGray-color);
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-md);
   }
 
   &:focus-within {
-    border-color: var(--secondary-color);
+    border-color: var(--surface-brand);
   }
 }
 
 .app__experience-item.is-current .app__experience-card {
-  border-color: rgba(49, 59, 172, 0.35);
+  border-color: color-mix(in srgb, var(--surface-brand) 35%, transparent);
 }
 
 .app__experience-trigger {
@@ -145,7 +145,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--secondary-color);
+    outline: 2px solid var(--focus-ring);
     outline-offset: -2px;
   }
 
@@ -163,7 +163,7 @@
 .app__experience-role {
   font-size: 1.05rem;
   line-height: 1.35;
-  color: var(--black-color);
+  color: var(--text);
 
   @media screen and (min-width: 900px) {
     font-size: 1.15rem;
@@ -173,11 +173,11 @@
 .app__experience-company {
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--secondary-color);
+  color: var(--text-brand);
 }
 
 .app__experience-type {
-  color: var(--gray-color);
+  color: var(--text-muted);
   font-weight: 400;
 }
 
@@ -187,11 +187,11 @@
   align-items: center;
   gap: 0.25rem 0.85rem;
   font-size: 0.82rem;
-  color: var(--gray-color);
+  color: var(--text-muted);
 }
 
 .app__experience-duration {
-  color: var(--gray-color);
+  color: var(--text-muted);
 }
 
 .app__experience-location {
@@ -209,7 +209,7 @@
   margin-top: 0.35rem;
   font-size: 0.92rem;
   line-height: 1.6;
-  color: var(--gray-color);
+  color: var(--text-muted);
 }
 
 .app__experience-chevron {
@@ -217,7 +217,7 @@
   top: 1.25rem;
   right: 1.15rem;
   display: flex;
-  color: var(--gray-color);
+  color: var(--text-muted);
   transition: transform 0.28s ease, color 0.2s ease;
 
   svg {
@@ -227,7 +227,7 @@
 
   &.is-open {
     transform: rotate(180deg);
-    color: var(--secondary-color);
+    color: var(--text-brand);
   }
 }
 
@@ -240,7 +240,7 @@
   flex-direction: column;
   gap: 1rem;
   padding: 0 1.15rem 1.35rem;
-  border-top: 1px solid var(--lightGray-color);
+  border-top: 1px solid var(--border);
   margin-top: 0.25rem;
   padding-top: 1.1rem;
 
@@ -263,7 +263,7 @@
     padding-left: 1.15rem;
     font-size: 0.9rem;
     line-height: 1.6;
-    color: var(--gray-color);
+    color: var(--text-muted);
 
     &::before {
       content: '';
@@ -273,7 +273,7 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background-color: var(--secondary-color);
+      background-color: var(--surface-brand);
       opacity: 0.55;
     }
   }
@@ -294,8 +294,8 @@
   gap: 0.35rem;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
-  background-color: var(--primary-color);
-  color: var(--black-color);
+  background-color: var(--surface-subtle);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 500;
   line-height: 1.4;
@@ -314,7 +314,7 @@
   align-self: flex-start;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--secondary-color);
+  color: var(--text-brand);
   text-decoration: none;
 
   &:hover,

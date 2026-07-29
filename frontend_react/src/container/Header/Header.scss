@@ -1,13 +1,25 @@
+@use '../../styles/mixins' as *;
+
 #home {
   position: relative;
-  // WebP, generated from bgIMG.png by `npm run images`. The PNG was 397 kB -
-  // more than the rest of the page combined - for a blurred texture that is
-  // scaled to cover. The source PNG stays in the repo but is no longer
-  // referenced, so it is not bundled.
-  background: url('../../assets/bgIMG.webp');
-  background-size: cover;
-  background-repeat: repeat;
-  background-position: center;
+  overflow: hidden;
+
+  // Replaces a raster texture (bgIMG, 397 kB as PNG and 5 kB as WebP). Two soft
+  // radial washes reproduce the same effect, cost nothing to download, stay
+  // sharp at any viewport, and - the reason for the change - follow the theme.
+  // A baked-in light texture could not.
+  background-color: var(--surface-subtle);
+  background-image:
+    radial-gradient(
+      ellipse 80% 60% at 15% 0%,
+      color-mix(in srgb, var(--brand-500) 18%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 70% at 90% 25%,
+      color-mix(in srgb, var(--accent-400) 14%, transparent),
+      transparent 65%
+    );
 
   .app__wrapper {
     padding: 0;
@@ -61,11 +73,11 @@
   .badge-cmp,
   .tag-cmp {
     padding: 1rem 2rem;
-    border: var(--white-color);
+    border: var(--surface-raised);
     flex-direction: row;
     border-radius: 15px;
     width: auto;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 
   .tag-cmp {
@@ -107,8 +119,8 @@
     height: 100px;
     border-radius: 50%;
 
-    background: var(--white-color);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-md);
 
     img {
       width: 60%;
@@ -190,6 +202,12 @@
     z-index: 0;
     width: 100%;
     height: 90%;
+
+    // A pale grey raster. At full strength on a near-black surface it reads as
+    // a spotlight rather than a soft backdrop, so dark mode dims it.
+    @include when-dark {
+      opacity: 0.14;
+    }
   }
 
   @media screen and (max-width: 1200px) {
