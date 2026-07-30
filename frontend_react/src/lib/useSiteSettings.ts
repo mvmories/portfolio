@@ -15,7 +15,7 @@ export const FALLBACK_SETTINGS: Required<
     'heroTagline' | 'availabilityEnabled' | 'availabilityText' | 'cvEnabled' | 'cvUrl' | 'socials'
   >
 > = {
-  heroTagline: 'I take products from a blank page to thirty countries.',
+  heroTagline: 'I take products from a blank page to 30 countries.',
   availabilityEnabled: true,
   availabilityText: 'Open to new opportunities',
   cvEnabled: true,

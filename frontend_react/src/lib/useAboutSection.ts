@@ -14,11 +14,11 @@ import type { AboutSection } from '@/types/sanity'
 export const FALLBACK_ABOUT: AboutSection = {
   _type: 'aboutSection',
   narrative:
-    "I'm a frontend engineer, and I've never much liked inheriting something finished. At IKEA I started a loyalty platform at a blank page; it's now in thirty countries. Before that I founded two companies and sold one. Fullstack when it counts — Node, Firestore, infrastructure as code — but the front is where I'm strongest. Most of my attention now goes to AI: agents that write the documentation nobody wants to write, and a local model stack I run on my own hardware to find out where it actually breaks.",
+    "I'm a fullstack engineer, strongest on the frontend, and I've never much enjoyed inheriting something finished. At IKEA I started a rewards experience from a blank canvas and shipped it: 170 million IKEA Family members had a card and nothing to earn with it. It's now live in thirty countries. Before that I founded and sold two companies. React and Node, GCP and infrastructure as code when it counts — but the front is where I'm sharpest. Most of my attention now goes to AI: agents that write the documentation nobody wants to write, and a local LLM stack I run on my own hardware to bring out-of-the-ordinary ideas to life.",
   stats: [
     { value: '30', label: 'countries live' },
     { value: '11', label: 'years shipping' },
-    { value: '1', label: 'company built and sold' },
+    { value: '2', label: 'companies built and sold' },
   ],
   portraitAlt: 'Miguel Vilhena',
 }
