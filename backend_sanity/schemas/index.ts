@@ -1,7 +1,7 @@
 import testimonials from './testimonials'
 import works from './works'
 import brands from './brands'
-import about from './about'
+import aboutSection from './aboutSection'
 import skills from './skills'
 import experience from './experience'
 import workExperience from './workExperience'
@@ -11,10 +11,10 @@ import siteSettings from './siteSettings'
 
 export const schemaTypes = [
   siteSettings,
+  aboutSection,
   works,
   testimonials,
   brands,
-  about,
   skills,
   experience,
   // Superseded by `experience`. Kept registered only so the old documents stay

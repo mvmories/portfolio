@@ -21,8 +21,12 @@ const Testimonial = () => {
 
   return (
     <>
-      <h2 className='head-text'>Testimonials</h2>
-      <h6 className='p-text'>Check LinkedIn for more details and testimonials</h6>
+      <h2 className='head-text'>
+        In their <span>words</span>
+      </h2>
+      {/* Was an h6 directly under the h2 - a four-level skip that reads as a
+          missing subsection to a screen reader. It is a caption, not a heading. */}
+      <p className='p-text'>Check LinkedIn for more details and testimonials</p>
 
       {testimonials.length > 0 && current && (
         <>
@@ -69,8 +73,11 @@ const Testimonial = () => {
         </>
       )}
 
+      {/* The old heading claimed these were customers. They were not - they were
+          employers, or clients of employers. P3-F curates the logos; the claim is
+          corrected here because a false one costs more than an ugly one. */}
       <h3 className='p-text' style={{ marginTop: '4rem', fontSize: '1.2rem' }}>
-        {'< Satisfied Customers />'}
+        Where I&apos;ve done it
       </h3>
 
       <div className='app__testimonial-brands app__flex'>

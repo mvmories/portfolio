@@ -8,7 +8,7 @@ import {schemaTypes} from './schemas'
  * pinned to the top of the desk, and are hidden from the generic type list so a
  * second one cannot be created by accident.
  */
-const SINGLETONS = ['siteSettings']
+const SINGLETONS = ['siteSettings', 'aboutSection']
 
 export default defineConfig({
   name: 'default',
@@ -31,6 +31,15 @@ export default defineConfig({
                   .schemaType('siteSettings')
                   .documentId('siteSettings')
                   .title('Site settings'),
+              ),
+            S.listItem()
+              .title('About section')
+              .id('aboutSection')
+              .child(
+                S.document()
+                  .schemaType('aboutSection')
+                  .documentId('aboutSection')
+                  .title('About section'),
               ),
             S.divider(),
             ...S.documentTypeListItems().filter((item) => !SINGLETONS.includes(item.getId() ?? '')),
