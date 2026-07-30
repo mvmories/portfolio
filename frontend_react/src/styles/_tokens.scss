@@ -220,6 +220,14 @@
 
   --scrim: rgb(16 18 28 / 45%);
   --glass: rgb(255 255 255 / 72%);
+
+  // Hero particle portrait. Read from CSS by the WebGL layer rather than
+  // hard-coded in the shader, so the effect is themed by the same system as
+  // everything else. Luminance maps dark -> light; accent tints points the
+  // pointer is pushing.
+  --particle-dark: var(--brand-800);
+  --particle-light: var(--brand-300);
+  --particle-accent: var(--accent-400);
 }
 
 @mixin dark-theme {
@@ -269,6 +277,12 @@
 
   --scrim: rgb(0 0 0 / 65%);
   --glass: rgb(16 18 28 / 72%);
+
+  // On a near-black surface the light end has to carry the portrait, so it
+  // moves to the accent ramp and the dark end lifts off the background.
+  --particle-dark: var(--brand-700);
+  --particle-light: var(--accent-200);
+  --particle-accent: var(--accent-300);
 }
 
 :root {

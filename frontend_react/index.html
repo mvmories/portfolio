@@ -30,20 +30,21 @@
     <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
     <!--
-      The hero photo is the Largest Contentful Paint element. Without this it is
-      only discoverable after React has booted and rendered, which cost 1.7s of
-      load delay on mobile. `imagesrcset` lets the browser pick the same source
-      the <picture> element would, so a phone preloads 14 kB rather than 19.
-      Only AVIF is preloaded: browsers that don't support it ignore the hint and
-      fall back to the <picture> element normally.
+      The hero portrait is both the fallback image and the source the particle
+      effect samples, so nothing in the hero can happen until it has decoded.
+      Without this it is only discoverable after React has booted and rendered,
+      which cost 1.7s of load delay on mobile when the old photo was the LCP
+      element. `imagesrcset` lets the browser pick the same source the <picture>
+      element would. Only AVIF is preloaded: browsers that don't support it
+      ignore the hint and fall back to the <picture> element normally.
     -->
     <link
       rel="preload"
       as="image"
       type="image/avif"
-      href="/hero/profile-617.avif"
-      imagesrcset="/hero/profile-400.avif 400w, /hero/profile-617.avif 617w"
-      imagesizes="(max-width: 900px) 60vw, 500px"
+      href="/hero/portrait-420.avif"
+      imagesrcset="/hero/portrait-420.avif 420w, /hero/portrait-840.avif 840w"
+      imagesizes="(max-width: 1200px) 70vw, 440px"
       fetchpriority="high"
     />
 

@@ -10,10 +10,37 @@ export default {
   title: 'Site settings',
   type: 'document',
   groups: [
-    { name: 'cv', title: 'CV', default: true },
+    { name: 'hero', title: 'Hero', default: true },
+    { name: 'cv', title: 'CV' },
     { name: 'socials', title: 'Social links' },
   ],
   fields: [
+    {
+      name: 'heroTagline',
+      title: 'Hero tagline',
+      type: 'text',
+      rows: 2,
+      group: 'hero',
+      description:
+        'The single sentence under your name. Lead with the outcome, not the job title. Leave empty to use the built-in default.',
+      validation: (Rule: SanityRule) => Rule.max(160),
+    },
+    {
+      name: 'availabilityEnabled',
+      title: 'Show the availability pill',
+      type: 'boolean',
+      group: 'hero',
+      initialValue: true,
+      description: 'Turn this off while you are not looking.',
+    },
+    {
+      name: 'availabilityText',
+      title: 'Availability text',
+      type: 'string',
+      group: 'hero',
+      description: 'Defaults to "Open to new opportunities" when empty.',
+      validation: (Rule: SanityRule) => Rule.max(48),
+    },
     {
       name: 'cvEnabled',
       title: 'Show the CV link',
@@ -106,6 +133,7 @@ export default {
 /** Minimal shape of Sanity's validation builder — avoids depending on its types here. */
 interface SanityRule {
   required: () => SanityRule
+  max: (length: number) => SanityRule
   uri: (options: { scheme: string[] }) => SanityRule
   custom: (fn: (value?: string) => true | string) => SanityRule
 }

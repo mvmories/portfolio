@@ -23,18 +23,18 @@
 
   .app__wrapper {
     padding: 0;
-
-    .copyright {
-      display: none;
-    }
   }
 }
 
 .app__header {
+  position: relative;
   flex: 1;
   width: 100%;
   height: 100%;
+
+  display: flex;
   flex-direction: row;
+  align-items: center;
 
   padding: 6rem 2rem 0;
 
@@ -50,63 +50,151 @@
 }
 
 .app__header-info {
-  flex: 0.65;
+  flex: 1.1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
-  height: 100%;
+  gap: var(--space-5);
 
-  @media screen and (max-width: 2000px) {
+  max-width: 34rem;
+
+  @media screen and (max-width: 1200px) {
+    max-width: none;
     width: 100%;
-    margin-right: 0%;
+    align-items: center;
+    text-align: center;
   }
 }
 
-.app__header-badge {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  flex-direction: column;
+.app__header-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
 
-  .badge-cmp,
-  .tag-cmp {
-    padding: 1rem 2rem;
-    border: var(--surface-raised);
-    flex-direction: row;
-    border-radius: 15px;
-    width: auto;
-    box-shadow: var(--shadow-md);
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-muted);
+}
+
+.app__header-availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--text-success);
+
+  // A steady dot reads as decoration; a slow pulse reads as a live status.
+  animation: availability-pulse 2.4s var(--ease-in-out) infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
+}
 
-  .tag-cmp {
-    flex-direction: column;
-    margin-top: 3rem;
-
-    p {
-      width: 100%;
-      text-transform: uppercase;
-      text-align: right;
-    }
+@keyframes availability-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--text-success) 45%, transparent);
   }
-
-  span {
-    font-size: 2.5rem;
-
-    @media screen and (min-width: 2000px) {
-      font-size: 5rem;
-    }
+  50% {
+    opacity: 0.75;
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--text-success) 0%, transparent);
   }
+}
+
+.app__header-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-6xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.app__header-tagline {
+  margin: 0;
+  max-width: 30ch;
+
+  font-size: var(--text-xl);
+  line-height: 1.5;
+  color: var(--text-muted);
 
   @media screen and (max-width: 1200px) {
-    justify-content: flex-start;
-    align-items: flex-start;
+    max-width: 38ch;
+  }
+}
+
+.app__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+// A mouse outline with a dot falling through it - the one scroll cue that is
+// legible without a caption.
+.app__header-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-6);
+  transform: translateX(-50%);
+
+  display: block;
+  padding: var(--space-2);
+  border-radius: var(--radius-full);
+
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.app__header-scroll-mouse {
+  display: block;
+  width: 24px;
+  height: 38px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-full);
+
+  transition: border-color var(--duration-fast) var(--ease-out);
+
+  span {
+    display: block;
+    width: 4px;
+    height: 8px;
+    margin: 6px auto 0;
+    border-radius: var(--radius-full);
+    background: var(--text-muted);
+
+    animation: scroll-cue 1.8s var(--ease-in-out) infinite;
+  }
+
+  .app__header-scroll:hover & {
+    border-color: var(--surface-brand);
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px);
   }
 }
 
 .app__header-circles {
-  flex: 0.75;
+  flex: 0.6;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -171,37 +259,22 @@
 }
 
 .app__header-img {
-  flex: 1;
-  height: 100%;
-
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  flex: 1.2;
   position: relative;
 
-  // `display: contents` removes the <picture> box from the layout entirely, so
-  // the <img> stays the direct flex child it was before the AVIF/WebP sources
-  // were added. Without this the picture element becomes the flex item and the
-  // percentage heights below resolve against the wrong box.
-  picture {
-    display: contents;
-  }
-
-  img {
-    max-height: 90%;
-    width: 100%;
-    object-fit: contain;
-    z-index: 1;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .overlay_circle {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    width: 100%;
-    height: 90%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+
+    width: 115%;
+    max-width: 520px;
 
     // A pale grey raster. At full strength on a near-black surface it reads as
     // a spotlight rather than a soft backdrop, so dark mode dims it.
@@ -211,6 +284,9 @@
   }
 
   @media screen and (max-width: 1200px) {
+    // Everything inside is absolutely positioned, so in the mobile column
+    // layout this box has no content to be sized by and collapses to zero.
+    width: 100%;
     margin: 2rem 0;
   }
 }

@@ -121,6 +121,9 @@ export interface SocialLink {
 /** Singleton — always fetched by the fixed id `siteSettings`. */
 export interface SiteSettings {
   _type: 'siteSettings'
+  heroTagline?: string
+  availabilityEnabled?: boolean
+  availabilityText?: string
   cvEnabled?: boolean
   cvUrl?: string
   cvLabel?: string

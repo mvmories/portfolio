@@ -85,7 +85,50 @@ async function main() {
       `(${Math.round((1 - largestAvif / before) * 100)}% smaller)\n`
   )
 
+  await portrait()
   await backgrounds()
+}
+
+/**
+ * The head-and-shoulders crop, used two ways: as the sampling source for the
+ * hero's particle portrait, and as the static image shown wherever WebGL is
+ * unavailable or unwanted.
+ *
+ * The crop is fixed rather than face-detected because the source never changes
+ * and a hand-picked box beats a detector that occasionally clips an ear. It was
+ * chosen by scanning the alpha channel: the head spans y 0-300 and the
+ * shoulders reach full width by y 420, so 90,0 -> 550,420 frames the subject
+ * without the thumbs-up pose below it.
+ */
+const PORTRAIT_CROP = {left: 90, top: 0, width: 460, height: 420}
+
+/** 1x for sampling (more points than the effect can show), 2x for the fallback. */
+const PORTRAIT_WIDTHS = [420, 840]
+
+async function portrait() {
+  console.log('portrait:')
+
+  for (const file of await readdir(outDir).catch(() => [])) {
+    if (file.startsWith('portrait-')) await unlink(path.join(outDir, file))
+  }
+
+  for (const w of PORTRAIT_WIDTHS) {
+    for (const [format, options] of [
+      ['avif', {quality: 60, effort: 6}],
+      ['webp', {quality: 78}],
+      ['png', {compressionLevel: 9}],
+    ]) {
+      const name = `portrait-${w}.${format}`
+      const info = await sharp(source)
+        .extract(PORTRAIT_CROP)
+        .resize({width: w})
+        [format](options)
+        .toFile(path.join(outDir, name))
+
+      console.log(`  ${name.padEnd(20)} ${kb(info.size).padStart(8)}`)
+    }
+  }
+  console.log()
 }
 
 /**
