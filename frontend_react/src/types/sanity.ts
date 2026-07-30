@@ -18,11 +18,18 @@ export interface SanityDocument {
   _rev: string
 }
 
-export interface About extends SanityDocument {
-  _type: 'about'
-  title: string
-  description: string
-  imgUrl: SanityImage
+export interface AboutStat {
+  _key?: string
+  value: string
+  label: string
+}
+
+export interface AboutSection {
+  _type: 'aboutSection'
+  narrative: string
+  stats: AboutStat[]
+  portrait?: SanityImage
+  portraitAlt?: string
 }
 
 export interface Work extends SanityDocument {
