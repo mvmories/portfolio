@@ -14,7 +14,7 @@ import type { AboutSection } from '@/types/sanity'
 export const FALLBACK_ABOUT: AboutSection = {
   _type: 'aboutSection',
   narrative:
-    "I'm a fullstack engineer, strongest on the frontend, and I've never much enjoyed inheriting something finished. At IKEA I started a rewards experience from a blank canvas and shipped it: 170 million IKEA Family members had a card and nothing to earn with it. It's now live in thirty countries. Before that I founded and sold two companies. React and Node, GCP and infrastructure as code when it counts — but the front is where I'm sharpest. Most of my attention now goes to AI: agents that write the documentation nobody wants to write, and a local LLM stack I run on my own hardware to bring out-of-the-ordinary ideas to life.",
+    "I'm a fullstack engineer, strongest on the frontend, and I've never much enjoyed inheriting something finished. At IKEA I inherited a one-country pilot instead — thin logic, thin UI — and three years later it's a rewards experience live in thirty markets: 170 million IKEA Family members had a card and nothing to earn with it. Before that I founded and sold two companies. React and Node, GCP and infrastructure as code when it counts — but the front is where I'm sharpest. Most of my attention now goes to AI. I run models on hardware I own and build with agents daily, rebuilding how I work around a simple fact: one engineer can now attempt what used to need a team.",
   stats: [
     { value: '30', label: 'countries live' },
     { value: '11', label: 'years shipping' },
