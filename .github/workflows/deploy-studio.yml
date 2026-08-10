@@ -35,7 +35,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          # Kept in step with backend_sanity/.nvmrc. The Sanity 3.9 CLI bundles a
+          # yargs shim that breaks under Node's newer require(esm) handling, so
+          # the version is pinned rather than floating on a major.
+          node-version-file: backend_sanity/.nvmrc
           cache: yarn
           cache-dependency-path: backend_sanity/yarn.lock
 
