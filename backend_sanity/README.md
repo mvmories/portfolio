@@ -15,20 +15,20 @@ Schema changes reach the hosted Studio through CI, not from your machine:
 `.github/workflows/deploy-studio.yml` deploys on every push to `main` that
 touches `backend_sanity/**`. So merge, don't deploy.
 
-## Deploying locally
+## Deploying locally — don't
 
-Rarely necessary, but if it is:
+`yarn deploy` fails on this machine with `ReferenceError: require is not defined
+in ES module scope`, thrown from `node_modules/yargs/yargs`. The cause is a
+packaging bug in yargs 17: its exports map points the `require` condition at an
+extensionless CJS file inside a package declared `"type": "module"`, so once
+Node gained `require(esm)` — backported to 20.19 and on by default from 22.12 —
+Node parses that file as ESM and `require` is undefined. Every yargs 17.x
+release including the latest has the same mapping, and yargs 18 is ESM-only, so
+there is no version of this dependency to pin your way onto. Sanity reaches it
+only from the deploy path, which is why every other `sanity` command works.
 
-```sh
-nvm use        # reads .nvmrc — Node 20
-yarn deploy
-```
-
-The Node version is not optional. Sanity 3.9's CLI bundles a `yargs` shim that
-throws `ReferenceError: require is not defined in ES module scope` under Node's
-newer `require(esm)` handling, so anything from Node 22.12 upwards fails before
-the command starts. `.nvmrc` pins the known-good version and the CI workflow
-reads the same file, so both stay in step.
+Use CI instead. It is not a workaround; it is the supported path, it deploys on
+every merge, and it holds the auth token so no one needs deploy rights locally.
 
 ## Singletons
 
