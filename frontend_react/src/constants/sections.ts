@@ -6,7 +6,6 @@ export const SECTIONS: readonly SectionId[] = [
   'about',
   'work',
   'experience',
-  'skills',
   'testimonials',
   'contact',
 ] as const

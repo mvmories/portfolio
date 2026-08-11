@@ -143,6 +143,5 @@ export type SectionId =
   | 'about'
   | 'work'
   | 'experience'
-  | 'skills'
   | 'testimonials'
   | 'contact'

@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { SECTIONS } from '@/constants/sections'
+
 // The Sanity client is network-bound; stub it so the smoke test stays offline.
 vi.mock('@/lib/client', () => ({
   client: { fetch: vi.fn().mockResolvedValue([]) },
@@ -16,10 +18,12 @@ vi.mock('@/lib/client', () => ({
 }))
 
 describe('App', () => {
-  it('renders every section landmark without crashing', async () => {
+  // Driven by SECTIONS rather than a copy of it, so a section that is added or
+  // removed without a matching landmark fails here instead of drifting silently.
+  it('renders a landmark for every section in the navigation', async () => {
     render(<App />)
 
-    for (const id of ['home', 'about', 'work', 'skills', 'testimonials', 'contact']) {
+    for (const id of SECTIONS) {
       expect(document.getElementById(id)).toBeInTheDocument()
     }
 
