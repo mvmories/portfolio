@@ -49,25 +49,6 @@ export interface Skill extends SanityDocument {
   icon: SanityImage
 }
 
-/**
- * Superseded by `Experience`. The nested shape kept the date range inside the
- * description prose, so it could not be sorted or formatted. Retained only until
- * the migrated documents are confirmed.
- */
-export interface WorkExperience {
-  _key?: string
-  name: string
-  company: string
-  desc: string
-}
-
-/** @deprecated Use {@link Experience}. */
-export interface LegacyExperience extends SanityDocument {
-  _type: 'experiences'
-  year: string
-  works: WorkExperience[]
-}
-
 export type EmploymentType = 'full-time' | 'contract' | 'freelance' | 'founder' | 'internship'
 
 export interface Experience extends SanityDocument {
