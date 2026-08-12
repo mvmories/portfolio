@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { AiFillEye, AiFillGithub } from 'react-icons/ai'
+import { AiFillGithub } from 'react-icons/ai'
+import { HiArrowUpRight } from 'react-icons/hi2'
 
 import { AppWrap, MotionWrap } from '@/wrapper'
 import { safeFetch, urlFor } from '@/lib/client'
@@ -26,61 +27,62 @@ const Work = () => {
       <div className='app__work-portfolio'>
         {works.map((work) => (
           <article className='app__work-item' key={work._id}>
-            <div className='app__work-img'>
+            <div className='app__work-media'>
               <img
                 src={urlFor(work.imgUrl)
-                  .width(900)
-                  .height(600)
+                  .width(1200)
+                  .height(900)
                   .fit('crop')
                   .auto('format')
                   .quality(80)
                   .url()}
                 alt={work.title}
-                width={450}
-                height={300}
+                width={600}
+                height={450}
                 loading='lazy'
                 decoding='async'
               />
+            </div>
 
-              <div className='app__work-hover'>
+            <div className='app__work-body'>
+              <h3 className='app__work-title'>{work.title}</h3>
+
+              {/* The outcome is the whole point of the card, so it is the card's
+                  only prose. The description is a fallback for projects that
+                  have not earned an outcome line yet. */}
+              <p className='app__work-lede'>{work.outcome || work.description}</p>
+
+              {work.tags && work.tags.length > 0 && (
+                <p className='app__work-stack'>
+                  {work.tags.filter((tag) => tag !== 'All').join(' · ')}
+                </p>
+              )}
+
+              <div className='app__work-actions'>
                 {work.projectLink && (
                   <a
+                    className='app__work-action'
                     href={work.projectLink}
                     target='_blank'
                     rel='noreferrer'
-                    aria-label={`View ${work.title}`}
                   >
-                    <AiFillEye />
+                    Visit the site
+                    <HiArrowUpRight aria-hidden='true' />
+                    <span className='sr-only'>{`, ${work.title}, opens in a new tab`}</span>
                   </a>
                 )}
                 {work.codeLink && (
                   <a
+                    className='app__work-action app__work-action--secondary'
                     href={work.codeLink}
                     target='_blank'
                     rel='noreferrer'
-                    aria-label={`Source code for ${work.title}`}
                   >
-                    <AiFillGithub />
+                    <AiFillGithub aria-hidden='true' />
+                    Source
+                    <span className='sr-only'>{`, ${work.title}, opens in a new tab`}</span>
                   </a>
                 )}
-              </div>
-            </div>
-
-            <div className='app__work-content'>
-              <h4 className='bold-text'>{work.title}</h4>
-
-              {work.outcome && <p className='app__work-outcome'>{work.outcome}</p>}
-
-              <p className='p-text'>{work.description}</p>
-
-              <div className='app__work-rounded-tags'>
-                {(work.tags ?? [])
-                  .filter((tag) => tag !== 'All')
-                  .map((tag) => (
-                    <span key={tag} className='app__work-tag-rounded p-text'>
-                      {tag}
-                    </span>
-                  ))}
               </div>
             </div>
           </article>

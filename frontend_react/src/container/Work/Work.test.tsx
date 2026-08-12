@@ -61,12 +61,44 @@ describe('Work', () => {
   })
 
   // 'All' only ever existed to make the old filter bar work.
-  it('does not render the All tag as a chip', async () => {
+  it('lists the stack as plain text without the All pseudo-tag', async () => {
     render(<Work />)
 
     await screen.findByRole('heading', { name: 'PowerByJS' })
-    expect(screen.getByText('React')).toBeInTheDocument()
-    expect(screen.queryByText('All')).not.toBeInTheDocument()
+    expect(screen.getByText('React \u00b7 Sanity')).toBeInTheDocument()
+  })
+
+  // The actions used to sit behind a hover overlay, which touch devices could
+  // never reveal.
+  it('shows the project links without needing hover', async () => {
+    render(<Work />)
+
+    await screen.findByRole('heading', { name: 'PowerByJS' })
+    expect(screen.getByRole('link', { name: /Visit the site/ })).toHaveAttribute(
+      'href',
+      'https://powerbyjs.test'
+    )
+    expect(screen.getByRole('link', { name: /Source/ })).toBeInTheDocument()
+  })
+
+  // The description is a fallback, not a second paragraph competing with the
+  // outcome.
+  it('shows the description only when there is no outcome', async () => {
+    safeFetch.mockResolvedValue([{ ...POWERBYJS, outcome: undefined }])
+    render(<Work />)
+
+    expect(
+      await screen.findByText('Fullstack app created for an elite personal trainer.')
+    ).toBeInTheDocument()
+  })
+
+  it('hides the description when an outcome exists', async () => {
+    render(<Work />)
+
+    await screen.findByRole('heading', { name: 'PowerByJS' })
+    expect(
+      screen.queryByText('Fullstack app created for an elite personal trainer.')
+    ).not.toBeInTheDocument()
   })
 
   it('explains why the list is short', async () => {

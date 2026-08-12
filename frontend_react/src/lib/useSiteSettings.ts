@@ -25,7 +25,7 @@ export const FALLBACK_SETTINGS: Required<
   availabilityEnabled: true,
   availabilityText: 'Open to new opportunities',
   cvEnabled: true,
-  workNote: 'Most of my work is covered by NDA. This is the part I can show — more as it ships.',
+  workNote: 'Most of my work is covered by NDA. This is the part I can show, more as it ships.',
   cvUrl: 'https://drive.google.com/file/d/1UzYCsJGdeNB5LJ3TGRXbz9GtKPrSzdee/view?usp=share_link',
   socials: [
     { platform: 'linkedin', url: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/' },
