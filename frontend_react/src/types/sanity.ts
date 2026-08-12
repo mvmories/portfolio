@@ -82,8 +82,12 @@ export interface Testimonial extends SanityDocument {
   name: string
   company: string
   role: string
-  imgurl: SanityImage
+  imgurl?: SanityImage
   feedback: string
+  workedTogetherAt?: string
+  linkedInUrl?: string
+  featured?: boolean
+  sortOrder?: number
 }
 
 export interface Brand extends SanityDocument {

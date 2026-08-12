@@ -1,0 +1,117 @@
+.app__quote-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: 100%;
+  padding: 1.75rem;
+
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-raised);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  &:hover,
+  &:focus-within {
+    transform: translateY(-4px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+  }
+
+  // Focused programmatically when the disclosure expands, so the ring would
+  // otherwise appear on a card nobody clicked.
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--text-brand);
+    outline-offset: 3px;
+  }
+}
+
+.app__quote-text {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--text);
+
+  // Quotation marks belong to the typography, not to the CMS field: baking
+  // them into the content makes clipping and nesting a manual problem.
+  &::before {
+    content: open-quote;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+
+.app__quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.app__quote-avatar {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--surface-muted);
+}
+
+.app__quote-avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.app__quote-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.app__quote-name {
+  font-weight: var(--weight-bold);
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.app__quote-name:hover,
+a.app__quote-name:focus-visible {
+  color: var(--text-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+// The load-bearing line: a backend engineer vouching for React only counts if
+// the reader can see the role.
+.app__quote-role {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+// Set quieter than the role: it is a disclaimer that keeps the attribution
+// honest, not part of the endorsement.
+.app__quote-context {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--text-subtle);
+}
