@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import { safeFetch, urlFor } from '@/lib/client'
+import { useSiteSettings } from '@/lib/useSiteSettings'
 import { QuoteCard } from '@/components'
 import { AppWrap, MotionWrap } from '@/wrapper'
 import type { Brand, Testimonial as TestimonialDoc } from '@/types/sanity'
@@ -16,6 +17,7 @@ const TESTIMONIALS_QUERY = `*[_type == "testimonials"] | order(sortOrder asc, na
 }`
 
 const Testimonial = () => {
+  const { socials } = useSiteSettings()
   const [brands, setBrands] = useState<Brand[]>([])
   const [testimonials, setTestimonials] = useState<TestimonialDoc[]>([])
   const [expanded, setExpanded] = useState(false)
@@ -36,6 +38,14 @@ const Testimonial = () => {
   useEffect(() => {
     if (expanded) firstRevealedRef.current?.focus()
   }, [expanded])
+
+  // Derived from the profile already configured in site settings rather than
+  // written out here. A hand-typed profile URL is one typo away from sending a
+  // recruiter to a different person with the same name.
+  const linkedInProfile = socials?.find((social) => social.platform === 'linkedin')?.url
+  const recommendationsUrl = linkedInProfile
+    ? `${linkedInProfile.replace(/\/+$/, '')}/details/recommendations/`
+    : undefined
 
   return (
     <>
@@ -71,14 +81,16 @@ const Testimonial = () => {
         {/* Every quote here is clipped, so the unabridged versions need an
             address. LinkedIn gives recommendations no individual URL, only this
             one tab, which is why the link is section-level rather than per card. */}
-        <a
-          className='app__testimonial-source'
-          href='https://www.linkedin.com/in/miguelvilhena/details/recommendations/'
-          target='_blank'
-          rel='noreferrer'
-        >
-          Read them in full on LinkedIn
-        </a>
+        {recommendationsUrl && (
+          <a
+            className='app__testimonial-source'
+            href={recommendationsUrl}
+            target='_blank'
+            rel='noreferrer'
+          >
+            Read them in full on LinkedIn
+          </a>
+        )}
       </div>
 
       {/* The old heading claimed these were customers. They were not - they were

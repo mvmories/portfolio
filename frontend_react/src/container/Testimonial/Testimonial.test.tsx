@@ -155,11 +155,18 @@ describe('Testimonial', () => {
 
   // Every quote on the page is clipped, so the unabridged versions need an
   // address. LinkedIn gives recommendations no per-quote URL, only this tab.
-  it('links out to the full recommendations', async () => {
+  //
+  // The exact profile is asserted on purpose. A hand-typed LinkedIn URL once
+  // shipped pointing at a different Miguel Vilhena, which sends a recruiter to
+  // a stranger's profile. It is derived from site settings now, and pinned here.
+  it('links out to the real profile, not a guessed one', async () => {
     render(<Testimonial />)
 
     const link = await screen.findByRole('link', { name: /Read them in full on LinkedIn/ })
-    expect(link).toHaveAttribute('href', expect.stringContaining('recommendations'))
+    expect(link).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/miguel-vilhena-215aa590/details/recommendations/',
+    )
   })
 
   // Recommendations arrive without a photo more often than not.
