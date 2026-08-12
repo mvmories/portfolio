@@ -27,18 +27,22 @@ const Work = () => {
       <div className='app__work-portfolio'>
         {works.map((work) => (
           <article className='app__work-item' key={work._id}>
+            {/* Sanity crops to the ratio it is asked for, honouring the crop
+                and hotspot set in the Studio, so it is asked for the ratio of
+                the box the image lands in. Cropping again in CSS would ignore
+                the hotspot and pick its own edge. */}
             <div className='app__work-media'>
               <img
                 src={urlFor(work.imgUrl)
-                  .width(1200)
-                  .height(900)
+                  .width(960)
+                  .height(540)
                   .fit('crop')
                   .auto('format')
-                  .quality(80)
+                  .quality(85)
                   .url()}
                 alt={work.title}
-                width={600}
-                height={450}
+                width={960}
+                height={540}
                 loading='lazy'
                 decoding='async'
               />

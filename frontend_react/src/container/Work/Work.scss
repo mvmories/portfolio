@@ -46,37 +46,22 @@ p.app__work-note {
     box-shadow: var(--shadow-lg);
   }
 
-  // A lone card in a multi-column grid reads as two siblings that failed to
-  // load, so the only project stretches and turns side-on instead.
+  // One project should look like a deliberate single card, not a stretched
+  // one. Going full width forces a very tall crop of the project image and
+  // leaves the text column half empty.
   &:only-child {
     grid-column: 1 / -1;
-
-    @media screen and (min-width: 900px) {
-      flex-direction: row;
-      align-items: stretch;
-
-      // A wider ratio than the stacked card: side by side, 16/10 makes the
-      // image tall enough to leave the text column half empty.
-      .app__work-media {
-        width: 52%;
-        aspect-ratio: 3 / 2;
-        border-bottom: 0;
-        border-right: 1px solid var(--border);
-      }
-
-      .app__work-body {
-        width: 48%;
-        justify-content: center;
-        padding: 2.5rem;
-      }
-    }
+    max-width: 620px;
+    margin: 0 auto;
   }
 }
 
 .app__work-media {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  // Matched to how project images actually arrive: a 16/9 shot of a site or a
+  // brand plate. A squarer box would crop the sides off both.
+  aspect-ratio: 16 / 9;
   background-color: var(--surface-muted);
   border-bottom: 1px solid var(--border);
 
@@ -84,10 +69,9 @@ p.app__work-note {
     width: 100%;
     height: 100%;
     display: block;
+    // Sanity has already cropped to this box's ratio, using the hotspot set in
+    // the Studio, so there is nothing left for CSS to decide.
     object-fit: cover;
-    // Project shots are website screenshots, and the interesting part of a
-    // website is the top of it.
-    object-position: top center;
     transition: transform 0.5s ease;
   }
 }
