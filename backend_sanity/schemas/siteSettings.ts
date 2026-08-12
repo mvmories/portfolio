@@ -12,6 +12,7 @@ export default {
   groups: [
     { name: 'hero', title: 'Hero', default: true },
     { name: 'cv', title: 'CV' },
+    { name: 'work', title: 'Work' },
     { name: 'socials', title: 'Social links' },
   ],
   fields: [
@@ -40,6 +41,16 @@ export default {
       group: 'hero',
       description: 'Defaults to "Open to new opportunities" when empty.',
       validation: (Rule: SanityRule) => Rule.max(48),
+    },
+    {
+      name: 'workNote',
+      title: 'Note under the Work heading',
+      type: 'text',
+      rows: 2,
+      group: 'work',
+      description:
+        'Sets expectations before the reader counts the projects. Leave empty to use the built-in default.',
+      validation: (Rule: SanityRule) => Rule.max(200),
     },
     {
       name: 'cvEnabled',

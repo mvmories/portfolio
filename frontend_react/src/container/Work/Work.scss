@@ -4,92 +4,76 @@
   flex-direction: column;
 }
 
-.app__work-filter {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-
-  margin: 4rem 0 2rem;
-
-  .app__work-filter-item {
-    padding: 0.5rem 1rem;
-    border: 0;
-    border-radius: 0.5rem;
-    background-color: var(--surface-raised);
-    color: var(--text);
-    font-weight: var(--weight-bold);
-    font-family: inherit;
-
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 0.5rem;
-
-    &:hover {
-      background-color: var(--surface-brand);
-      color: var(--text-on-brand);
-    }
-
-    @media screen and (min-width: 2000px) {
-      padding: 1rem 2rem;
-      border-radius: 0.85rem;
-    }
-  }
-
-  .item-active {
-    background-color: var(--surface-brand);
-    color: var(--text-on-brand);
-  }
+// Sets expectations before the reader counts the cards: most of the work is
+// under NDA, so a short list is the honest state of things rather than a gap.
+p.app__work-note {
+  max-width: 46ch;
+  margin: 1.25rem auto 0;
+  text-align: center;
+  color: var(--text-muted);
 }
 
 .app__work-portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  align-items: start;
+
+  width: 100%;
+  max-width: 1100px;
+  margin: 3rem auto 0;
+}
+
+.app__work-item {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 
-  .app__work-item {
-    width: 270px;
-    flex-direction: column;
+  border-radius: 0.75rem;
+  background-color: var(--surface-raised);
+  color: var(--text);
+  overflow: hidden;
 
-    margin: 2rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: var(--surface-raised);
-    color: var(--text);
+  transition: box-shadow 0.3s ease;
 
-    cursor: pointer;
-    transition: all 0.3s ease;
+  &:hover {
+    box-shadow: var(--shadow-lg);
+  }
 
-    &:hover {
-      box-shadow: var(--shadow-lg);
-    }
+  // A lone card in a multi-column grid reads as two siblings that failed to
+  // load, so the only project stretches and turns side-on instead.
+  &:only-child {
+    grid-column: 1 / -1;
 
-    @media screen and (min-width: 2000px) {
-      width: 470px;
-      padding: 1.25rem;
-      border-radius: 0.75rem;
-    }
+    @media screen and (min-width: 900px) {
+      flex-direction: row;
 
-    @media screen and (max-width: 300px) {
-      width: 100%;
-      margin: 1rem;
+      .app__work-img {
+        width: 55%;
+        height: auto;
+        min-height: 320px;
+      }
+
+      .app__work-content {
+        width: 45%;
+        justify-content: center;
+        padding: 2rem;
+      }
     }
   }
 }
 
 .app__work-img {
+  position: relative;
   width: 100%;
   height: 230px;
-
-  position: relative;
+  overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
-    border-radius: 0.5rem;
     object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
   }
 
   @media screen and (min-width: 2000px) {
@@ -99,58 +83,108 @@
 
 .app__work-hover {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
   background-color: var(--scrim);
 
-  border-radius: 0.5rem;
-  opacity: 0;
-  transition: all 0.3s ease;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  div {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: var(--surface-brand);
     color: var(--text-on-brand);
 
-    margin: 1rem;
-    font-family: var(--font-base);
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
 
     svg {
       width: 50%;
       height: 50%;
       color: var(--text-on-brand);
     }
+
+    &:hover {
+      transform: scale(0.9);
+    }
+  }
+}
+
+// Touch devices have no hover state to reveal anything, so the actions stay
+// visible there and only pointer devices get the reveal.
+@media (hover: hover) and (pointer: fine) {
+  .app__work-hover {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    a {
+      transform: translateY(0.75rem);
+    }
+  }
+
+  .app__work-item:hover,
+  .app__work-item:focus-within {
+    .app__work-hover {
+      opacity: 1;
+
+      a {
+        transform: translateY(0);
+      }
+    }
+
+    .app__work-img img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__work-img img,
+  .app__work-hover,
+  .app__work-hover a {
+    transition: none;
+  }
+
+  .app__work-item:hover .app__work-img img {
+    transform: none;
   }
 }
 
 .app__work-content {
-  padding: 0.5rem;
-  width: 100%;
-  position: relative;
+  display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 1.25rem;
 
   h4 {
-    margin-top: 1rem;
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
-  .app__work-tag {
-    position: absolute;
-
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    background-color: var(--surface-raised);
-    top: -25px;
+  .p-text {
+    margin-top: 0.5rem;
   }
+}
+
+// The line that answers "so what?". Louder than the description on purpose:
+// it is the only part of a card that reports a result.
+.app__work-outcome {
+  margin-top: 0.75rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-brand);
+  line-height: 1.5;
+}
+
+.app__work-rounded-tags {
+  margin-top: 1rem;
 }
 
 .app__work-tag-rounded {

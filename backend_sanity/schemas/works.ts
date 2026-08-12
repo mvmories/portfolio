@@ -15,6 +15,14 @@ export default {
       type: 'string',
     },
     {
+      name: 'outcome',
+      title: 'Outcome',
+      type: 'string',
+      description:
+        'One line on what the project achieved for whoever paid for it, not what it was built with. A screenshot and a tech list is not a portfolio entry.',
+      validation: (Rule: SanityRule) => Rule.max(120),
+    },
+    {
       name: 'projectLink',
       title: 'Project Link',
       type: 'string',
@@ -46,4 +54,8 @@ export default {
       ],
     },
   ],
+}
+
+interface SanityRule {
+  max: (length: number) => SanityRule
 }

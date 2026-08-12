@@ -12,13 +12,20 @@ import type { SiteSettings, SocialLink } from '@/types/sanity'
 export const FALLBACK_SETTINGS: Required<
   Pick<
     SiteSettings,
-    'heroTagline' | 'availabilityEnabled' | 'availabilityText' | 'cvEnabled' | 'cvUrl' | 'socials'
+    | 'heroTagline'
+    | 'availabilityEnabled'
+    | 'availabilityText'
+    | 'cvEnabled'
+    | 'cvUrl'
+    | 'workNote'
+    | 'socials'
   >
 > = {
   heroTagline: 'I take products from a blank page to 30 countries.',
   availabilityEnabled: true,
   availabilityText: 'Open to new opportunities',
   cvEnabled: true,
+  workNote: 'Most of my work is covered by NDA. This is the part I can show — more as it ships.',
   cvUrl: 'https://drive.google.com/file/d/1UzYCsJGdeNB5LJ3TGRXbz9GtKPrSzdee/view?usp=share_link',
   socials: [
     { platform: 'linkedin', url: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/' },
@@ -30,7 +37,7 @@ export const FALLBACK_SETTINGS: Required<
 // is needed and a stray second document could never be picked up by mistake.
 const QUERY = `*[_id == "siteSettings"][0]{
   heroTagline, availabilityEnabled, availabilityText,
-  cvEnabled, cvUrl, cvLabel, cvUpdatedAt, socials
+  cvEnabled, cvUrl, cvLabel, cvUpdatedAt, workNote, socials
 }`
 
 export function useSiteSettings(): SiteSettings {
@@ -54,6 +61,7 @@ export function useSiteSettings(): SiteSettings {
         cvUrl: data.cvUrl || FALLBACK_SETTINGS.cvUrl,
         cvLabel: data.cvLabel,
         cvUpdatedAt: data.cvUpdatedAt,
+        workNote: data.workNote?.trim() || FALLBACK_SETTINGS.workNote,
         socials: data.socials?.length ? data.socials : FALLBACK_SETTINGS.socials,
       })
     })

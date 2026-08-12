@@ -36,6 +36,8 @@ export interface Work extends SanityDocument {
   _type: 'works'
   title: string
   description: string
+  /** One line reporting what the project achieved, not what it was built with. */
+  outcome?: string
   projectLink?: string
   codeLink?: string
   imgUrl: SanityImage
@@ -116,6 +118,8 @@ export interface SiteSettings {
   cvUrl?: string
   cvLabel?: string
   cvUpdatedAt?: string
+  /** Short note under the Work heading explaining why the list is short. */
+  workNote?: string
   socials?: SocialLink[]
 }
 
