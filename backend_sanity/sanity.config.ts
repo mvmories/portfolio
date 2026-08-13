@@ -1,6 +1,7 @@
 import {defineConfig} from 'sanity'
-import {deskTool} from 'sanity/desk'
+import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {schemaTypes} from './schemas'
 
 /**
@@ -10,6 +11,11 @@ import {schemaTypes} from './schemas'
  */
 const SINGLETONS = ['siteSettings', 'aboutSection']
 
+// Types listed here are reordered by dragging rather than by a number field, so
+// they get their own desk item and are removed from the generic list to avoid
+// two entries that order differently.
+const ORDERABLE = ['testimonials']
+
 export default defineConfig({
   name: 'default',
   title: 'mvmories_portfolio',
@@ -18,8 +24,8 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    deskTool({
-      structure: (S) =>
+    structureTool({
+      structure: (S, context) =>
         S.list()
           .title('Content')
           .items([
@@ -42,7 +48,16 @@ export default defineConfig({
                   .title('About section'),
               ),
             S.divider(),
-            ...S.documentTypeListItems().filter((item) => !SINGLETONS.includes(item.getId() ?? '')),
+            orderableDocumentListDeskItem({
+              type: 'testimonials',
+              title: 'Testimonials',
+              S,
+              context,
+            }),
+            ...S.documentTypeListItems().filter(
+              (item) =>
+                !SINGLETONS.includes(item.getId() ?? '') && !ORDERABLE.includes(item.getId() ?? ''),
+            ),
           ]),
     }),
     visionTool(),

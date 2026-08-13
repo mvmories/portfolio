@@ -1,3 +1,5 @@
+import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
+
 interface SanityRule {
   required: () => SanityRule
   max: (n: number) => SanityRule
@@ -74,24 +76,11 @@ export default {
       description:
         'Featured quotes show immediately; the rest sit behind "Read all recommendations". Keep this to about six, chosen for what they say about the work and for a spread of companies.',
     },
-    {
-      name: 'sortOrder',
-      title: 'Sort order',
-      type: 'number',
-      description:
-        'Lower shows first. Lead with the quotes that talk about the work rather than the personality.',
-    },
+    // Drag and drop under Testimonials in the desk writes this. Hand-numbering
+    // meant every new recommendation forced a renumber of everything below it.
+    orderRankField({ type: 'testimonials' }),
   ],
-  orderings: [
-    {
-      title: 'Display order',
-      name: 'displayOrder',
-      by: [
-        { field: 'sortOrder', direction: 'asc' },
-        { field: 'name', direction: 'asc' },
-      ],
-    },
-  ],
+  orderings: [orderRankOrdering],
   preview: {
     select: {
       title: 'name',

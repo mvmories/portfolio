@@ -88,6 +88,7 @@ export interface Testimonial extends SanityDocument {
   linkedInUrl?: string
   featured?: boolean
   sortOrder?: number
+  orderRank?: string
 }
 
 export interface Brand extends SanityDocument {

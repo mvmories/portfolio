@@ -12,9 +12,12 @@ import './Testimonial.scss'
 // record; this only stops an unflagged dataset from dumping everything at once.
 const FALLBACK_FEATURED_COUNT = 6
 
-const TESTIMONIALS_QUERY = `*[_type == "testimonials"] | order(sortOrder asc, name asc) {
+// orderRank is written by drag and drop in the Studio. sortOrder is the previous
+// hand-numbered field, kept only as a tiebreak: it still holds values in the
+// dataset and governs the order until "Reset Order" has seeded every rank.
+const TESTIMONIALS_QUERY = `*[_type == "testimonials"] | order(orderRank asc, sortOrder asc, name asc) {
   _id, _type, name, company, role, workedTogetherAt, feedback, imgurl, linkedInUrl,
-  featured, sortOrder
+  featured, sortOrder, orderRank
 }`
 
 const Testimonial = () => {

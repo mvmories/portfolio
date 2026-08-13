@@ -79,7 +79,7 @@ describe('Testimonial', () => {
 
     await screen.findByText(/Marcos Miani said something/)
     const query = safeFetch.mock.calls.map((call) => String(call[0])).find((q) => q.includes('testimonials')) ?? ''
-    for (const field of ['name', 'role', 'company', 'workedTogetherAt', 'feedback', 'imgurl', 'linkedInUrl', 'featured', 'sortOrder']) {
+    for (const field of ['name', 'role', 'company', 'workedTogetherAt', 'feedback', 'imgurl', 'linkedInUrl', 'featured', 'orderRank']) {
       expect(query).toContain(field)
     }
   })
