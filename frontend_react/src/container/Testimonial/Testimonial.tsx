@@ -13,7 +13,8 @@ import './Testimonial.scss'
 const FALLBACK_FEATURED_COUNT = 6
 
 const TESTIMONIALS_QUERY = `*[_type == "testimonials"] | order(sortOrder asc, name asc) {
-  _id, _type, name, company, role, feedback, imgurl, linkedInUrl, featured, sortOrder
+  _id, _type, name, company, role, workedTogetherAt, feedback, imgurl, linkedInUrl,
+  featured, sortOrder
 }`
 
 const Testimonial = () => {

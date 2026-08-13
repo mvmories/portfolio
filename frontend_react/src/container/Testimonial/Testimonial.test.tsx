@@ -49,7 +49,7 @@ const FEATURED = [
   quote({ name: 'Aleksandr Morozov', featured: true }),
 ]
 
-const REST = [quote({ name: 'Kirill Poddubnyi' }), quote({ name: 'Yuliia Andrieieva' })]
+const REST = [quote({ name: 'Kyrylo Piddubnyi' }), quote({ name: 'Yuliia Andrieieva' })]
 
 const mockData = (testimonials: TestimonialDoc[]) => {
   safeFetch.mockImplementation((query: string) =>
@@ -70,6 +70,20 @@ describe('Testimonial', () => {
     expect(screen.getByText(/Aleksandr Morozov said something/)).toBeInTheDocument()
   })
 
+  // The projection once omitted workedTogetherAt, so every quote from someone
+  // who had since changed employer silently claimed Miguel worked at their new
+  // company. Component tests pass props directly and cannot catch that, so the
+  // query itself has to be asserted.
+  it('asks Sanity for every field the card renders', async () => {
+    render(<Testimonial />)
+
+    await screen.findByText(/Marcos Miani said something/)
+    const query = safeFetch.mock.calls.map((call) => String(call[0])).find((q) => q.includes('testimonials')) ?? ''
+    for (const field of ['name', 'role', 'company', 'workedTogetherAt', 'feedback', 'imgurl', 'linkedInUrl', 'featured', 'sortOrder']) {
+      expect(query).toContain(field)
+    }
+  })
+
   // The section used to be a one-at-a-time slider, so a visitor who never
   // pressed an arrow concluded there was a single recommendation.
   it('renders no slider controls', async () => {
@@ -84,7 +98,7 @@ describe('Testimonial', () => {
     render(<Testimonial />)
 
     await screen.findByText(/Marcos Miani said something/)
-    expect(screen.queryByText(/Kirill Poddubnyi said something/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Kyrylo Piddubnyi said something/)).not.toBeInTheDocument()
   })
 
   // The count is a claim in its own right, so it has to come from the data.
@@ -94,7 +108,7 @@ describe('Testimonial', () => {
     const button = await screen.findByRole('button', { name: 'Read all 4 recommendations' })
     await userEvent.click(button)
 
-    expect(screen.getByText(/Kirill Poddubnyi said something/)).toBeInTheDocument()
+    expect(screen.getByText(/Kyrylo Piddubnyi said something/)).toBeInTheDocument()
     expect(screen.getByText(/Yuliia Andrieieva said something/)).toBeInTheDocument()
     await waitFor(() => expect(button).not.toBeInTheDocument())
   })
@@ -104,7 +118,7 @@ describe('Testimonial', () => {
 
     await userEvent.click(await screen.findByRole('button', { name: /Read all/ }))
 
-    const revealed = screen.getByText(/Kirill Poddubnyi said something/).closest('li')
+    const revealed = screen.getByText(/Kyrylo Piddubnyi said something/).closest('li')
     await waitFor(() => expect(revealed).toHaveFocus())
   })
 
@@ -181,7 +195,7 @@ describe('Testimonial', () => {
     mockData(REST)
     render(<Testimonial />)
 
-    expect(await screen.findByText(/Kirill Poddubnyi said something/)).toBeInTheDocument()
+    expect(await screen.findByText(/Kyrylo Piddubnyi said something/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /Read all/ })).not.toBeInTheDocument()
   })
 })
