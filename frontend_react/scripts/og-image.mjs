@@ -18,12 +18,14 @@
  * Override the browser with CHROME=/path/to/chrome if the default is wrong.
  */
 
-import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises'
+import {mkdtemp, readFile, rm, stat, writeFile} from 'node:fs/promises'
 import {execFile} from 'node:child_process'
 import {tmpdir} from 'node:os'
 import path from 'node:path'
 import {promisify} from 'node:util'
 import {fileURLToPath} from 'node:url'
+
+import sharp from 'sharp'
 
 const run = promisify(execFile)
 const root = path.dirname(fileURLToPath(import.meta.url))
@@ -95,6 +97,7 @@ const card = async () => {
 const out = path.join(pkg, 'public', 'og.png')
 const dir = await mkdtemp(path.join(tmpdir(), 'og-'))
 const html = path.join(dir, 'card.html')
+const shot = path.join(dir, 'shot.png')
 
 await writeFile(html, await card())
 await run(CHROME, [
@@ -103,11 +106,17 @@ await run(CHROME, [
   '--hide-scrollbars',
   '--force-device-scale-factor=1',
   `--window-size=${WIDTH},${HEIGHT}`,
-  `--screenshot=${out}`,
+  `--screenshot=${shot}`,
   '--virtual-time-budget=4000',
   `file://${html}`,
 ])
+
+// Chrome writes a quickly-encoded PNG, roughly three times larger than the same
+// pixels properly compressed. It stays a PNG rather than becoming a JPEG so the
+// flat background and the type stay free of ringing artefacts.
+await sharp(shot).png({compressionLevel: 9, effort: 10}).toFile(out)
 await rm(dir, {recursive: true, force: true})
 
-console.log(`wrote ${path.relative(pkg, out)}`)
+const kb = Math.round((await stat(out)).size / 1024)
+console.log(`wrote ${path.relative(pkg, out)} (${kb} kB)`)
 console.log(`tagline: ${TAGLINE}`)
