@@ -52,10 +52,15 @@
   }
 }
 
+// Cards sit in a grid row, so the author blocks have to start at the same
+// height or the names go ragged. Only some cards carry the third line, and
+// centring lets that line push the name upwards, so the block is top-aligned
+// and reserves the space whether or not the line is there.
 .app__quote-author {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.875rem;
+  min-height: 5.75rem;
 }
 
 .app__quote-avatar {
