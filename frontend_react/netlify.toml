@@ -16,9 +16,10 @@
   NODE_VERSION = "22"
 
   # Netlify's secrets scanner flags any environment-variable *value* it finds in
-  # the build output. These three are deliberately public — the contact address
-  # is a mailto: link in the footer, the from address appears in every email
-  # sent, and the site URL is the site itself — so their presence is expected.
+  # the build output. These three are deliberately public: the contact address
+  # is where the form delivers, the from address appears in every email sent,
+  # and the site URL is the site itself, so their presence is expected. The
+  # contact address is no longer rendered anywhere on the page; see P3-G.
   #
   # Scoped to keys rather than paths on purpose: SECRETS_SCAN_OMIT_PATHS would
   # blind the scanner to entire files, and disabling it outright would stop it
@@ -59,5 +60,13 @@
 # free on repeat visits, short enough that replacing the photo is not permanent.
 [[headers]]
   for = "/hero/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# The social card is fetched by link unfurlers, which cache aggressively and by
+# URL. A day of caching keeps repeat scrapes cheap without making a corrected
+# card permanently stuck in Slack and WhatsApp previews.
+[[headers]]
+  for = "/og.png"
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"

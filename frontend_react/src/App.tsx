@@ -23,8 +23,7 @@ const App = () => (
     </main>
 
     <footer className='copyright'>
-      <p className='p-text'>@{new Date().getFullYear()} Miguel Vilhena</p>
-      <p className='p-text'>All rights reserved</p>
+      <p className='p-text'>&copy; {new Date().getFullYear()} Miguel Vilhena. All rights reserved.</p>
     </footer>
   </div>
 )

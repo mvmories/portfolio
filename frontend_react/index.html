@@ -48,8 +48,88 @@
       fetchpriority="high"
     />
 
-    <title>Miguel Vilhena</title>
-    <meta name="description" content="Portfolio of Miguel Vilhena — Software Engineer & Entrepreneur." />
+    <title>Miguel Vilhena | Frontend engineer building product platforms at scale</title>
+    <meta
+      name="description"
+      content="Frontend engineer, fullstack when it counts. I took an IKEA rewards platform from one country to thirty, for 157 million members, and I build with AI daily. Open to permanent roles and freelance work."
+    />
+    <link rel="canonical" href="https://miguelvilhena.com/" />
+
+    <!--
+      Written statically rather than through a Helmet-style runtime.
+      Link unfurlers on LinkedIn, WhatsApp and Slack read the HTML as served and
+      do not execute JavaScript, so meta tags rendered by React are invisible to
+      exactly the audience this section exists for. Driving these from Sanity
+      would look tidier in the codebase and would not work.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://miguelvilhena.com/" />
+    <meta property="og:site_name" content="Miguel Vilhena" />
+    <meta property="og:title" content="Miguel Vilhena | Frontend engineer building product platforms at scale" />
+    <meta
+      property="og:description"
+      content="I take products from a blank page to 30 countries. Frontend engineer, fullstack when it counts, deep in AI."
+    />
+    <meta property="og:image" content="https://miguelvilhena.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Miguel Vilhena, frontend engineer. I take products from a blank page to 30 countries."
+    />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Miguel Vilhena | Frontend engineer building product platforms at scale" />
+    <meta
+      name="twitter:description"
+      content="I take products from a blank page to 30 countries. Frontend engineer, fullstack when it counts, deep in AI."
+    />
+    <meta name="twitter:image" content="https://miguelvilhena.com/og.png" />
+
+    <!--
+      Person and WebSite, so a search result can carry the job title and the
+      social profiles rather than a bare link. The LinkedIn URL is duplicated
+      from `useSiteSettings.ts`; if it ever changes, change it in both places.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://miguelvilhena.com/#miguel",
+            "name": "Miguel Vilhena",
+            "url": "https://miguelvilhena.com/",
+            "image": "https://miguelvilhena.com/hero/portrait-840.png",
+            "jobTitle": "Frontend Engineer",
+            "description": "Frontend engineer, fullstack when it counts, who builds product platforms at scale and works deeply with AI.",
+            "knowsAbout": [
+              "Frontend engineering",
+              "React",
+              "TypeScript",
+              "Node.js",
+              "Design systems",
+              "Web performance",
+              "Google Cloud Platform",
+              "Artificial intelligence"
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/miguel-vilhena-215aa590/",
+              "https://github.com/mvmories"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://miguelvilhena.com/#website",
+            "url": "https://miguelvilhena.com/",
+            "name": "Miguel Vilhena",
+            "inLanguage": "en-GB",
+            "publisher": { "@id": "https://miguelvilhena.com/#miguel" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
