@@ -97,35 +97,3 @@
   }
 }
 
-.app__testimonial-brands {
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
-}
-
-.app__testimonial-brands > div {
-  width: 200px;
-  margin: 0.5rem;
-
-  img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    filter: grayscale(1);
-  }
-
-  &:hover {
-    img {
-      filter: grayscale(0);
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    width: 150px;
-  }
-}

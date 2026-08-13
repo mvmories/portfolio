@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 
-import { safeFetch, urlFor } from '@/lib/client'
+import { safeFetch } from '@/lib/client'
 import { useSiteSettings } from '@/lib/useSiteSettings'
 import { QuoteCard } from '@/components'
 import { AppWrap, MotionWrap } from '@/wrapper'
-import type { Brand, Testimonial as TestimonialDoc } from '@/types/sanity'
+import type { Testimonial as TestimonialDoc } from '@/types/sanity'
 import './Testimonial.scss'
 
 // How many show when nothing is flagged in the Studio. Sanity is the editor of
@@ -22,14 +21,12 @@ const TESTIMONIALS_QUERY = `*[_type == "testimonials"] | order(orderRank asc, so
 
 const Testimonial = () => {
   const { socials } = useSiteSettings()
-  const [brands, setBrands] = useState<Brand[]>([])
   const [testimonials, setTestimonials] = useState<TestimonialDoc[]>([])
   const [expanded, setExpanded] = useState(false)
   const firstRevealedRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
     safeFetch<TestimonialDoc[]>(TESTIMONIALS_QUERY, []).then(setTestimonials)
-    safeFetch<Brand[]>('*[_type == "brands"]', []).then(setBrands)
   }, [])
 
   const flagged = testimonials.filter((item) => item.featured)
@@ -95,30 +92,6 @@ const Testimonial = () => {
             Read them in full on LinkedIn
           </a>
         )}
-      </div>
-
-      {/* The old heading claimed these were customers. They were not - they were
-          employers, or clients of employers. P3-F curates the logos; the claim is
-          corrected here because a false one costs more than an ugly one. */}
-      <h3 className='p-text' style={{ marginTop: '4rem', fontSize: '1.2rem' }}>
-        Where I&apos;ve done it
-      </h3>
-
-      <div className='app__testimonial-brands app__flex'>
-        {brands.map((brand) => (
-          <motion.div
-            whileInView={{ opacity: [0, 1] }}
-            transition={{ duration: 0.5, type: 'tween' }}
-            key={brand._id}
-          >
-            <img
-              src={urlFor(brand.imgUrl).width(300).auto('format').quality(80).url()}
-              alt={brand.name}
-              loading='lazy'
-              decoding='async'
-            />
-          </motion.div>
-        ))}
       </div>
     </>
   )

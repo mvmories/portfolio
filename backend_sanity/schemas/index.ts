@@ -1,6 +1,5 @@
 import testimonials from './testimonials'
 import works from './works'
-import brands from './brands'
 import aboutSection from './aboutSection'
 import skills from './skills'
 import experience from './experience'
@@ -12,7 +11,6 @@ export const schemaTypes = [
   aboutSection,
   works,
   testimonials,
-  brands,
   skills,
   experience,
   contact,

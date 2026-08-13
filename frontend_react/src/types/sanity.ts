@@ -91,12 +91,6 @@ export interface Testimonial extends SanityDocument {
   orderRank?: string
 }
 
-export interface Brand extends SanityDocument {
-  _type: 'brands'
-  name: string
-  imgUrl: SanityImage
-}
-
 export interface ContactSubmission {
   _type: 'contact'
   name: string
