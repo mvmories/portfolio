@@ -6,8 +6,6 @@
  * Skill / brand / project imagery is served from Sanity's CDN instead.
  */
 
-import email from '../assets/email.png'
-import mobile from '../assets/mobile.png'
 import circle from '../assets/circle.svg'
 import logo from '../assets/logo.svg'
 
@@ -16,8 +14,6 @@ import react from '../assets/react.png'
 import typescript from '../assets/typescript.png'
 
 export default {
-  email,
-  mobile,
   circle,
   logo,
   node,

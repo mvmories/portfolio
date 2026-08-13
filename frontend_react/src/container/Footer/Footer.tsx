@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 
-import { images } from '@/constants'
+import { useSiteSettings } from '@/lib/useSiteSettings'
 import { AppWrap, MotionWrap } from '@/wrapper'
 import './Footer.scss'
 
@@ -9,6 +9,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
 const INITIAL = { name: '', email: '', message: '', website: '' }
 
 const Footer = () => {
+  const { contactNote, calUrl } = useSiteSettings()
   const [formData, setFormData] = useState(INITIAL)
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState<string | null>(null)
@@ -64,20 +65,11 @@ const Footer = () => {
         Tell me what you&apos;re <span>building</span>
       </h2>
 
-      <div className='app__footer-cards'>
-        <div className='app__footer-card'>
-          <img src={images.email} alt='' aria-hidden='true' width={40} height={40} loading='lazy' />
-          <a href='mailto:mvmories@gmail.com' className='p-text'>
-            mvmories@gmail.com
-          </a>
-        </div>
-        <div className='app__footer-card'>
-          <img src={images.mobile} alt='' aria-hidden='true' width={40} height={40} loading='lazy' />
-          <a href='tel:+31619433454' className='p-text'>
-            +31 (0) 619 433 454
-          </a>
-        </div>
-      </div>
+      {/* The address and phone number used to sit here as cards. They repeated
+          the form standing next to them and published two identifiers that
+          cannot be unpublished once harvested. The number is in the CV, which
+          is where someone who genuinely wants to call will already be. */}
+      {contactNote && <p className='app__footer-note p-text'>{contactNote}</p>}
 
       {status !== 'sent' ? (
         <form className='app__footer-form app__flex' onSubmit={handleSubmit} noValidate={false}>
@@ -146,9 +138,20 @@ const Footer = () => {
             />
           </div>
 
-          <button type='submit' className='p-text' disabled={isSending}>
-            {isSending ? 'Sending…' : 'Send Message'}
-          </button>
+          <div className='app__footer-actions'>
+            <button type='submit' className='p-text' disabled={isSending}>
+              {isSending ? 'Sending…' : 'Send message'}
+            </button>
+
+            {/* Secondary on purpose: some people would rather talk than write,
+                but offering a calendar first invites a meeting before there is
+                anything to meet about. */}
+            {calUrl && (
+              <a className='app__footer-book' href={calUrl} target='_blank' rel='noreferrer'>
+                Or book 20 minutes
+              </a>
+            )}
+          </div>
 
           <p className='app__footer-status p-text' role='status' aria-live='polite'>
             {error}

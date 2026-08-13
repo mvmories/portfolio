@@ -18,6 +18,7 @@ export const FALLBACK_SETTINGS: Required<
     | 'cvEnabled'
     | 'cvUrl'
     | 'workNote'
+    | 'contactNote'
     | 'socials'
   >
 > = {
@@ -26,6 +27,8 @@ export const FALLBACK_SETTINGS: Required<
   availabilityText: 'Open to new opportunities',
   cvEnabled: true,
   workNote: 'Most of my work is covered by NDA. This is the part I can show, more as it ships.',
+  contactNote:
+    "Open to permanent roles, and to freelance or advisory work alongside one. I read every message myself, and I'll tell you straight if I'm not the right fit.",
   cvUrl: 'https://drive.google.com/file/d/1UzYCsJGdeNB5LJ3TGRXbz9GtKPrSzdee/view?usp=share_link',
   socials: [
     { platform: 'linkedin', url: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/' },
@@ -37,7 +40,7 @@ export const FALLBACK_SETTINGS: Required<
 // is needed and a stray second document could never be picked up by mistake.
 const QUERY = `*[_id == "siteSettings"][0]{
   heroTagline, availabilityEnabled, availabilityText,
-  cvEnabled, cvUrl, cvLabel, cvUpdatedAt, workNote, socials
+  cvEnabled, cvUrl, cvLabel, cvUpdatedAt, workNote, contactNote, calUrl, socials
 }`
 
 export function useSiteSettings(): SiteSettings {
@@ -62,6 +65,10 @@ export function useSiteSettings(): SiteSettings {
         cvLabel: data.cvLabel,
         cvUpdatedAt: data.cvUpdatedAt,
         workNote: data.workNote?.trim() || FALLBACK_SETTINGS.workNote,
+        contactNote: data.contactNote?.trim() || FALLBACK_SETTINGS.contactNote,
+        // No fallback: an invented booking link is worse than none, so the
+        // secondary action stays hidden until a real one is published.
+        calUrl: data.calUrl?.trim() || undefined,
         socials: data.socials?.length ? data.socials : FALLBACK_SETTINGS.socials,
       })
     })

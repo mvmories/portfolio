@@ -13,6 +13,7 @@ export default {
     { name: 'hero', title: 'Hero', default: true },
     { name: 'cv', title: 'CV' },
     { name: 'work', title: 'Work' },
+    { name: 'contact', title: 'Contact' },
     { name: 'socials', title: 'Social links' },
   ],
   fields: [
@@ -51,6 +52,25 @@ export default {
       description:
         'Sets expectations before the reader counts the projects. Leave empty to use the built-in default.',
       validation: (Rule: SanityRule) => Rule.max(200),
+    },
+    {
+      name: 'contactNote',
+      title: 'Note under the Contact heading',
+      type: 'text',
+      rows: 3,
+      group: 'contact',
+      description:
+        'What you are open to, in your own words. Leave empty to use the built-in default. Avoid promising a response time you cannot keep every time.',
+      validation: (Rule: SanityRule) => Rule.max(240),
+    },
+    {
+      name: 'calUrl',
+      title: 'Booking link',
+      type: 'url',
+      group: 'contact',
+      description:
+        'A scheduling link, offered next to the form as the secondary action. The link hides itself while this is empty, so an unfinished booking page is never exposed.',
+      validation: (Rule: SanityRule) => Rule.uri({ scheme: ['https'] }),
     },
     {
       name: 'cvEnabled',

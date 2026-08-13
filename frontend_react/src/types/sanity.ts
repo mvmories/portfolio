@@ -119,6 +119,10 @@ export interface SiteSettings {
   cvUpdatedAt?: string
   /** Short note under the Work heading explaining why the list is short. */
   workNote?: string
+  /** Short note under the Contact heading saying what he is open to. */
+  contactNote?: string
+  /** Scheduling link offered beside the form. Hidden while empty. */
+  calUrl?: string
   socials?: SocialLink[]
 }
 
