@@ -66,17 +66,39 @@
     width: 100%;
   }
 
+  // An outlined twin of the submit button rather than a text link. It is the
+  // only place on the page where someone with no time to write can still
+  // convert, so it has to look pressable; the outline keeps it clearly second.
   .app__footer-book {
-    color: var(--text-muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    padding: 1rem 2rem;
     margin-top: 2rem;
     white-space: nowrap;
 
-    &:hover,
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+
+    background-color: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+
     &:focus-visible {
-      color: var(--text-brand);
+      outline: 2px solid var(--text-brand);
+      outline-offset: 3px;
     }
+  }
+
+  // Written flat because `a&:hover` nested in a class block does not compile.
+  a.app__footer-book:hover,
+  a.app__footer-book:focus-visible {
+    color: var(--text-on-brand);
+    background-color: var(--surface-brand);
+    border-color: var(--surface-brand);
   }
 
   button {
