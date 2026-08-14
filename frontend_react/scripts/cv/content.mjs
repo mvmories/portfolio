@@ -45,7 +45,10 @@ export const identity = {
   links: [
     {label: 'mvmories@gmail.com', href: 'mailto:mvmories@gmail.com'},
     {label: 'miguelvilhena.com', href: 'https://miguelvilhena.com'},
-    {label: 'cal.com/miguelvilhena/20min', href: 'https://cal.com/miguelvilhena/20min'},
+    // The only contact link whose domain does not say what it does. The others
+    // are self-describing, and prefixing them all would pad the row without
+    // telling the reader anything.
+    {pre: 'Book a call', label: 'cal.com/miguelvilhena/20min', href: 'https://cal.com/miguelvilhena/20min'},
     {
       label: 'linkedin.com/in/miguel-vilhena-215aa590',
       href: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/',
@@ -71,6 +74,7 @@ and run my own local model infrastructure.`
 export const selectedWork = {
   name: 'PowerByJS',
   href: 'https://miguelvilhena.com/powerbyjs',
+  hrefPre: 'Case study',
   hrefLabel: 'miguelvilhena.com/powerbyjs',
   blurb: `Brand, site and booking flow for a Haarlem strength studio, designed and built
 end to end. Full case study, including the problem, the decisions and the result,

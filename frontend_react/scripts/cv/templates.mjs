@@ -59,17 +59,35 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
   @font-face { font-family: 'Display'; src: url(${fonts.display}) format('woff2-variations'); font-weight: 200 800; }
   @font-face { font-family: 'Base'; src: url(${fonts.base}) format('woff2-variations'); font-weight: 100 1000; }
 
-  @page { size: A4; margin: 13mm 14mm; }
+  @page { size: A4; margin: 11.5mm 13mm; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Base', Arial, sans-serif;
-    font-size: 8.7pt;
-    line-height: 1.42;
+    font-size: 8.4pt;
+    line-height: 1.47;
     color: ${brand.body};
+    orphans: 2; widows: 2;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: ${brand.accent}; text-decoration: none; }
+  a { color: ${brand.accent}; }
+  /* Every link in this document is a real PDF link annotation, but rendered
+     without an underline they read as coloured text and nobody tries clicking
+     them. A hairline underline in the soft accent is the affordance; it is set
+     below the baseline and thinner than the type so it does not fight the
+     letterforms at 8pt.
+
+     The URLs themselves stay visible rather than being replaced by words like
+     "LinkedIn". Most applicant tracking systems parse the text they can see and
+     ignore the anchor, so an aliased link loses the address entirely, and on
+     paper it is dead. */
+  a {
+    text-decoration: underline;
+    text-decoration-color: ${brand.accentSoft};
+    text-decoration-thickness: 0.4pt;
+    text-underline-offset: 1.6pt;
+  }
+  .pre { color: ${brand.muted}; }
 
   /* ---- header ------------------------------------------------------ */
   .name {
@@ -95,28 +113,33 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
 
   /* ---- summary ----------------------------------------------------- */
   .summary {
-    margin-top: 4mm; font-size: 9.1pt; line-height: 1.5; color: ${brand.ink};
+    margin-top: 5.2mm; font-size: 8.8pt; line-height: 1.55; color: ${brand.ink};
   }
 
   /* ---- sections ---------------------------------------------------- */
-  section { margin-top: 5.4mm; }
+  section { margin-top: 6.8mm; }
   h2 {
     font-family: 'Base', sans-serif; font-size: 7.4pt; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.16em; color: ${brand.accent};
-    padding-bottom: 1.4mm; border-bottom: 1px solid ${brand.rule}; margin-bottom: 2.6mm;
+    padding-bottom: 1.6mm; border-bottom: 1px solid ${brand.rule}; margin-bottom: 3.4mm;
   }
 
   /* ---- roles ------------------------------------------------------- */
-  .role { margin-bottom: 3.4mm; page-break-inside: avoid; break-inside: avoid; }
+  /* Roles are allowed to split across the page break, but never immediately
+     after their own heading, and never leaving a single line stranded. Forbidding
+     the split outright looks tidier in isolation and wastes most of the bottom of
+     a page, which then pushes the document to a third sheet. */
+  .role { margin-bottom: 4.6mm; }
+  .role-head { break-after: avoid; page-break-after: avoid; }
   .role:last-child { margin-bottom: 0; }
   .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; }
   .role-left { display: flex; align-items: baseline; gap: 2.4mm; min-width: 0; }
   .role-right { text-align: right; white-space: nowrap; font-size: 7.7pt; color: ${brand.muted}; }
   .co { font-family: 'Display', sans-serif; font-weight: 800; font-size: 10pt; color: ${brand.ink}; letter-spacing: -0.01em; }
-  .ti { font-size: 8.6pt; color: ${brand.body}; }
+  .ti { font-size: 8.4pt; color: ${brand.body}; }
   .role-right .pl::before { content: '·'; margin: 0 1.4mm; color: ${brand.rule}; }
 
-  .blurb { margin-top: 1mm; }
+  .blurb { margin-top: 1.4mm; }
   /* Coloured via ::marker rather than an absolutely positioned pseudo-element.
      A positioned marker takes the whole list item out of normal flow, and
      Chrome then paints it in a later layer, which puts every bullet at the END
@@ -124,11 +147,11 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
      extraction returned each role's achievements detached from the role, so an
      applicant tracking system would have attributed them to the wrong employer.
      Verified by re-extracting the PDF after this change. */
-  .role ul { list-style: disc; margin-top: 1.4mm; padding-left: 3.6mm; }
-  .role li { margin-bottom: 0.8mm; padding-left: 0.6mm; }
+  .role ul { list-style: disc; margin-top: 1.9mm; padding-left: 3.6mm; }
+  .role li { margin-bottom: 1.3mm; padding-left: 0.6mm; }
   .role li::marker { color: ${brand.accentSoft}; font-size: 0.82em; }
   .tech {
-    margin-top: 1.6mm; font-size: 7.2pt; color: ${brand.muted};
+    margin-top: 2.1mm; font-size: 7.2pt; color: ${brand.muted};
     letter-spacing: 0.012em;
   }
 
@@ -140,16 +163,16 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
   .note { font-size: 7.6pt; color: ${brand.muted}; margin-bottom: 2mm; }
 
   /* ---- ai ---------------------------------------------------------- */
-  .ai p + p { margin-top: 1.6mm; }
+  .ai p + p { margin-top: 2.2mm; }
 
   /* ---- education --------------------------------------------------- */
-  .edu { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; margin-bottom: 1.1mm; }
+  .edu { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; margin-bottom: 1.7mm; }
   .edu:last-of-type { margin-bottom: 0; }
   .edu-left { min-width: 0; }
   .edu .school { font-weight: 700; color: ${brand.ink}; }
   .edu .award::before { content: '·'; margin: 0 1.4mm; color: ${brand.rule}; }
   .edu .dt { white-space: nowrap; font-size: 7.7pt; color: ${brand.muted}; }
-  .edu-note { font-size: 8.4pt; color: ${brand.body}; margin: 0.2mm 0 1.8mm; }
+  .edu-note { font-size: 8.2pt; color: ${brand.body}; margin: 0.2mm 0 1.8mm; }
 
   .langs { color: ${brand.ink}; }
 </style></head>
@@ -162,7 +185,10 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
     <div class="contact">
       <span class="loc">${esc(identity.location)}</span>
       ${identity.links
-        .map((l) => ` <span class="sep">·</span> <a href="${l.href}">${esc(l.label)}</a>`)
+        .map(
+          (l) =>
+            ` <span class="sep">·</span> ${l.pre ? `<span class="pre">${esc(l.pre)}</span> ` : ''}<a href="${l.href}">${esc(l.label)}</a>`,
+        )
         .join('')}
     </div>
   </header>
@@ -173,7 +199,7 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
     <h2>Selected work</h2>
     <div class="work-head">
       <span class="co">${esc(selectedWork.name)}</span>
-      <a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a>
+      <span>${selectedWork.hrefPre ? `<span class="pre">${esc(selectedWork.hrefPre)}</span> ` : ''}<a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a></span>
     </div>
     <p class="blurb">${tidy(selectedWork.blurb)}</p>
   </section>
@@ -243,7 +269,8 @@ export const docHtml = ({identity, summary, selectedWork, experience, ventures, 
   h1 { font-size: 19pt; margin: 0 0 2px; color: ${brand.ink}; }
   .role-line { font-size: 10pt; color: ${brand.accent}; font-weight: bold; margin: 0 0 5px; }
   .contact { font-size: 8.5pt; color: #555; margin: 0 0 11px; line-height: 1.5; }
-  .contact a, a { color: ${brand.accent}; text-decoration: none; }
+  .contact a, a { color: ${brand.accent}; text-decoration: underline; }
+  .pre { color: #666; }
   h2 { font-size: 9.5pt; color: ${brand.accent}; text-transform: uppercase; letter-spacing: 1.1px;
        margin: 13px 0 6px; padding-bottom: 2px; border-bottom: 1px solid ${brand.rule}; }
   .job { margin: 0 0 2px; }
@@ -260,13 +287,16 @@ export const docHtml = ({identity, summary, selectedWork, experience, ventures, 
 <h1>${esc(identity.name)}</h1>
 <p class="role-line">${esc(identity.tagline)}</p>
 <p class="contact">${esc(identity.location)}${dot}${identity.links
-    .map((l) => `<a href="${l.href}">${esc(l.label)}</a>`)
+    .map(
+      (l) =>
+        `${l.pre ? `<span class="pre">${esc(l.pre)}</span> ` : ''}<a href="${l.href}">${esc(l.label)}</a>`,
+    )
     .join(dot)}</p>
 
 <p class="blurb">${tidy(summary)}</p>
 
 <h2>Selected work</h2>
-<p class="job"><span class="co">${esc(selectedWork.name)}</span>${dot}<a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a></p>
+<p class="job"><span class="co">${esc(selectedWork.name)}</span>${dot}${selectedWork.hrefPre ? `<span class="pre">${esc(selectedWork.hrefPre)}</span> ` : ''}<a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a></p>
 <p class="blurb">${tidy(selectedWork.blurb)}</p>
 
 <h2>Experience</h2>
