@@ -618,6 +618,87 @@ const PowerByJS = () => (
       {/* 08 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>08</p>
+        <h2>What is in the build</h2>
+        <p>
+          Before quoting I ran a twenty one question intake covering the business, the market, and
+          how customers actually find him. The competitor row came back as not known yet, which is
+          the right answer from a man who spends his days coaching rather than studying the market,
+          and it is why the research further up this page is mine and not his. He came in wanting a
+          CMS and one page. The research came back with four audiences, two languages and three ways
+          to buy. I wrote the spec for that, and then I built it.
+        </p>
+        <p>Thirty three components across eight routes. The parts worth naming:</p>
+
+        <div className='cs-inventory'>
+          <div>
+            <h3>Interface</h3>
+            <ul>
+              <li>
+                <strong>Scroll-linked feature reveals.</strong> Each slide owns a viewport height of
+                track, with position and opacity driven off scroll progress, so his method is
+                demonstrated as you move through it rather than asserted in a paragraph. That is
+                what Dedicated Daniel came to evaluate.
+              </li>
+              <li>
+                <strong>A service overlay that stays hidden until hover.</strong> All three tiers
+                sit one gesture away from every page without spending a navigation bar, or a
+                scroll, on them.
+              </li>
+              <li>
+                <strong>Before and after cards, headed with weeks and age.</strong> Wellness Wendy
+                needs to see someone like her, on her timescale, rather than an athlete.
+              </li>
+              <li>
+                <strong>A testimonial carousel</strong> with autoplay and wheel gestures, linking
+                out to the originals rather than reprinting them.
+              </li>
+              <li>
+                <strong>An FAQ accordion built on Headless UI disclosures</strong>, keyboard and
+                screen reader correct without hand rolled ARIA. It answers the price and commitment
+                questions that people will not send an email to ask.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Content</h3>
+            <ul>
+              <li>
+                <strong>Every section backed by Sanity</strong>, so the copy, the prices, the
+                testimonials and the transformation photographs are all his to change.
+              </li>
+              <li>
+                <strong>English and Dutch in full.</strong> 294 strings at exact parity across
+                eleven namespaces, pluralised properly rather than concatenated, so a Dutch reader
+                never lands on an English fragment.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Conversion</h3>
+            <ul>
+              <li>
+                <strong>Three pricing engines</strong>, one per service, each with its own
+                arithmetic.
+              </li>
+              <li>
+                <strong>A contact modal reachable through context from any component</strong>, so
+                every call to action on the site lands in the same place and arrives carrying what
+                the visitor had configured.
+              </li>
+              <li>
+                <strong>Delivery through a Netlify function</strong> with reply-to set to the
+                visitor, so he answers by hitting reply.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 09 -------------------------------------------------------------- */}
+      <section className='cs-section'>
+        <p className='cs-num'>09</p>
         <h2>Handing it over</h2>
         <p>
           The one thing he asked for by name was the ability to run it himself, so that is the part
@@ -631,9 +712,9 @@ const PowerByJS = () => (
         </p>
       </section>
 
-      {/* 09 -------------------------------------------------------------- */}
+      {/* 10 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>09</p>
+        <p className='cs-num'>10</p>
         <h2>Honestly</h2>
         <p>
           I overdelivered here deliberately. He is a genuinely good coach in a crowded market and
