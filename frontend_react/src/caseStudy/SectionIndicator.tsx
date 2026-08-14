@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 
 type Current = { num: string; title: string }
 
+/** Where the band starts: clear of the fixed bar. */
+const TOP_OFFSET = 88
+
 /**
  * Tells the reader which section they are in.
  *
@@ -16,6 +19,12 @@ type Current = { num: string; title: string }
  * sections as a prop, so a section added to the page cannot be forgotten here.
  * Hidden from assistive technology on purpose: the headings already carry the
  * structure, and a label that rewrites itself on every scroll is noise.
+ *
+ * The band is measured in pixels rather than as a percentage of the viewport.
+ * Expressed as a percentage it inverts on any viewport shorter than about
+ * 490px, which is every phone held sideways: the bottom edge climbs above the
+ * top edge, nothing can intersect an impossible band, and the label silently
+ * never appears. Recomputed on resize for the same reason.
  */
 const SectionIndicator = () => {
   const [current, setCurrent] = useState<Current | null>(null)
@@ -25,32 +34,54 @@ const SectionIndicator = () => {
     const sections = Array.from(document.querySelectorAll('.cs-section'))
     if (sections.length === 0) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.current.add(entry.target)
-          else visible.current.delete(entry.target)
-        }
+    let observer: IntersectionObserver | null = null
 
-        // At a boundary two sections briefly share the band. The later one in
-        // document order is the one being scrolled into.
-        const active = sections.filter((s) => visible.current.has(s)).pop()
+    const connect = () => {
+      observer?.disconnect()
+      visible.current.clear()
 
-        if (!active) {
-          setCurrent(null)
-          return
-        }
+      // A band that starts below the fixed bar and is never taller than the
+      // room left beneath it.
+      const top = TOP_OFFSET
+      const depth = Math.max(40, Math.min(120, Math.round(window.innerHeight * 0.18)))
+      const bottom = Math.max(0, window.innerHeight - top - depth)
 
-        setCurrent({
-          num: active.querySelector('.cs-num')?.textContent ?? '',
-          title: active.querySelector('h2')?.textContent ?? '',
-        })
-      },
-      { rootMargin: '-88px 0px -82% 0px' },
-    )
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) visible.current.add(entry.target)
+            else visible.current.delete(entry.target)
+          }
 
-    for (const section of sections) observer.observe(section)
-    return () => observer.disconnect()
+          // At a boundary two sections briefly share the band. The later one in
+          // document order is the one being scrolled into.
+          const active = sections.filter((s) => visible.current.has(s)).pop()
+
+          if (!active) {
+            setCurrent(null)
+            return
+          }
+
+          setCurrent({
+            num: active.querySelector('.cs-num')?.textContent ?? '',
+            title: active.querySelector('h2')?.textContent ?? '',
+          })
+        },
+        { rootMargin: `-${top}px 0px -${bottom}px 0px` },
+      )
+
+      for (const section of sections) observer.observe(section)
+    }
+
+    connect()
+    window.addEventListener('resize', connect)
+    window.addEventListener('orientationchange', connect)
+
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', connect)
+      window.removeEventListener('orientationchange', connect)
+    }
   }, [])
 
   return (
