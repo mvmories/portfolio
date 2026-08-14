@@ -34,7 +34,7 @@ const Header = () => {
           {/* Points at experience, not work: the employed work is the proof,
               and it is now the section directly below About. */}
           <a className='app__btn app__btn--primary' href='#experience'>
-            View my work
+            See what I&apos;ve shipped
           </a>
 
           {cv && (
