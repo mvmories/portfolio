@@ -27,7 +27,7 @@ export const FALLBACK_SETTINGS: Required<
   cvEnabled: true,
   contactNote:
     "Open to permanent roles, and to freelance or advisory work alongside one. I read every message myself, and I'll tell you straight if I'm not the right fit.",
-  cvUrl: 'https://drive.google.com/file/d/1UzYCsJGdeNB5LJ3TGRXbz9GtKPrSzdee/view?usp=share_link',
+  cvUrl: 'https://miguelvilhena.com/cv.pdf',
   socials: [
     { platform: 'linkedin', url: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/' },
     { platform: 'github', url: 'https://github.com/mvmories' },
