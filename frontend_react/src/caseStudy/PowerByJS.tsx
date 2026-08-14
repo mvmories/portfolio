@@ -12,6 +12,9 @@ import logoTaglineGold from '../assets/caseStudy/logo-tagline-gold.svg'
 import logoIconGold from '../assets/caseStudy/logo-icon-gold.svg'
 import logoIconSilver from '../assets/caseStudy/logo-icon-silver.svg'
 import brandOldLogo from '../assets/caseStudy/brand-old-logo.webp'
+import brandGuide from '../assets/caseStudy/brand-guide.webp'
+import brandGuideScalable from '../assets/caseStudy/brand-guide-scalable.webp'
+import brandGuideErrors from '../assets/caseStudy/brand-guide-errors.webp'
 import brandCard from '../assets/caseStudy/brand-card.webp'
 import brandApparel from '../assets/caseStudy/brand-apparel.webp'
 import brandSupplements from '../assets/caseStudy/brand-supplements.webp'
@@ -202,8 +205,8 @@ const PowerByJS = () => (
         <p className='cs-num'>04</p>
         <h2>The brand</h2>
         <p className='cs-lede'>
-          He arrived with a logo he did not like. He left with an identity: palette, gradients,
-          typefaces, twelve logo lockups, a tone of voice and a tagline.
+          He arrived with a logo he did not like. He left with an identity, and with a document
+          that lets the next person he hires apply it without asking me first.
         </p>
 
         <div className='cs-logos cs-logos--compare'>
@@ -344,6 +347,55 @@ const PowerByJS = () => (
         <p className='cs-caption'>
           Mockups from the guide rather than photographs. The apparel is the part that left the
           page: he had the shirts made and they are in the gym.
+        </p>
+
+        <h3 className='cs-sub'>Written down, in both languages</h3>
+        <p>
+          All of it is a versioned editorial document rather than a folder of exported files,
+          because Jessy will hire other people. A photographer, a printer, someone running his ads,
+          whoever builds the next thing. Fifty two pages, in English and in Dutch, opening with what
+          the brand is for before it gets anywhere near a rule, then the lockups, the clear space,
+          the approved pairings and the file types. He can hand it over and get work back that still
+          looks like him.
+        </p>
+        <img
+          className='cs-wide'
+          src={brandGuide}
+          alt='The pages of the PowerByJS brand style guide'
+          width={2118}
+          height={1827}
+          loading='lazy'
+        />
+        <p className='cs-caption'>
+          Shown without the two closing spreads, which carry his contact details.
+        </p>
+
+        <div className='cs-compare'>
+          <figure>
+            <img
+              src={brandGuideScalable}
+              alt='A page explaining which logo lockup to use in which space'
+              width={1400}
+              height={788}
+              loading='lazy'
+            />
+            <figcaption>Choosing a lockup for the space you have</figcaption>
+          </figure>
+          <figure>
+            <img
+              src={brandGuideErrors}
+              alt='A page showing common typographic mistakes to avoid'
+              width={1400}
+              height={788}
+              loading='lazy'
+            />
+            <figcaption>And the ways it goes wrong</figcaption>
+          </figure>
+        </div>
+        <p className='cs-caption'>
+          A guide that only shows a brand at its best is decoration. The half that does the work is
+          the half telling the next person what not to do, which is the half that survives being
+          read by someone in a hurry.
         </p>
       </section>
 
