@@ -9,7 +9,15 @@ import moodboard from '../assets/caseStudy/moodboard.webp'
 import typeHeading from '../assets/caseStudy/type-heading.webp'
 import typeBody from '../assets/caseStudy/type-body.webp'
 import logoTaglineGold from '../assets/caseStudy/logo-tagline-gold.svg'
-import logoTaglineSilver from '../assets/caseStudy/logo-tagline-silver.svg'
+import logoIconGold from '../assets/caseStudy/logo-icon-gold.svg'
+import logoIconSilver from '../assets/caseStudy/logo-icon-silver.svg'
+import brandOldLogo from '../assets/caseStudy/brand-old-logo.webp'
+import brandCard from '../assets/caseStudy/brand-card.webp'
+import brandApparel from '../assets/caseStudy/brand-apparel.webp'
+import brandSupplements from '../assets/caseStudy/brand-supplements.webp'
+import designCanvas from '../assets/caseStudy/design-canvas.webp'
+import designPricing from '../assets/caseStudy/design-pricing.webp'
+import designModal from '../assets/caseStudy/design-modal.webp'
 import productHome from '../assets/caseStudy/product-home.webp'
 import productPricing from '../assets/caseStudy/product-pricing.webp'
 import productAbout from '../assets/caseStudy/product-about.webp'
@@ -198,17 +206,47 @@ const PowerByJS = () => (
           typefaces, twelve logo lockups, a tone of voice and a tagline.
         </p>
 
+        <div className='cs-logos cs-logos--compare'>
+          <figure>
+            <img
+              src={brandOldLogo}
+              alt='The previous PowerByJS logo, a thin gold script wordmark'
+              width={1280}
+              height={292}
+              loading='lazy'
+            />
+            <figcaption>Before</figcaption>
+          </figure>
+          <figure>
+            <img
+              src={logoTaglineGold}
+              alt='The new PowerByJS logo, gold finish'
+              width={270}
+              height={152}
+              loading='lazy'
+            />
+            <figcaption>After</figcaption>
+          </figure>
+        </div>
+        <p className='cs-caption'>
+          The old mark was a hairline script. At a glance it reads as a signature rather than as a
+          strength coach, and the strokes are thin enough that it closes up in a favicon and
+          disappears entirely once anyone tries to print it. A logo for this business has to survive
+          being embroidered on a hoodie in a badly lit gym. That was the argument, and it is easier
+          to see than to make.
+        </p>
+
         <div className='cs-logos'>
           <img
-            src={logoTaglineGold}
-            alt='PowerByJS logo, gold finish'
+            src={logoIconGold}
+            alt='The PowerByJS monogram, gold finish'
             width={270}
             height={152}
             loading='lazy'
           />
           <img
-            src={logoTaglineSilver}
-            alt='PowerByJS logo, silver finish'
+            src={logoIconSilver}
+            alt='The PowerByJS monogram, silver finish'
             width={270}
             height={152}
             loading='lazy'
@@ -269,7 +307,43 @@ const PowerByJS = () => (
         <p className='cs-tagline'>Lead Your Transformation</p>
         <p className='cs-caption'>
           The tagline had to work as a promise to the client and as an instruction to Jessy himself.
-          It ships on the hero, in the logo lockups and on his printed material.
+          It ships on the hero and in the logo lockups, and he had it printed on shirts that he wears
+          around the gym and hands to clients. That is the honest test of an identity: the client
+          starts spending his own money extending it.
+        </p>
+
+        <h3 className='cs-sub'>Off the screen</h3>
+        <p>
+          The guide did not stop at the website, because the brand was never only going to live
+          there. It specifies the identity on print, on apparel and on packaging, so Jessy can order
+          any of it without coming back to ask what the gold is.
+        </p>
+        <div className='cs-applied'>
+          <img
+            src={brandCard}
+            alt='The PowerByJS business card in gold on black'
+            width={1200}
+            height={900}
+            loading='lazy'
+          />
+          <img
+            src={brandApparel}
+            alt='The PowerByJS logo on a black t-shirt'
+            width={1200}
+            height={900}
+            loading='lazy'
+          />
+          <img
+            src={brandSupplements}
+            alt='The PowerByJS identity applied to supplement packaging'
+            width={1200}
+            height={829}
+            loading='lazy'
+          />
+        </div>
+        <p className='cs-caption'>
+          Mockups from the guide rather than photographs. The apparel is the part that left the
+          page: he had the shirts made and they are in the gym.
         </p>
       </section>
 
@@ -290,6 +364,20 @@ const PowerByJS = () => (
           The moodboard set the register before any layout existed: dark, restrained, premium,
           closer to a watch brand than to a gym. Sketches and low fidelity wireframes came next,
           then high fidelity screens in Figma, then the build.
+        </p>
+
+        <img
+          className='cs-wide'
+          src={designCanvas}
+          alt='The Figma canvas showing all eight pages designed end to end'
+          width={2105}
+          height={2385}
+          loading='lazy'
+        />
+        <p className='cs-caption'>
+          Every page was drawn end to end at full fidelity before any of it was built, in both
+          languages and in each interaction state. The questions that normally get answered in code,
+          halfway through building, were settled here while they were still cheap to change.
         </p>
 
         <div className='cs-grid-2'>
@@ -373,14 +461,33 @@ const PowerByJS = () => (
           sold by hand.
         </p>
 
-        <img
-          className='cs-wide'
-          src={productPricing}
-          alt='The three pricing calculators'
-          width={1440}
-          height={860}
-          loading='lazy'
-        />
+        <div className='cs-compare'>
+          <figure>
+            <img
+              src={designPricing}
+              alt='The pricing page drawn in Figma'
+              width={1366}
+              height={816}
+              loading='lazy'
+            />
+            <figcaption>Drawn in Figma</figcaption>
+          </figure>
+          <figure>
+            <img
+              src={productPricing}
+              alt='The three pricing calculators as they shipped'
+              width={1440}
+              height={860}
+              loading='lazy'
+            />
+            <figcaption>Shipped</figcaption>
+          </figure>
+        </div>
+        <p className='cs-caption'>
+          The calculators were specified in Figma down to the selected states, so the build was a
+          matter of encoding arithmetic that had already been agreed rather than inventing a pricing
+          model at the keyboard.
+        </p>
 
         <ul className='cs-pricing'>
           {PRICING_MODELS.map((m) => (
@@ -419,6 +526,19 @@ const PowerByJS = () => (
         <p className='cs-lede'>
           A calculator that forgets its own answer the moment someone clicks Contact is a toy.
           Whatever the visitor configured travels into the enquiry.
+        </p>
+
+        <img
+          className='cs-wide'
+          src={designModal}
+          alt='The enquiry modal, showing the estimated price above the form'
+          width={1366}
+          height={760}
+          loading='lazy'
+        />
+        <p className='cs-caption'>
+          The enquiry modal opens over the calculator and carries the estimate with it, so nobody
+          has to retype what they just chose. What it shows the visitor is what it sends.
         </p>
 
         <img

@@ -328,6 +328,59 @@ $wide: 1080px;
   }
 }
 
+// Before and after, and design against shipped. Two figures of equal weight so
+// the reader compares them rather than reading one as the caption of the other.
+.cs-compare,
+.cs-logos--compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cs-gap);
+  align-items: center;
+
+  figure {
+    margin: 0;
+  }
+
+  figcaption {
+    max-width: none;
+    margin: 0.75rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+}
+
+.cs-compare {
+  align-items: start;
+  margin: 2rem 0 0;
+}
+
+// The old mark is a flat screenshot on its own black bed and the new one is an
+// SVG, so they are padded onto a shared bed to be compared like for like.
+.cs-logos--compare {
+  margin-bottom: 0.5rem;
+
+  // A fixed bed height for both, otherwise the two marks set their own and the
+  // Before and After labels stop lining up with each other.
+  img {
+    height: 220px;
+    padding: 2rem;
+    object-fit: contain;
+    background: #1a1a1a;
+  }
+}
+
+// Print, apparel and packaging, all photographic mockups, so they carry no
+// padded bed of their own.
+.cs-applied {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--cs-gap);
+  margin: 2rem 0 0;
+}
+
 .cs-swatches {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -639,5 +692,10 @@ $wide: 1080px;
   .cs-tone li {
     grid-template-columns: 1fr;
     gap: 0.25rem;
+  }
+
+  .cs-compare,
+  .cs-logos--compare {
+    grid-template-columns: 1fr;
   }
 }
