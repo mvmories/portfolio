@@ -642,7 +642,8 @@ const PowerByJS = () => (
               <li>
                 <strong>A service overlay that stays hidden until hover.</strong> All three tiers
                 sit one gesture away from every page without spending a navigation bar, or a
-                scroll, on them.
+                scroll, on them. It only mounts on pointer devices, so a phone is never offered an
+                affordance it cannot trigger.
               </li>
               <li>
                 <strong>Before and after cards, headed with weeks and age.</strong> Wellness Wendy
@@ -672,6 +673,11 @@ const PowerByJS = () => (
                 eleven namespaces, pluralised properly rather than concatenated, so a Dutch reader
                 never lands on an English fragment.
               </li>
+              <li>
+                <strong>Transformation photographs served through Sanity&apos;s image pipeline</strong>
+                , with format negotiation on and cropping off. A before and after photograph that
+                the CDN has decided to crop is no longer evidence of anything.
+              </li>
             </ul>
           </div>
 
@@ -694,6 +700,13 @@ const PowerByJS = () => (
             </ul>
           </div>
         </div>
+
+        <p className='cs-inventory-tail'>
+          Then the half nobody notices until it is missing: scroll position reset on every route
+          change, a real 404 rather than a blank screen, and the services typed such that adding a
+          fourth one without its copy fails the build instead of rendering an empty panel in front
+          of a customer.
+        </p>
       </section>
 
       {/* 09 -------------------------------------------------------------- */}

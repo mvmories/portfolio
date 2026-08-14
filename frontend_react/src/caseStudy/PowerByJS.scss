@@ -549,6 +549,19 @@ $wide: 1080px;
   }
 }
 
+.cs-inventory-tail {
+  max-width: 58rem !important;
+  margin: 2rem auto 0 !important;
+  padding-left: 9.25rem;
+  font-size: var(--text-sm) !important;
+}
+
+@media (max-width: 640px) {
+  .cs-inventory-tail {
+    padding-left: 0;
+  }
+}
+
 // --- Product ---------------------------------------------------------------
 
 // Figures are allowed past the text measure. Screenshots are evidence, and
