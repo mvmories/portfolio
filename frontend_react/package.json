@@ -18,7 +18,8 @@
     "test:watch": "vitest",
     "email:preview": "vitest run emails && open .email-previews/notification.html .email-previews/auto-reply.html",
     "images": "node scripts/optimize-images.mjs",
-    "og": "node scripts/og-image.mjs"
+    "og": "node scripts/og-image.mjs",
+    "banner": "node scripts/linkedin-banner.mjs"
   },
   "dependencies": {
     "@react-email/components": "^1.0.12",
