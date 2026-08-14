@@ -1,4 +1,5 @@
 import ThemeToggle from '../components/ThemeToggle'
+import SectionIndicator from './SectionIndicator'
 import { BRAND_COLOURS, COMPETITORS, PERSONAS, PRICING_MODELS, STACK, TONE } from './data'
 
 import personaMark from '../assets/caseStudy/persona-mark.webp'
@@ -53,9 +54,13 @@ const SITE = 'https://powerbyjs.com'
 const PowerByJS = () => (
   <>
     <div className='cs-topbar'>
-      <a className='cs-back' href='/'>
-        <span aria-hidden='true'>&larr;</span> Miguel Vilhena
-      </a>
+      <div className='cs-topbar-left'>
+        <a className='cs-back' href='/'>
+          <span aria-hidden='true'>&larr;</span>
+          <span className='cs-back-label'>Miguel Vilhena</span>
+        </a>
+        <SectionIndicator />
+      </div>
       <ThemeToggle />
     </div>
 

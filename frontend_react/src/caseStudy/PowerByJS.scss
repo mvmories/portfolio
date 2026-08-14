@@ -88,6 +88,58 @@ $wide: 1080px;
   }
 }
 
+// Kept against the left edge rather than centred: the bar floats over an
+// editorial column, and covering the start of a few lines beside the back link
+// is less disruptive than covering the middle of them.
+.cs-topbar-left {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  min-width: 0;
+}
+
+// Which section the reader is in. Shares the bar's glass treatment so it reads
+// as one control strip rather than a badge dropped on top of the page.
+.cs-where {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs) !important;
+  letter-spacing: 0.08em;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(8px);
+
+  &[data-shown='true'] {
+    opacity: 1;
+  }
+}
+
+.cs-where-num {
+  flex: none;
+  color: var(--text-brand);
+}
+
+.cs-where-title {
+  overflow: hidden;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-where {
+    transition: none;
+  }
+}
+
 .cs-back {
   display: inline-flex;
   gap: 0.5rem;
@@ -742,6 +794,12 @@ $wide: 1080px;
 }
 
 @media (max-width: 640px) {
+  // The bar cannot hold a name, a section title and a toggle at this width,
+  // and of the three the reader's position is the one they cannot recover.
+  .cs-back-label {
+    display: none;
+  }
+
   .cs-inventory > div {
     grid-template-columns: 1fr;
     gap: 0.75rem;
