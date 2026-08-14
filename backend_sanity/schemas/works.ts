@@ -12,7 +12,11 @@ export default {
     {
       name: 'description',
       title: 'Description',
-      type: 'string',
+      type: 'text',
+      rows: 4,
+      description:
+        'What you owned on this project, in prose. The disciplines belong in a sentence rather than in tags: as chips they sit at the same weight as the framework names and read as a service menu.',
+      validation: (Rule: SanityRule) => Rule.max(400),
     },
     {
       name: 'outcome',
@@ -44,6 +48,8 @@ export default {
     {
       name: 'tags',
       title: 'Tags',
+      description:
+        'The stack only. What you owned belongs in the description, where it reads as ownership rather than as a list of services for hire.',
       type: 'array',
       of: [
         {

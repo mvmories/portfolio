@@ -4,15 +4,6 @@
   flex-direction: column;
 }
 
-// Sets expectations before the reader counts the cards: most of the work is
-// under NDA, so a short list is the honest state of things rather than a gap.
-p.app__work-note {
-  max-width: 46ch;
-  margin: 1.25rem auto 0;
-  text-align: center;
-  color: var(--text-muted);
-}
-
 .app__work-portfolio {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -97,13 +88,25 @@ p.app__work-note {
   color: var(--text);
 }
 
-// The line that answers "so what?", and the card's only prose. Set as body
-// text rather than shouted in brand colour: it sits under the title, and a
-// subtitle louder than its heading inverts the hierarchy.
+// The line that answers "so what?". Set as body text rather than shouted in
+// brand colour: it sits under the title, and a subtitle louder than its
+// heading inverts the hierarchy.
 .app__work-lede {
   max-width: 42ch;
   font-size: var(--text-base);
   line-height: 1.6;
+  color: var(--text);
+}
+
+// What was owned to get there. Quieter than the outcome above it, because the
+// outcome is the claim and this is the evidence for it, but still prose: the
+// research, brand and design half of a project is invisible once it has been
+// flattened into chips sitting next to the framework names.
+.app__work-prose {
+  max-width: 46ch;
+  margin-top: 0.75rem;
+  font-size: var(--text-sm);
+  line-height: 1.7;
   color: var(--text-muted);
 }
 

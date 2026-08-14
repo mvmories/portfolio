@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Work as WorkDoc } from '@/types/sanity'
@@ -81,9 +81,19 @@ describe('Work', () => {
     expect(screen.getByRole('link', { name: /Source/ })).toBeInTheDocument()
   })
 
-  // The description is a fallback, not a second paragraph competing with the
-  // outcome.
-  it('shows the description only when there is no outcome', async () => {
+  // Both paragraphs render, and they do different jobs: the outcome is the
+  // result, the description is the ownership behind it. Reducing the second to
+  // a fallback hid the research and design half of the project.
+  it('renders the outcome and the description together', async () => {
+    render(<Work />)
+
+    expect(await screen.findByText('Enquiries doubled in the first month.')).toBeInTheDocument()
+    expect(
+      screen.getByText('Fullstack app created for an elite personal trainer.')
+    ).toBeInTheDocument()
+  })
+
+  it('renders a card that has no outcome yet', async () => {
     safeFetch.mockResolvedValue([{ ...POWERBYJS, outcome: undefined }])
     render(<Work />)
 
@@ -92,18 +102,13 @@ describe('Work', () => {
     ).toBeInTheDocument()
   })
 
-  it('hides the description when an outcome exists', async () => {
+  // The heading no longer promises a portfolio, so nothing has to apologise for
+  // the length of the list. The employed work is in the experience section.
+  it('is headed as side projects, with no note excusing the length', async () => {
     render(<Work />)
 
     await screen.findByRole('heading', { name: 'PowerByJS' })
-    expect(
-      screen.queryByText('Fullstack app created for an elite personal trainer.')
-    ).not.toBeInTheDocument()
-  })
-
-  it('explains why the list is short', async () => {
-    render(<Work />)
-
-    await waitFor(() => expect(screen.getByText(/covered by NDA/i)).toBeInTheDocument())
+    expect(screen.getByRole('heading', { name: /Side projects/i })).toBeInTheDocument()
+    expect(screen.queryByText(/NDA/i)).not.toBeInTheDocument()
   })
 })

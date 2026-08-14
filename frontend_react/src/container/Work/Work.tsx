@@ -4,13 +4,11 @@ import { HiArrowUpRight } from 'react-icons/hi2'
 
 import { AppWrap, MotionWrap } from '@/wrapper'
 import { safeFetch, urlFor } from '@/lib/client'
-import { useSiteSettings } from '@/lib/useSiteSettings'
 import type { Work as WorkDoc } from '@/types/sanity'
 import './Work.scss'
 
 const Work = () => {
   const [works, setWorks] = useState<WorkDoc[]>([])
-  const { workNote } = useSiteSettings()
 
   useEffect(() => {
     safeFetch<WorkDoc[]>('*[_type == "works"] | order(_createdAt desc)', []).then(setWorks)
@@ -18,11 +16,14 @@ const Work = () => {
 
   return (
     <>
+      {/* "Side projects" rather than "personal and client work". The old
+          heading promised a portfolio, which one card cannot deliver, and the
+          gap then needed a note apologising for NDAs. A side-projects section
+          with one project in it is not short of anything: the employed work
+          lives in the experience section directly above. */}
       <h2 className='head-text'>
-        Personal and client <span>work</span>
+        Side <span>projects</span>
       </h2>
-
-      {workNote && <p className='app__work-note p-text'>{workNote}</p>}
 
       <div className='app__work-portfolio'>
         {works.map((work) => (
@@ -51,10 +52,13 @@ const Work = () => {
             <div className='app__work-body'>
               <h3 className='app__work-title'>{work.title}</h3>
 
-              {/* The outcome is the whole point of the card, so it is the card's
-                  only prose. The description is a fallback for projects that
-                  have not earned an outcome line yet. */}
-              <p className='app__work-lede'>{work.outcome || work.description}</p>
+              {/* Two paragraphs doing different jobs. The outcome is the result
+                  for whoever paid for it. The description is what was owned to
+                  get there, in prose, because the design and research half of a
+                  project dies when it is reduced to chips next to "Netlify". */}
+              {work.outcome && <p className='app__work-lede'>{work.outcome}</p>}
+
+              {work.description && <p className='app__work-prose'>{work.description}</p>}
 
               {work.tags && work.tags.length > 0 && (
                 <p className='app__work-stack'>
