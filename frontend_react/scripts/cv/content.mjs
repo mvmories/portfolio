@@ -269,7 +269,12 @@ export const education = [
     school: 'NOVA IMS, Universidade Nova de Lisboa',
     award: 'BSc, Information Systems and Technology',
     dates: '2011 - 2015',
-    note: `Received a formal commendation from the school's Director for academic performance.`,
+    // Documented, not informal: the Director's letter of 29/06/2015 states the
+    // top-five placing outright and it was published on the school's Quadro de
+    // Mérito. Scan kept at .backups/commendation.jpeg. The year matters, because
+    // the distinction is for 2013/2014 specifically rather than for the degree
+    // as a whole, and the old CV's "top 5 graduates of his year" overstated it.
+    note: `Named to the NOVA IMS Academic Merit Board for 2013/2014, top five students on the course.`,
   },
   {
     school: 'Boot.dev',
