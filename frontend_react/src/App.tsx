@@ -16,8 +16,8 @@ const App = () => (
     <main id='main' tabIndex={-1}>
       <Header />
       <About />
-      <Work />
       <Experience />
+      <Work />
       <Testimonial />
       <Footer />
     </main>

@@ -31,7 +31,9 @@ const Header = () => {
         <p className='app__header-tagline'>{heroTagline}</p>
 
         <div className='app__header-actions'>
-          <a className='app__btn app__btn--primary' href='#work'>
+          {/* Points at experience, not work: the employed work is the proof,
+              and it is now the section directly below About. */}
+          <a className='app__btn app__btn--primary' href='#experience'>
             View my work
           </a>
 
