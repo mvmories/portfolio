@@ -49,10 +49,7 @@ export const identity = {
     // are self-describing, and prefixing them all would pad the row without
     // telling the reader anything.
     {pre: 'Book a call', label: 'cal.com/miguelvilhena/20min', href: 'https://cal.com/miguelvilhena/20min'},
-    {
-      label: 'linkedin.com/in/miguel-vilhena-215aa590',
-      href: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/',
-    },
+    {label: 'linkedin.com/in/mvmories', href: 'https://www.linkedin.com/in/mvmories/'},
     {label: 'github.com/mvmories', href: 'https://github.com/mvmories'},
   ],
 }

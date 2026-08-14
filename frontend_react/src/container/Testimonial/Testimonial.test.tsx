@@ -179,7 +179,7 @@ describe('Testimonial', () => {
     const link = await screen.findByRole('link', { name: /Read them in full on LinkedIn/ })
     expect(link).toHaveAttribute(
       'href',
-      'https://www.linkedin.com/in/miguel-vilhena-215aa590/details/recommendations/',
+      'https://www.linkedin.com/in/mvmories/details/recommendations/',
     )
   })
 

@@ -56,7 +56,7 @@ describe('index.html metadata', () => {
     // A wrong LinkedIn URL has shipped here once before, pointing at a
     // different person entirely.
     const person = graph['@graph'].find((node) => node['@type'] === 'Person')
-    expect(person?.sameAs).toContain('https://www.linkedin.com/in/miguel-vilhena-215aa590/')
+    expect(person?.sameAs).toContain('https://www.linkedin.com/in/mvmories/')
   })
 
   it('has a title that says what he does', () => {

@@ -23,7 +23,7 @@ const LINE = '#e6e9f2'
 const CANVAS = '#edf2f8'
 
 const SOCIALS = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/miguel-vilhena-215aa590/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mvmories/' },
   { label: 'GitHub', href: 'https://github.com/mvmories' },
   { label: 'Portfolio', href: 'https://miguelvilhena.com' },
 ]
