@@ -9,14 +9,6 @@ import { useSiteSettings } from '@/lib/useSiteSettings'
 import { AppWrap } from '@/wrapper'
 import './Header.scss'
 
-const scaleVariants = {
-  whileInView: {
-    scale: [0, 1] as [number, number],
-    opacity: [0, 1] as [number, number],
-    transition: { duration: 1, ease: 'easeInOut' as const },
-  },
-}
-
 const Header = () => {
   const { heroTagline, availabilityEnabled, availabilityText } = useSiteSettings()
   const cv = useCv()
@@ -69,18 +61,6 @@ const Header = () => {
           className='overlay_circle'
         />
       </div>
-
-      <motion.div
-        variants={scaleVariants}
-        whileInView={scaleVariants.whileInView}
-        className='app__header-circles'
-      >
-        {[images.react, images.typescript, images.node].map((circle, index) => (
-          <div className='circle-cmp app__flex' key={`circle-${index}`}>
-            <img src={circle} alt='' aria-hidden='true' loading='lazy' decoding='async' />
-          </div>
-        ))}
-      </motion.div>
 
       {/* Hidden for reduced motion: it is a bouncing arrow whose only job is to
           draw the eye, so there is nothing left of it once it cannot move. */}
