@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <meta name="theme-color" content="#313bac" />
+
+    <!-- Same pre-paint theme restore as index.html. Duplicated rather than
+         imported because it has to run before any bundle loads, and a case
+         study opened from a shared link is often someone's first page. -->
+    <script>
+      try {
+        var t = localStorage.getItem('theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch (e) {
+        /* Private mode can throw on storage access; the CSS default still applies. */
+      }
+    </script>
+
+    <title>PowerByJS case study | Miguel Vilhena</title>
+    <meta
+      name="description"
+      content="A kickboxing coach asked me for a one page website. I researched his market, found that one page would lose, and shipped him a brand, eight pages in two languages and three pricing calculators wired into his enquiries."
+    />
+    <link rel="canonical" href="https://miguelvilhena.com/powerbyjs" />
+
+    <!-- Static for the same reason as index.html: unfurlers do not run JS, and
+         this page exists to be shared. -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://miguelvilhena.com/powerbyjs" />
+    <meta property="og:site_name" content="Miguel Vilhena" />
+    <meta property="og:title" content="He asked for one page. I shipped him a business." />
+    <meta
+      property="og:description"
+      content="How a €0 brief for a one page website became a brand, eight bilingual pages and three pricing engines wired into the client's inbox."
+    />
+    <meta property="og:image" content="https://miguelvilhena.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="He asked for one page. I shipped him a business." />
+    <meta
+      name="twitter:description"
+      content="How a brief for a one page website became a brand, eight bilingual pages and three pricing engines wired into the client's inbox."
+    />
+    <meta name="twitter:image" content="https://miguelvilhena.com/og.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/caseStudy/main.tsx"></script>
+  </body>
+</html>

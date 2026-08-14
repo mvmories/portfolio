@@ -102,6 +102,27 @@ describe('Work', () => {
     ).toBeInTheDocument()
   })
 
+  // Pins the published document id to the case study path. The link is driven
+  // by a hardcoded map, so a wrong id would not fail loudly, it would simply
+  // never render the most valuable link on the page.
+  it('links a project that has a case study, and demotes the site link', async () => {
+    safeFetch.mockResolvedValue([{ ...POWERBYJS, _id: 'd65aa5b4-9741-4706-950e-cef1206f4605' }])
+    render(<Work />)
+
+    const caseStudy = await screen.findByRole('link', { name: /Read the case study/ })
+    expect(caseStudy).toHaveAttribute('href', '/powerbyjs')
+    expect(screen.getByRole('link', { name: /Visit the site/ })).toHaveClass(
+      'app__work-action--secondary'
+    )
+  })
+
+  it('shows no case study link for a project without one', async () => {
+    render(<Work />)
+
+    await screen.findByRole('heading', { name: 'PowerByJS' })
+    expect(screen.queryByRole('link', { name: /case study/i })).not.toBeInTheDocument()
+  })
+
   // The heading no longer promises a portfolio, so nothing has to apologise for
   // the length of the list. The employed work is in the experience section.
   it('is headed as side projects, with no note excusing the length', async () => {

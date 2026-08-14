@@ -7,6 +7,19 @@ import { safeFetch, urlFor } from '@/lib/client'
 import type { Work as WorkDoc } from '@/types/sanity'
 import './Work.scss'
 
+/**
+ * Projects that have a case study page of their own.
+ *
+ * Keyed by document id rather than title, because the id survives a rename in
+ * the Studio and a broken link here would be silent. Kept in code rather than
+ * added as a Sanity field: the case studies are hand built pages that live in
+ * this repository, so a published value pointing at a page that does not exist
+ * would be the easier mistake to make.
+ */
+const CASE_STUDIES: Record<string, string> = {
+  'd65aa5b4-9741-4706-950e-cef1206f4605': '/powerbyjs',
+}
+
 const Work = () => {
   const [works, setWorks] = useState<WorkDoc[]>([])
 
@@ -67,9 +80,18 @@ const Work = () => {
               )}
 
               <div className='app__work-actions'>
+                {CASE_STUDIES[work._id] && (
+                  <a className='app__work-action' href={CASE_STUDIES[work._id]}>
+                    Read the case study
+                    <HiArrowUpRight aria-hidden='true' />
+                    <span className='sr-only'>{`, ${work.title}`}</span>
+                  </a>
+                )}
                 {work.projectLink && (
                   <a
-                    className='app__work-action'
+                    className={`app__work-action${
+                      CASE_STUDIES[work._id] ? ' app__work-action--secondary' : ''
+                    }`}
                     href={work.projectLink}
                     target='_blank'
                     rel='noreferrer'
