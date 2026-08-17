@@ -8,6 +8,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  *
  * These cover the redirect target rather than the plumbing, because the target
  * is the part that can be wrong while everything still looks healthy.
+ *
+ * Kept in a subdirectory because Netlify treats every top-level file in the
+ * functions directory as a function to bundle, and a test importing vitest
+ * fails that bundle.
  */
 
 const fetchSettings = vi.fn()
@@ -16,7 +20,7 @@ vi.mock('@sanity/client', () => ({
   createClient: () => ({ fetch: fetchSettings }),
 }))
 
-const load = async () => (await import('./cv.mjs')).default
+const load = async () => (await import('../cv.mjs')).default
 
 const call = async (url = 'https://miguelvilhena.com/cv') => {
   const handler = await load()
