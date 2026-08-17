@@ -78,14 +78,14 @@ const Factory = () => (
           One engineer can now attempt what used to need a team. That sentence is easy to say and
           expensive to mean, because an agent is only worth having if you can leave it alone, and
           you can only leave it alone if the models are good enough and the boundaries are real. So
-          I built the thing that measures the first and enforces the second. This is what it is,
-          what it cost, and where it still falls short.
+          I built the thing that measures the first and enforces the second. Here is what it is,
+          what it caught, and where it still stops short.
         </p>
 
         <dl className='cs-meta'>
           <div>
-            <dt>Scope</dt>
-            <dd>Personal infrastructure</dd>
+            <dt>Shape</dt>
+            <dd>One machine, two lanes</dd>
           </div>
           <div>
             <dt>Hardware</dt>
@@ -253,7 +253,7 @@ const Factory = () => (
         </p>
       </section>
 
-      {/* 03 -------------------------------------------------------------- */}
+      {/* 04 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>04</p>
         <h2>I stopped reading about models and measured them</h2>
@@ -293,7 +293,7 @@ const Factory = () => (
         </p>
       </section>
 
-      {/* 04 -------------------------------------------------------------- */}
+      {/* 05 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>05</p>
         <h2>The agent cannot push, and not because I asked it not to</h2>
@@ -335,7 +335,7 @@ const Factory = () => (
         </p>
       </section>
 
-      {/* 05 -------------------------------------------------------------- */}
+      {/* 06 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>06</p>
         <h2>Three bugs, and what was actually wrong</h2>
@@ -365,7 +365,7 @@ const Factory = () => (
         </ol>
       </section>
 
-      {/* 06 -------------------------------------------------------------- */}
+      {/* 07 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>07</p>
         <h2>One of them was not my bug</h2>
@@ -429,7 +429,7 @@ const Factory = () => (
         </p>
       </section>
 
-      {/* 07 -------------------------------------------------------------- */}
+      {/* 08 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>08</p>
         <h2>What it still cannot do</h2>
@@ -450,7 +450,7 @@ const Factory = () => (
         </ul>
       </section>
 
-      {/* 08 -------------------------------------------------------------- */}
+      {/* 09 -------------------------------------------------------------- */}
       <section className='cs-section'>
         <p className='cs-num'>09</p>
         <h2>Why bother</h2>
