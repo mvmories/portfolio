@@ -116,8 +116,30 @@ describe('Work', () => {
     )
   })
 
-  it('shows no case study link for a project without one', async () => {
+  /**
+   * The factory card is the first entry with no site to visit and no source to
+   * show, so the case study is its only action. A missing id here would leave a
+   * card that links nowhere at all, which is worse than the PowerByJS case.
+   */
+  it('links the factory card to its case study and gives it no other action', async () => {
+    safeFetch.mockResolvedValue([
+      {
+        ...POWERBYJS,
+        _id: 'a122c9f7-25b0-4243-af82-c01a4dac9891',
+        title: 'The AI Factory',
+        projectLink: undefined,
+        codeLink: undefined,
+      },
+    ])
     render(<Work />)
+
+    const caseStudy = await screen.findByRole('link', { name: /Read the case study/ })
+    expect(caseStudy).toHaveAttribute('href', '/factory')
+    expect(screen.queryByRole('link', { name: /Visit the site/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Source/ })).not.toBeInTheDocument()
+  })
+
+  it('shows no case study link for a project without one', async () => {    render(<Work />)
 
     await screen.findByRole('heading', { name: 'PowerByJS' })
     expect(screen.queryByRole('link', { name: /case study/i })).not.toBeInTheDocument()

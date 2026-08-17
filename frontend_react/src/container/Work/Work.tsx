@@ -18,6 +18,7 @@ import './Work.scss'
  */
 const CASE_STUDIES: Record<string, string> = {
   'd65aa5b4-9741-4706-950e-cef1206f4605': '/powerbyjs',
+  'a122c9f7-25b0-4243-af82-c01a4dac9891': '/factory',
 }
 
 const Work = () => {

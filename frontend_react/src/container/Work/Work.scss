@@ -77,6 +77,10 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.75rem;
+
+  // Cards stretch to the tallest in the row, so the body has to grow with them
+  // or a shorter card leaves its actions floating in the middle of its own box.
+  flex: 1;
 }
 
 .app__work-title {
@@ -125,7 +129,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  margin-top: 0.75rem;
+  // Pinned to the bottom so the actions line up across a row whatever the
+  // description lengths happen to be.
+  margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 // Always visible. The previous design hid the actions behind a hover overlay,
