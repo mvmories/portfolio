@@ -42,13 +42,15 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
-      // Two entry points, not one. `powerbyjs.html` builds to dist/powerbyjs.html,
-      // which Netlify serves at /powerbyjs in preference to the catch-all SPA
-      // rewrite, because a non-forced redirect cannot shadow a file that exists.
-      // This keeps the case study out of the home page bundle entirely.
+      // Three entry points, not one. `powerbyjs.html` and `factory.html` build
+      // to dist/*.html, which Netlify serves at /powerbyjs and /factory in
+      // preference to the catch-all SPA rewrite, because a non-forced redirect
+      // cannot shadow a file that exists. This keeps the case studies out of
+      // the home page bundle entirely, and out of each other's.
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         powerbyjs: fileURLToPath(new URL('./powerbyjs.html', import.meta.url)),
+        factory: fileURLToPath(new URL('./factory.html', import.meta.url)),
       },
       output: {
         manualChunks: {

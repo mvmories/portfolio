@@ -63,6 +63,21 @@ const About = () => {
         <div className='app__about-text'>
           <p className='app__about-narrative'>{narrative}</p>
 
+          {/* The narrative's last claim is the AI one, and it was the only
+              sentence on the page with nothing behind it. The link sits here
+              rather than in the projects section because a claim and its
+              evidence are worth more adjacent than they are apart. */}
+          <a className='app__about-evidence' href='/factory'>
+            <span className='app__about-evidence-label'>The AI part, in detail</span>
+            <span className='app__about-evidence-text'>
+              How I chose the models by measuring them, why the agent holds no credential that
+              could push, and the bug I fixed in the inference server everything runs on.
+            </span>
+            <span className='app__about-evidence-more' aria-hidden='true'>
+              Read the case study &rarr;
+            </span>
+          </a>
+
           {/* A definition list, because that is what it is: each number is the
               value of the term beside it, and it reads correctly unstyled. */}
           <dl className='app__about-stats'>

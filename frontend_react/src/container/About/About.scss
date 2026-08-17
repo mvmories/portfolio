@@ -60,6 +60,57 @@
   }
 }
 
+/* The one link out of the About section, so it is a card rather than an inline
+   anchor: the sentence it backs up is the least evidenced on the page, and a
+   link buried in prose is the version of this nobody clicks. */
+.app__about-evidence {
+  display: block;
+  margin: var(--space-8) 0 0;
+  padding: var(--space-6);
+  text-align: left;
+  text-decoration: none;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+}
+
+.app__about-evidence-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.app__about-evidence-text {
+  display: block;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text);
+}
+
+/* Not a button, because the whole card is the target. It is here so the card
+   reads as somewhere to go rather than as a panel of text. */
+.app__about-evidence-more {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-brand);
+}
+
 .app__about-stats {
   margin: var(--space-8) 0 0;
   padding: var(--space-6) 0 0;
