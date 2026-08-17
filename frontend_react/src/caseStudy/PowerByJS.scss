@@ -1,10 +1,10 @@
 // ---------------------------------------------------------------------------
-// PowerByJS case study
+// PowerByJS case study, the parts specific to this page.
 //
-// An editorial layout rather than a section of the portfolio: one measured
-// column of prose, with figures allowed to break wider than the text. Every
-// colour, size and radius comes from the shared semantic tokens, so the page
-// inherits both themes without defining a palette of its own.
+// The shell it sits in (layout, measure, topbar, hero, sections, footer) lives
+// in `_shell.scss` and is shared with the other case study. What is left here
+// exists to make this project's argument: the competitor grid, the personas,
+// the brand specimens and the pricing tables.
 //
 // The only literal colours in this file belong to the client's brand, in the
 // swatch and gradient demonstrations. Those are rendered live rather than
@@ -12,299 +12,7 @@
 // beside it.
 // ---------------------------------------------------------------------------
 
-// An absolute length rather than `ch`, because `ch` resolves against each
-// element's own font size: headings would have measured several times wider
-// than the paragraphs beneath them and the column would have no left edge.
-$measure: 49rem;
-$wide: 1080px;
-
-.cs {
-  // Three rhythms doing three jobs: prose is tight, evidence is given room,
-  // and sections are separated by more air than anything inside them uses.
-  --cs-gap: 1.25rem;
-  --cs-fig: 3.25rem;
-
-  max-width: $wide;
-  margin: 0 auto;
-  padding: 4rem 1.5rem 7rem;
-  color: var(--text);
-
-  p {
-    max-width: $measure;
-    margin: 0 auto 1.5rem;
-    font-size: var(--text-base);
-    line-height: 1.75;
-    color: var(--text-muted);
-  }
-
-  h2 {
-    max-width: $measure;
-    margin: 0 auto 1.75rem;
-    font-size: var(--text-3xl);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-  }
-
-  figcaption,
-  .cs-caption {
-    max-width: $measure;
-    margin: 1rem auto var(--cs-fig);
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    color: var(--text-subtle);
-  }
-}
-
-// Persistent, because the case study is often someone's first page and this is
-// the only navigation it has back to the portfolio. The theme toggle rides
-// along on the right so it is not left stranded in the document flow.
-.cs-topbar {
-  position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
-  left: 1.25rem;
-  z-index: 20;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  pointer-events: none;
-
-  > * {
-    pointer-events: auto;
-  }
-
-  .theme-toggle {
-    background: color-mix(in srgb, var(--surface) 82%, transparent);
-    backdrop-filter: blur(8px);
-  }
-}
-
-// Kept against the left edge rather than centred: the bar floats over an
-// editorial column, and covering the start of a few lines beside the back link
-// is less disruptive than covering the middle of them.
-.cs-topbar-left {
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  min-width: 0;
-}
-
-// Which section the reader is in. Shares the bar's glass treatment so it reads
-// as one control strip rather than a badge dropped on top of the page.
-.cs-where {
-  display: flex;
-  gap: 0.6rem;
-  align-items: baseline;
-  min-width: 0;
-  margin: 0 !important;
-  padding: 0.5rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs) !important;
-  letter-spacing: 0.08em;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  backdrop-filter: blur(8px);
-
-  &[data-shown='true'] {
-    opacity: 1;
-  }
-}
-
-.cs-where-num {
-  flex: none;
-  color: var(--text-brand);
-}
-
-.cs-where-title {
-  overflow: hidden;
-  color: var(--text-muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cs-where {
-    transition: none;
-  }
-}
-
-.cs-back {
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.5rem 0.9rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text);
-  text-decoration: none;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  backdrop-filter: blur(8px);
-
-  &:hover {
-    background: var(--surface-muted);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-}
-
-// --- Hero ------------------------------------------------------------------
-
-.cs-hero {
-  padding: 3rem 0 4rem;
-
-  h1 {
-    max-width: 20ch;
-    margin: 0 auto 1.5rem;
-    font-size: var(--text-5xl);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    text-align: center;
-    color: var(--text);
-
-    span {
-      color: var(--text-brand);
-    }
-  }
-}
-
-.cs-eyebrow {
-  margin-bottom: 1rem !important;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--text-subtle);
-}
-
-.cs-standfirst {
-  font-size: var(--text-lg) !important;
-  text-align: center;
-}
-
-// A definition list rather than a row of divs: these genuinely are term and
-// value pairs, so announcing them as such costs nothing.
-.cs-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-  justify-content: center;
-  max-width: $measure;
-  margin: 2.5rem auto 3rem;
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-
-  dt {
-    margin-bottom: 0.35rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-subtle);
-  }
-
-  dd {
-    margin: 0;
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--text);
-  }
-}
-
-.cs-live {
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-right: 0.4rem;
-  background: var(--success-500);
-  border-radius: 50%;
-}
-
-.cs-hero-shot {
-  box-shadow: var(--shadow-lg);
-}
-
-// --- Sections --------------------------------------------------------------
-
-.cs-section {
-  padding: 6rem 0;
-  border-top: 1px solid var(--border);
-}
-
-.cs-num {
-  max-width: $measure;
-  margin: 0 auto 1rem !important;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  color: var(--text-brand);
-}
-
-// Taken down in size and up in weight, then given the brand hue. That removes
-// a type size from the page and adds a second layer to scan by, which matters
-// more than heading scale on a page this long.
-.cs-sub {
-  max-width: $measure;
-  margin: 4.5rem auto 1.5rem;
-  font-size: var(--text-lg);
-  font-weight: 700;
-  letter-spacing: 0;
-  color: var(--text-brand);
-}
-
-.cs-lede {
-  font-size: var(--text-lg) !important;
-  color: var(--text) !important;
-}
-
-// The one place the page raises its voice, reserved for the decision the whole
-// case study turns on. Reusing it would spend that emphasis.
-.cs-callout {
-  padding: 1.25rem 1.5rem;
-  color: var(--text) !important;
-  background: var(--surface-brand-subtle);
-  border-left: 3px solid var(--surface-brand);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
-
-.cs-quote {
-  max-width: $measure;
-  margin: 0 auto 2rem;
-  padding: 0 0 0 1.5rem;
-  border-left: 3px solid var(--border-strong);
-
-  p {
-    margin-bottom: 0.75rem;
-    font-size: var(--text-xl);
-    line-height: 1.5;
-    color: var(--text);
-  }
-
-  footer {
-    font-size: var(--text-sm);
-    color: var(--text-subtle);
-  }
-}
-
-// --- Competitors -----------------------------------------------------------
+@use './shell' as *;
 
 .cs-competitors {
   display: grid;
@@ -618,26 +326,7 @@ $wide: 1080px;
 
 // Figures are allowed past the text measure. Screenshots are evidence, and
 // evidence squeezed into a 68ch column stops being legible.
-.cs-wide {
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
-  box-shadow: var(--shadow-md);
-}
 
-.cs-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem var(--cs-gap);
-  margin: 2.5rem 0 var(--cs-fig);
-
-  figure {
-    margin: 0;
-  }
-
-  figcaption {
-    margin-bottom: 0;
-  }
-}
 
 .cs-phone {
   max-width: 300px;
@@ -655,30 +344,6 @@ $wide: 1080px;
   }
 }
 
-.cs-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: var(--cs-gap);
-  margin: 2.5rem 0 0;
-  padding: 1.5rem 0;
-  list-style: none;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-
-  li {
-    font-size: var(--text-sm);
-    text-align: center;
-    color: var(--text-muted);
-  }
-
-  strong {
-    display: block;
-    font-size: var(--text-4xl);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-}
 
 .cs-stack {
   display: flex;
@@ -754,69 +419,10 @@ $wide: 1080px;
 
 // --- Footer ----------------------------------------------------------------
 
-.cs-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  padding: 4rem 0 0;
-  border-top: 1px solid var(--border);
-}
-
-.cs-cta {
-  padding: 0.9rem 1.6rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-on-brand);
-  text-decoration: none;
-  background: var(--surface-brand);
-  border: 1px solid var(--surface-brand);
-  border-radius: var(--radius-full);
-
-  &:hover {
-    background: var(--surface-brand-hover);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-
-  &--ghost {
-    color: var(--text);
-    background: transparent;
-    border-color: var(--border-strong);
-
-    &:hover {
-      background: var(--surface-muted);
-    }
-  }
-}
-
 @media (max-width: 640px) {
-  // The bar cannot hold a name, a section title and a toggle at this width,
-  // and of the three the reader's position is the one they cannot recover.
-  .cs-back-label {
-    display: none;
-  }
-
   .cs-inventory > div {
     grid-template-columns: 1fr;
     gap: 0.75rem;
-  }
-
-  .cs {
-    padding-top: 5rem;
-  }
-
-  .cs-hero h1 {
-    font-size: var(--text-4xl);
-  }
-
-  .cs-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
   }
 
   .cs-swatch {
