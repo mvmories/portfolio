@@ -1,6 +1,6 @@
 import ThemeToggle from '../components/ThemeToggle'
 import SectionIndicator from './SectionIndicator'
-import { BUGS, EVAL_CODER, EVAL_UI, LIMITS, MACHINE, UPSTREAM } from './factoryData'
+import { BUGS, EVAL_CODER, EVAL_UI, LANES, LIMITS, MACHINE, STACK, UPSTREAM } from './factoryData'
 
 import './Factory.scss'
 
@@ -75,11 +75,11 @@ const Factory = () => (
           <span>So I built the thing that checks it.</span>
         </h1>
         <p className='cs-standfirst'>
-          I run large language models on a machine I own, and an agent that writes code on top of
-          them. The first thing that agent produced looked correct and was not. Everything since has
-          been about the distance between those two states: choosing models by measuring them rather
-          than by reading about them, and building an agent that is <em>incapable</em> of what it
-          must not do rather than merely instructed against it.
+          One engineer can now attempt what used to need a team. That sentence is easy to say and
+          expensive to mean, because an agent is only worth having if you can leave it alone, and
+          you can only leave it alone if the models are good enough and the boundaries are real. So
+          I built the thing that measures the first and enforces the second. This is what it is,
+          what it cost, and where it still falls short.
         </p>
 
         <dl className='cs-meta'>
@@ -114,33 +114,113 @@ const Factory = () => (
       </header>
 
       {/* 01 -------------------------------------------------------------- */}
-      
+
       <section className='cs-section'>
         <p className='cs-num'>01</p>
-        <h2>What is actually running</h2>
+        <h2>Why a person builds this</h2>
 
         <p className='cs-lede'>
-          A Mac Studio in my house, serving models over an OpenAI compatible endpoint that is bound
-          to the machine itself and never to the network.
+          Start with the part that has nothing to do with technology. The gap between having an
+          idea and having something real has always been staffing, and for the first time it might
+          not be.
         </p>
         <p>
-          On top of it sits an agent with its own operating system user, its own workspace, and a
-          set of scripts that refuse to call a task finished until the project installs, lints,
-          type checks, tests and builds. I can reach all of it from my phone. In July I scaffolded
-          a small TypeScript utility, ran it through every gate and committed it, from a pub, with
-          no laptop.
+          I have spent eleven years watching good ideas die in the queue. Not because they were
+          wrong, and not because nobody could build them, but because building them needed four
+          people for three months and there were only ever two people and one month. That
+          arithmetic is the reason most software that should exist does not.
         </p>
         <p>
-          The hardware decides the shape of everything else. Sixty-four gigabytes of unified memory
-          puts the ceiling at around thirty-five billion parameters at a speed you can hold a
-          conversation with. That single constraint is what turned model selection from a matter of
-          taste into a matter of measurement.
+          An agent that writes and checks its own code changes that arithmetic, but only if you can
+          walk away from it. An assistant you have to supervise line by line is a slower version of
+          typing. The whole value is in the leaving alone, and leaving something alone requires two
+          things I did not want to take on trust: that the model is genuinely good enough, and that
+          the worst thing it can do is something I could survive.
+        </p>
+        <p>
+          Neither is answerable by opinion. The first is a measurement problem and the second is a
+          permissions problem. So I bought one machine, put both questions to it directly, and
+          this page is the answer to each.
+        </p>
+        <p className='cs-callout'>
+          The rest of this is in two registers on purpose. If you run a company, sections 01, 02, 05
+          and 09 are the ones that matter and they assume nothing. If you write code, 03 through 07
+          are where the receipts are.
         </p>
       </section>
 
       {/* 02 -------------------------------------------------------------- */}
+
       <section className='cs-section'>
         <p className='cs-num'>02</p>
+        <h2>The shape of it</h2>
+
+        <p className='cs-lede'>
+          Two ways in, one spine, and a hard stop at the end. Everything drawn here is running
+          today.
+        </p>
+
+        <figure className='fx-arch cs-wide'>
+          <div className='fx-arch-lanes'>
+            {LANES.map((lane) => (
+              <div className='fx-arch-lane' key={lane.id}>
+                <p className='fx-arch-entry'>{lane.entry}</p>
+                <p className='fx-arch-via'>via {lane.via}</p>
+                <div className='fx-arch-card'>
+                  <p className='fx-arch-name'>{lane.name}</p>
+                  <ul>
+                    {lane.detail.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className='fx-arch-merge' aria-hidden='true' />
+
+          <ol className='fx-arch-stack'>
+            {STACK.map((step) => (
+              <li key={step.label}>
+                <p className='fx-arch-step'>{step.label}</p>
+                <p className='fx-arch-detail'>{step.detail}</p>
+              </li>
+            ))}
+          </ol>
+
+          <figcaption>
+            Nothing here is exposed to the internet. The server listens on the machine itself, and
+            the only way in from outside the house is a private network between my own devices.
+          </figcaption>
+        </figure>
+
+        <p>
+          The two lanes are the part people miss. They are not two interfaces onto one thing, they
+          are two different levels of trust. The phone lane runs as a separate operating system user
+          with no ability to reach my documents, my keys or my work, because that lane is the one I
+          use when I am not watching. The laptop lane runs as me, and is for the work I want to see
+          happen. Both talk to the same server and write into the same workspace, so a project
+          started on a train can be finished at the desk. The truth lives in files and git, not in
+          any tool&rsquo;s memory.
+        </p>
+        <p>
+          The hardware decides the shape of all of it. Sixty-four gigabytes of unified memory puts
+          the ceiling at around thirty-five billion parameters at a speed you can hold a
+          conversation with. That single constraint is what turned model selection from a matter of
+          taste into a matter of measurement, which is section 04.
+        </p>
+        <p className='cs-callout'>
+          The test I set myself was deliberately unglamorous: away from the desk, no laptop,
+          scaffold a small TypeScript project from my phone, put it through every gate, and commit
+          it. It passed in July, from a pub. That is the whole system working end to end, and it is
+          also the honest ceiling of what it does today.
+        </p>
+      </section>
+
+      {/* 03 -------------------------------------------------------------- */}
+      <section className='cs-section'>
+        <p className='cs-num'>03</p>
         <h2>The code looked right</h2>
 
         <p>
@@ -175,7 +255,7 @@ const Factory = () => (
 
       {/* 03 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>03</p>
+        <p className='cs-num'>04</p>
         <h2>I stopped reading about models and measured them</h2>
 
         <p>
@@ -215,7 +295,7 @@ const Factory = () => (
 
       {/* 04 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>04</p>
+        <p className='cs-num'>05</p>
         <h2>The agent cannot push, and not because I asked it not to</h2>
 
         <p>
@@ -257,7 +337,7 @@ const Factory = () => (
 
       {/* 05 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>05</p>
+        <p className='cs-num'>06</p>
         <h2>Three bugs, and what was actually wrong</h2>
 
         <p>
@@ -287,7 +367,7 @@ const Factory = () => (
 
       {/* 06 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>06</p>
+        <p className='cs-num'>07</p>
         <h2>One of them was not my bug</h2>
 
         <p>
@@ -351,13 +431,13 @@ const Factory = () => (
 
       {/* 07 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>07</p>
+        <p className='cs-num'>08</p>
         <h2>What it still cannot do</h2>
 
         <p>
           A page about a machine in your own house, written by the person who owns it, is worth
-          about as much as its worst admission. So here are the four a reader would otherwise have
-          to ask about.
+          about as much as its worst admission. So here are the five a reader would otherwise have
+          to ask about, starting with the one that matters most.
         </p>
 
         <ul className='fx-limits'>
@@ -372,14 +452,15 @@ const Factory = () => (
 
       {/* 08 -------------------------------------------------------------- */}
       <section className='cs-section'>
-        <p className='cs-num'>08</p>
+        <p className='cs-num'>09</p>
         <h2>Why bother</h2>
 
         <p>
-          Because one engineer can now attempt what used to need a team, and almost all of the
-          difficulty has moved. It is no longer in producing the code. It is in knowing whether the
-          code you were handed is any good, and in making sure the thing that produced it cannot
-          hurt you while you find out.
+          Because of the arithmetic in section 01. Four people for three months is why most
+          software that should exist does not, and that number is moving. Almost all of the
+          difficulty has moved with it. It is no longer in producing the code. It is in knowing
+          whether the code you were handed is any good, and in making sure the thing that produced
+          it cannot hurt you while you find out.
         </p>
         <p>
           That is not a prompt engineering problem. It is an engineering problem, and it looks
@@ -390,7 +471,9 @@ const Factory = () => (
         <p>
           I did not build this to have a local model. I built it to find out what changes when the
           model is yours, the hardware is yours, and every mistake is yours to diagnose. What
-          changed is that I now trust generated code less, and ship it more.
+          changed is that I now trust generated code less, and ship it more. The next thing to
+          build is the layer that takes a checked commit and turns it into something a user can
+          open. When that exists this page will say so, and not before.
         </p>
       </section>
 

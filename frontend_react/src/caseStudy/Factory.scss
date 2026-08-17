@@ -324,6 +324,207 @@
   }
 }
 
+
+/* ── The architecture diagram ──────────────────────────────────────────────
+   Built from boxes and text rather than SVG, for three reasons: it reflows at
+   500px instead of scrolling sideways, it inherits both themes from the same
+   custom properties as everything else, and a screen reader gets real content
+   rather than a shrug.
+
+   Every paragraph rule below is nested, because `.cs-section p` outranks a
+   bare class selector and would otherwise put prose margins inside the boxes. */
+
+.fx-arch {
+  margin: 3rem 0 0;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+
+  .fx-arch-entry {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .fx-arch-via {
+    margin: 0.2rem 0 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+
+  .fx-arch-name {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .fx-arch-step {
+    margin: 0;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .fx-arch-detail {
+    margin: 0.15rem 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  figcaption {
+    margin: 2rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-subtle);
+  }
+}
+
+.fx-arch-lanes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Flex so the two cards match height regardless of how many bullets each has.
+   The padding below the card is where that lane's stem down to the merge bar
+   is drawn, which is why the card is flex: 1 and not height: 100%. */
+.fx-arch-lane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.25rem;
+  text-align: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1px;
+    height: 1.25rem;
+    background: var(--border-strong);
+  }
+}
+
+.fx-arch-card {
+  flex: 1;
+  padding: 1.25rem;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 1rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+
+    & + li {
+      margin-top: 0.6rem;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border-strong);
+    }
+  }
+}
+
+/* Both lanes converge here: a bar joining the two stems, and one drop into the
+   shared spine. The bar spans the middle half because each lane's stem sits at
+   the centre of its own grid column. */
+.fx-arch-merge {
+  position: relative;
+  height: 2rem;
+  margin: 0;
+
+  /* The bar has to end exactly under each lane's stem. A lane centre is a
+     quarter of the row minus half the grid gap, so a plain 25% misses by
+     0.375rem on each side and leaves a visible break. */
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(25% - 0.375rem);
+    right: calc(25% - 0.375rem);
+    top: 0;
+    height: 1px;
+    background: var(--border-strong);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 2rem;
+    background: var(--border-strong);
+  }
+}
+
+/* Narrow, so the shared spine reads as a spine rather than a stack of banners. */
+.fx-arch-stack {
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: 0.85rem 1.25rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+
+    & + li {
+      margin-top: 1.5rem;
+
+      /* The connector into this box, drawn in the gap above it. */
+      &::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -1.5rem;
+        width: 1px;
+        height: 1.5rem;
+        background: var(--border-strong);
+      }
+    }
+
+    /* The last box is where the agent stops, so it is marked as an end. */
+    &:last-child {
+      border-color: var(--border-strong);
+      border-style: dashed;
+    }
+  }
+}
+
 @media (max-width: 640px) {
   // The numbers move under the verdict rather than shrinking, because at this
   // width a right rail leaves the model names two words wide.
@@ -341,5 +542,34 @@
 
   .fx-upstream-meta {
     gap: 1.25rem;
+  }
+
+  /* Two lanes side by side stop being readable well before 500px. */
+  .fx-arch {
+    padding: 1.25rem;
+  }
+
+  .fx-arch-lanes {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Stacked lanes have nothing to join left to right, so the bar goes and the
+     first lane's stem would otherwise dangle into the second. */
+  .fx-arch-lane::after,
+  .fx-arch-merge::before {
+    display: none;
+  }
+
+  .fx-arch-lane {
+    padding-bottom: 0;
+  }
+
+  .fx-arch-merge {
+    height: 1.75rem;
+
+    &::after {
+      height: 1.75rem;
+    }
   }
 }

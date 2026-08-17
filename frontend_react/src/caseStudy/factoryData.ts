@@ -22,6 +22,73 @@ export const MACHINE = [
 ] as const
 
 /**
+ * The two ways in.
+ *
+ * They are genuinely different in privilege, not just in interface, which is
+ * the only reason the distinction is worth a reader's attention. The phone lane
+ * runs as a different operating system user to the one I log in as.
+ */
+export const LANES = [
+  {
+    id: 'lane-2',
+    entry: 'My phone',
+    via: 'Telegram',
+    name: 'Autonomous',
+    detail: [
+      'Runs as its own macOS user, not as me',
+      'Local models only, no cloud provider configured',
+      'Confined to one workspace directory',
+    ],
+  },
+  {
+    id: 'lane-1',
+    entry: 'My laptop',
+    via: 'Terminal',
+    name: 'Hands on',
+    detail: [
+      'Runs as me, with my privileges',
+      'Local by default, can escalate to a frontier model',
+      'For the work I want to watch happen',
+    ],
+  },
+] as const
+
+/**
+ * The shared spine both lanes drop into, top to bottom.
+ *
+ * Only phases the build record marks as done appear here. The pipeline this is
+ * eventually meant to feed, project templates, a push flow, preview deploys,
+ * is real in the plan and not real on the machine, so it is not drawn.
+ */
+export const STACK = [
+  {
+    label: 'Context and gates',
+    detail: 'Current library documentation, plus the scripts a task has to survive.',
+  },
+  {
+    label: 'Inference server',
+    detail: 'Stateless, OpenAI compatible, bound to the machine and never to the network.',
+  },
+  {
+    label: 'The model',
+    detail: 'Qwen3.6-35B-A3B, 4-bit, chosen by measurement. The bake-off is section 04.',
+  },
+  {
+    label: 'One workspace',
+    detail: 'Every project lives here. Nothing the agent does happens anywhere else.',
+  },
+  {
+    label: 'Five gates',
+    detail: 'Install, lint, typecheck, test, build. A task is not done until all five pass.',
+  },
+  {
+    label: 'A local commit',
+    detail: 'And it stops there. Pushing is mine. Section 05 explains why it has to be.',
+  },
+] as const
+
+
+/**
  * A row is one model given one task.
  *
  * `outcome` drives the styling rather than being derived from the score,
@@ -178,6 +245,10 @@ export const UPSTREAM = {
  * would otherwise have to find out by asking.
  */
 export const LIMITS = [
+  {
+    title: 'It scaffolds and checks. It does not yet ship',
+    body: 'What runs today is the engine, the boundary and the gates. The layer above it, project templates, a push and review flow, preview deploys, is designed and written down and not yet built. Anyone describing this as an idea going in and a product coming out is describing my plan, not my machine.',
+  },
   {
     title: 'It cannot survive a power cut on its own',
     body: 'Disk encryption has no unattended unlock, so a cold boot leaves the machine off the network until somebody walks over and types a password. Remote access is only as good as the last time the room was occupied.',
