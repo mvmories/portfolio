@@ -31,7 +31,7 @@ const dot = ' &nbsp;·&nbsp; '
 // The designed rendering
 // ---------------------------------------------------------------------------
 
-export const printHtml = ({fonts, identity, summary, selectedWork, experience, ventures, ai, education, languages}) => {
+export const printHtml = ({fonts, identity, summary, selectedWork, experience, ventures, education, languages}) => {
   const role = (r, {compact = false} = {}) => `
     <article class="role">
       <div class="role-head">
@@ -157,13 +157,13 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
 
   /* ---- selected work ----------------------------------------------- */
   .work-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; }
+  /* Separates the second entry from the first blurb, and keeps a title from
+     being orphaned at the foot of a column. */
+  .blurb + .work-head { margin-top: 2.8mm; break-before: avoid; page-break-before: avoid; }
   .work-head .co { font-size: 10pt; }
 
   /* ---- ventures ---------------------------------------------------- */
   .note { font-size: 7.6pt; color: ${brand.muted}; margin-bottom: 2mm; }
-
-  /* ---- ai ---------------------------------------------------------- */
-  .ai p + p { margin-top: 2.2mm; }
 
   /* ---- education --------------------------------------------------- */
   .edu { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; margin-bottom: 1.7mm; }
@@ -197,11 +197,16 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
 
   <section>
     <h2>Selected work</h2>
+    ${selectedWork
+      .map(
+        (w) => `
     <div class="work-head">
-      <span class="co">${esc(selectedWork.name)}</span>
-      <span>${selectedWork.hrefPre ? `<span class="pre">${esc(selectedWork.hrefPre)}</span> ` : ''}<a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a></span>
+      <span class="co">${esc(w.name)}</span>
+      <span>${w.hrefPre ? `<span class="pre">${esc(w.hrefPre)}</span> ` : ''}<a href="${w.href}">${esc(w.hrefLabel)}</a></span>
     </div>
-    <p class="blurb">${tidy(selectedWork.blurb)}</p>
+    <p class="blurb">${tidy(w.blurb)}</p>`,
+      )
+      .join('')}
   </section>
 
   <section>
@@ -213,11 +218,6 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
     <h2>Founded companies</h2>
     <p class="note">${esc(ventures.note)}</p>
     ${ventures.items.map((r) => role(r, {compact: true})).join('')}
-  </section>
-
-  <section class="ai">
-    <h2>Building with AI</h2>
-    ${ai.map((p) => `<p>${tidy(p)}</p>`).join('')}
   </section>
 
   <section>
@@ -248,7 +248,7 @@ export const printHtml = ({fonts, identity, summary, selectedWork, experience, v
 // The Google Docs rendering
 // ---------------------------------------------------------------------------
 
-export const docHtml = ({identity, summary, selectedWork, experience, ventures, ai, education, languages}) => {
+export const docHtml = ({identity, summary, selectedWork, experience, ventures, education, languages}) => {
   const role = (r, {compact = false} = {}) => `
   <p class="job">
     <span class="co">${esc(r.company)}</span>${dot}<span class="ti">${esc(r.title)}</span>${dot}<span class="dt">${esc(r.dates)}${r.place ? dot + esc(r.place) : ''}</span>
@@ -296,8 +296,12 @@ export const docHtml = ({identity, summary, selectedWork, experience, ventures, 
 <p class="blurb">${tidy(summary)}</p>
 
 <h2>Selected work</h2>
-<p class="job"><span class="co">${esc(selectedWork.name)}</span>${dot}${selectedWork.hrefPre ? `<span class="pre">${esc(selectedWork.hrefPre)}</span> ` : ''}<a href="${selectedWork.href}">${esc(selectedWork.hrefLabel)}</a></p>
-<p class="blurb">${tidy(selectedWork.blurb)}</p>
+${selectedWork
+    .map(
+      (w) => `<p class="job"><span class="co">${esc(w.name)}</span>${dot}${w.hrefPre ? `<span class="pre">${esc(w.hrefPre)}</span> ` : ''}<a href="${w.href}">${esc(w.hrefLabel)}</a></p>
+<p class="blurb">${tidy(w.blurb)}</p>`,
+    )
+    .join('')}
 
 <h2>Experience</h2>
 ${experience.map((r) => role(r)).join('')}
@@ -305,9 +309,6 @@ ${experience.map((r) => role(r)).join('')}
 <h2>Founded companies</h2>
 <p class="note">${esc(ventures.note)}</p>
 ${ventures.items.map((r) => role(r, {compact: true})).join('')}
-
-<h2>Building with AI</h2>
-${ai.map((p) => `<p class="blurb">${tidy(p)}</p>`).join('')}
 
 <h2>Education</h2>
 ${education

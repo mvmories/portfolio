@@ -64,19 +64,48 @@ Founded and exited two companies alongside full-time work. I build with AI daily
 and run my own local model infrastructure.`
 
 /**
- * Deliberately one entry. A "selected work" section with six links is a link
- * dump; with one it is a recommendation. It sits above Experience because it is
- * the only thing on the page a reader can click and verify in thirty seconds.
+ * Two entries, and it stops there. A "selected work" section with six links is a
+ * link dump; with two it is still a recommendation. It sits above Experience
+ * because it is the only thing on the page a reader can click and verify in
+ * thirty seconds.
+ *
+ * The second entry replaced the standalone "Building with AI" block on page 2.
+ * That block asserted the local-model work in prose with nothing to click, which
+ * is the exact failure the site's own design review calls out: an unevidenced
+ * superlative reads as inflation. The claim now sits next to its proof, above
+ * the fold, and the CV is shorter for it.
+ *
+ * PowerByJS stays first: it is delivered client work with an outcome, which is
+ * the stronger signal to a recruiter skimming. The AI Factory is the
+ * differentiator, and it supports the "deep in AI" line rather than carrying the
+ * document.
  */
-export const selectedWork = {
-  name: 'PowerByJS',
-  href: 'https://miguelvilhena.com/powerbyjs',
-  hrefPre: 'Case study',
-  hrefLabel: 'miguelvilhena.com/powerbyjs',
-  blurb: `Brand, site and booking flow for a Haarlem strength studio, designed and built
+export const selectedWork = [
+  {
+    name: 'PowerByJS',
+    href: 'https://miguelvilhena.com/powerbyjs',
+    hrefPre: 'Case study',
+    hrefLabel: 'miguelvilhena.com/powerbyjs',
+    blurb: `Brand, site and booking flow for a Haarlem strength studio, designed and built
 end to end. Full case study, including the problem, the decisions and the result,
 at the link above.`,
-}
+  },
+  {
+    name: 'The AI Factory',
+    href: 'https://miguelvilhena.com/factory',
+    hrefPre: 'Case study',
+    hrefLabel: 'miguelvilhena.com/factory',
+    // Wording carried over from the retired `ai` block, which was reviewed
+    // against §10.3's list of claims that may not be made. "Deploy" stays out:
+    // the pipeline does not deploy anything, and it is exactly the claim an
+    // interviewer would ask to see demonstrated.
+    blurb: `A private AI development environment I run on a Mac Studio: a local open-weight
+LLM on Apple silicon, an agent orchestrator, and a chat interface I can reach
+from anywhere over Tailscale, sandboxed to a non-root user. It takes an idea from
+a loose prompt to a structured spec, then to designs, code and automated quality
+gates, with sub-agents owning each stage.`,
+  },
+]
 
 /**
  * Reverse chronological, with a deliberate recency taper: the newest roles carry
@@ -233,25 +262,11 @@ against it.`,
 }
 
 /**
- * Replaces the old "The World of AI" block, which was ~250 words in one
- * unbroken paragraph.
- *
- * The specific model and quantisation are deliberately absent: they date the
- * document the moment the model changes, and the architecture is the
- * interesting part. The word "deploy" is also absent, because the pipeline does
- * not deploy anything yet and it is exactly the claim an interviewer would ask
- * to see demonstrated.
+ * The "Building with AI" block that used to live here is gone. Its substance
+ * moved into `selectedWork` as The AI Factory entry, where the claim sits next
+ * to a link that proves it. Do not reinstate it: two places making the same
+ * claim, one of them unlinked, is worse than one place making it with evidence.
  */
-export const ai = [
-  `I run a private AI development environment on a Mac Studio at home: a local
-open-weight LLM served on Apple silicon, an agent orchestrator, and a chat
-interface I can reach from anywhere over Tailscale, sandboxed to a non-root user
-and a constrained workspace.`,
-  `I use it to take an idea from a loose prompt to a structured technical spec,
-then to designs, code, and automated quality gates, with sub-agents owning each
-stage. Agentic AI is also part of my day-to-day work at IKEA.`,
-]
-
 /**
  * Four of ten entries. The full list lives on LinkedIn, where it costs nothing.
  * Here, four separate course listings would crowd out the work and read as
